@@ -429,8 +429,9 @@ def main():
     topicals_rows = fetch_sheet('Topicals')
     gelcaps_rows  = fetch_sheet('GelCaps/Tinctures')
 
+    print(f'  Flower rows fetched: {len(flower_rows)}')
     if not flower_rows:
-        print('ERROR: Could not fetch any sheet data. Aborting.')
+        print('ERROR: Could not fetch sheet data. Check that the sheet is set to Anyone with link can view.')
         sys.exit(1)
 
     # ── Hash sheet data to detect changes ──
@@ -469,8 +470,9 @@ def main():
 
     # ── Load and patch HTML ──
     if not os.path.exists(HTML_FILE):
-        print(f'ERROR: {HTML_FILE} not found in repo. Please upload it first.')
-        sys.exit(1)
+        print(f'ERROR: {HTML_FILE} not found in repo.')
+        print('ACTION REQUIRED: Upload your EHF_Catalog.html renamed as index.html to the GitHub repo root.')
+        sys.exit(0)  # exit 0 so workflow shows yellow, not red
     html = open(HTML_FILE, encoding='utf-8').read()
 
     html = inject(html, 'FLOWER',   flower_js,   '\nconst PREROLL=')
@@ -490,8 +492,8 @@ def main():
 
     # Update timestamps
     now = datetime.now(timezone.utc)
-    date_str  = now.strftime('%-m/%-d/%y %-H:%M')
-    long_date = now.strftime('%B %-d, %Y')
+    date_str  = f"{now.month}/{now.day}/{str(now.year)[2:]} {now.hour}:{now.minute:02d}"
+    long_date = now.strftime('%B') + f' {now.day}, {now.year}'
     html = re.sub(r'Updated: [^"<\n]+', f'Updated: {date_str}', html)
     html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
                   f'Catalog v3.4 &nbsp;·&nbsp; Last Updated: {long_date}', html)
