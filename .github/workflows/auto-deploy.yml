@@ -6,7 +6,7 @@ on:
   workflow_dispatch:           # Manual trigger button in GitHub UI
 
 permissions:
-  contents: write              # Allows committing last_hash.txt back to repo
+  contents: write
 
 jobs:
   build-and-deploy:
@@ -23,6 +23,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install dependencies
+        run: pip install requests
+
       - name: Run builder
         env:
           NETLIFY_ACCESS_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
@@ -34,5 +37,6 @@ jobs:
           git config user.name  "EHF Auto Bot"
           git config user.email "bot@exclusivehempfarms.com"
           git add index.html last_hash.txt 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git diff --staged --quiet && echo "Nothing to commit" && exit 0
+          git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
