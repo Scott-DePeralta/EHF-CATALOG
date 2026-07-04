@@ -2,7 +2,7 @@ name: Auto-Update EHF Catalog
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '0 19 * * *'   # Once daily at 12:00 PM Pacific (19:00 UTC)
   workflow_dispatch:
     inputs:
       force_rebuild:
@@ -45,6 +45,5 @@ jobs:
           git add index.html last_hash.txt 2>/dev/null || true
           git diff --staged --quiet && echo "Nothing to commit" && exit 0
           git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M UTC')"
-          # Pull any remote changes first to avoid push rejection, then push
           git pull --rebase --autostash origin main || true
           git push origin main || echo "Push skipped — site already deployed via Netlify"
