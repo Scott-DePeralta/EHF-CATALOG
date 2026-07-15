@@ -21,14 +21,29 @@ NETLIFY_SITE_ID = os.environ.get('NETLIFY_SITE_ID', '')
 
 # ── HELPERS ──────────────────────────────────────────────
 def fetch_sheet(tab):
-    url = BASE_URL + tab.replace(' ', '%20').replace('/', '%2F')
-    try:
-        req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-        data = urlopen(req, timeout=30).read().decode('utf-8')
-        return list(csv.reader(io.StringIO(data)))
-    except URLError as e:
-        print(f'  WARNING: Could not fetch tab "{tab}": {e}')
-        return []
+    """Fetch a sheet tab as CSV. Uses gviz endpoint with sheet name.
+    Retries once and logs row count so failures are visible."""
+    from urllib.parse import quote
+    url = BASE_URL + quote(tab)
+    for attempt in range(2):
+        try:
+            req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            raw = urlopen(req, timeout=45).read().decode('utf-8')
+            rows = list(csv.reader(io.StringIO(raw)))
+            print(f'  Fetched "{tab}": {len(rows)} rows')
+            if len(rows) > 1:
+                return rows
+            # Empty result — retry once
+            if attempt == 0:
+                print(f'  "{tab}" returned {len(rows)} rows, retrying...')
+                continue
+            return rows
+        except Exception as e:
+            print(f'  WARNING: fetch "{tab}" attempt {attempt+1} failed: {e}')
+            if attempt == 0:
+                continue
+            return []
+    return []
 
 def get_drive_id(url):
     if not url: return ''
