@@ -304,9 +304,12 @@ def parse_edibles(rows):
         price = row[3].strip() if len(row)>3 else ''
         pic_raw = row[4].strip() if len(row)>4 else ''
         coa   = row[5].strip() if len(row)>5 else ''
-        if name in EDIBLES_SECTIONS or (not cann and not price):
+        # A row is a SECTION HEADER if it has no cannabinoid AND no price.
+        # This detects any section name automatically — no hardcoded list needed.
+        if not cann and not price:
             items.append({'sec':True,'n':name})
             continue
+        # A real product needs a cannabinoid. Skip malformed rows.
         if not cann: continue
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
