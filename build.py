@@ -378,9 +378,13 @@ def find_price_columns(header):
 
 def find_prices(row, pic_idx, coa_idx, box_col=-1, unit_col=-1):
     """Return (box_price, unit_price).
-    If explicit labeled columns are provided (box_col/unit_col), use them directly.
-    Otherwise fall back to: largest $ value = box, next = single unit."""
-    # Preferred: use the explicitly-labeled columns from the header
+    Strategy:
+    1. If labeled columns were found in the header, use them directly.
+    2. Otherwise collect all $-cells, DISCARD any 'combined' price that contains
+       '/' or 'UNIT' (e.g. '$100/10 UNITS' — that's the stale legacy column),
+       then take the two clean prices: larger = box-of-10, smaller = single unit.
+    """
+    # 1. Labeled columns (most reliable)
     if box_col != -1 or unit_col != -1:
         box  = row[box_col].strip()  if 0 <= box_col  < len(row) else ''
         unit = row[unit_col].strip() if 0 <= unit_col < len(row) else ''
@@ -388,19 +392,28 @@ def find_prices(row, pic_idx, coa_idx, box_col=-1, unit_col=-1):
             if box and unit and _price_val(box) == _price_val(unit):
                 return box, ''
             return box, unit
-    # Fallback: detect by value among $-cells (excluding pic/coa columns)
-    cells = []
+    # 2. Fallback: gather clean $-prices, dropping any combined "/UNITS" style value
+    clean = []
     for i in range(2, len(row)):
         if i == pic_idx or i == coa_idx: continue
         cell = row[i].strip()
-        if '$' in cell:
-            cells.append(cell)
-    if not cells:
+        if '$' not in cell: continue
+        up = cell.upper()
+        # Skip the stale combined price like "$100/10 UNITS"
+        if '/' in cell or 'UNIT' in up:
+            continue
+        clean.append(cell)
+    if not clean:
+        # No clean prices — fall back to whatever single price exists
+        for i in range(2, len(row)):
+            if i == pic_idx or i == coa_idx: continue
+            if '$' in row[i]:
+                return row[i].strip(), ''
         return '', ''
-    if len(cells) == 1:
-        return cells[0], ''
-    cells_sorted = sorted(cells, key=_price_val, reverse=True)
-    box, unit = cells_sorted[0], cells_sorted[1]
+    if len(clean) == 1:
+        return clean[0], ''
+    clean_sorted = sorted(clean, key=_price_val, reverse=True)
+    box, unit = clean_sorted[0], clean_sorted[1]
     if _price_val(box) == _price_val(unit):
         return box, ''
     return box, unit
@@ -496,7 +509,7 @@ def inject(html, const_name, new_js, next_const):
 
 # ── MAIN ─────────────────────────────────────────────────
 def main():
-    print(f'\n=== EHF Catalog Builder v5 (labeled-price-columns) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
+    print(f'\n=== EHF Catalog Builder v6 (discard-stale-price) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
 
     # ── Fetch all sheet tabs ──
     print('Fetching sheets...')
@@ -538,6 +551,10 @@ def main():
     gelcaps_items  = parse_generic(gelcaps_rows, 'GELCAPS')
 
     print(f'  Flower: {len(flower_items)} | PreRoll: {len([x for x in preroll_items if not x.get("sec")])} | Vape: {len([x for x in vape_items if not x.get("sec")])} | Edibles: {len([x for x in edibles_items if not x.get("sec")])}')
+    # DEBUG: print first 3 edibles prices so we can verify from the log
+    _ed_prods = [x for x in edibles_items if not x.get('sec')][:3]
+    for _p in _ed_prods:
+        print(f'    EDIBLE {_p["n"]}: box={_p.get("price","")!r} unit={_p.get("unit","")!r}')
 
     # ── Build JS arrays ──
     flower_js  = build_flower_js(flower_items)
