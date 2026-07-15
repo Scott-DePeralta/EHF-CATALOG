@@ -279,18 +279,23 @@ def parse_vape(rows):
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',): continue
-        cann  = row[1].strip() if len(row)>1 else ''
-        qty   = row[2].strip() if len(row)>2 else ''
-        price = row[3].strip() if len(row)>3 else ''
-        pic_raw = row[4].strip() if len(row)>4 else ''
-        coa   = row[5].strip() if len(row)>5 else ''
-        # Section headers have no cann or price
-        if not cann or not price:
+        cann = row[1].strip() if len(row)>1 else ''
+        # Section header: no cannabinoid
+        if not cann:
             items.append({'sec':True,'n':name})
             continue
+        pic_idx, coa_idx = find_url_columns(row)
+        pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
+        coa     = row[coa_idx].strip() if coa_idx != -1 else ''
+        # Price = first $-containing cell that isn't the pic/coa column
+        price = ''
+        for i in range(2, len(row)):
+            if i == pic_idx or i == coa_idx: continue
+            if '$' in row[i]:
+                price = row[i].strip(); break
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
-        items.append({'sec':False,'n':name,'cann':cann,'qty':qty,
+        items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'pic':pic,'coa':coa})
     return items
 
@@ -314,21 +319,22 @@ def parse_edibles(rows):
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',): continue
-        cann  = row[1].strip() if len(row)>1 else ''
-        qty   = row[2].strip() if len(row)>2 else ''
-        price = row[3].strip() if len(row)>3 else ''
-        pic_raw = row[4].strip() if len(row)>4 else ''
-        coa   = row[5].strip() if len(row)>5 else ''
-        # A row is a SECTION HEADER if it has no cannabinoid AND no price.
-        # This detects any section name automatically — no hardcoded list needed.
-        if not cann and not price:
+        cann = row[1].strip() if len(row)>1 else ''
+        # Section header: no cannabinoid (detects any section name automatically)
+        if not cann:
             items.append({'sec':True,'n':name})
             continue
-        # A real product needs a cannabinoid. Skip malformed rows.
-        if not cann: continue
+        pic_idx, coa_idx = find_url_columns(row)
+        pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
+        coa     = row[coa_idx].strip() if coa_idx != -1 else ''
+        price = ''
+        for i in range(2, len(row)):
+            if i == pic_idx or i == coa_idx: continue
+            if '$' in row[i]:
+                price = row[i].strip(); break
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
-        items.append({'sec':False,'n':name,'cann':cann,'qty':qty,
+        items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'pic':pic,'coa':coa,'note':''})
     return items
 
