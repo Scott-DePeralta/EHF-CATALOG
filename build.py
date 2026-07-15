@@ -275,19 +275,21 @@ VAPE_SECTIONS = {'2G DISPOSABLE VAPE\nBLINKERS BLEND',
 
 def parse_vape(rows):
     items = []
+    box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',): continue
+        if name in ('PRODUCT NAME',):
+            box_col, unit_col = find_price_columns(row)
+            continue
         cann = row[1].strip() if len(row)>1 else ''
-        # Section header: no cannabinoid
         if not cann:
             items.append({'sec':True,'n':name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx)
+        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
@@ -310,19 +312,21 @@ EDIBLES_SECTIONS = {'SWEET TOOTH','SWEETH TOOTH','CBD CANDY','EHF','PESO PESO'}
 
 def parse_edibles(rows):
     items = []
+    box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',): continue
+        if name in ('PRODUCT NAME',):
+            box_col, unit_col = find_price_columns(row)
+            continue
         cann = row[1].strip() if len(row)>1 else ''
-        # Section header: no cannabinoid (detects any section name automatically)
         if not cann:
             items.append({'sec':True,'n':name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx)
+        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
@@ -354,36 +358,72 @@ def find_url_columns(row):
                 coa_idx = i
     return pic_idx, coa_idx
 
-def find_prices(row, pic_idx, coa_idx):
-    """Return (box_price, unit_price) — the first two $-containing cells that aren't pic/coa."""
-    prices = []
+def _price_val(s):
+    """Extract the leading dollar amount from a price string like '$100/10 UNITS' -> 100.0"""
+    import re
+    m = re.search(r'\$?\s*([\d,]+\.?\d*)', s.replace(',', ''))
+    return float(m.group(1)) if m else 0.0
+
+def find_price_columns(header):
+    """Locate box-price and unit-price columns by their header labels.
+    Returns (box_idx, unit_idx) or (-1,-1) if not found by label."""
+    box_idx = unit_idx = -1
+    for i, h in enumerate(header):
+        hl = h.strip().lower()
+        if 'box' in hl and 'price' in hl:
+            box_idx = i
+        elif ('single' in hl or 'per unit' in hl or 'single unit' in hl) and 'price' in hl:
+            unit_idx = i
+    return box_idx, unit_idx
+
+def find_prices(row, pic_idx, coa_idx, box_col=-1, unit_col=-1):
+    """Return (box_price, unit_price).
+    If explicit labeled columns are provided (box_col/unit_col), use them directly.
+    Otherwise fall back to: largest $ value = box, next = single unit."""
+    # Preferred: use the explicitly-labeled columns from the header
+    if box_col != -1 or unit_col != -1:
+        box  = row[box_col].strip()  if 0 <= box_col  < len(row) else ''
+        unit = row[unit_col].strip() if 0 <= unit_col < len(row) else ''
+        if box or unit:
+            if box and unit and _price_val(box) == _price_val(unit):
+                return box, ''
+            return box, unit
+    # Fallback: detect by value among $-cells (excluding pic/coa columns)
+    cells = []
     for i in range(2, len(row)):
         if i == pic_idx or i == coa_idx: continue
         cell = row[i].strip()
         if '$' in cell:
-            prices.append(cell)
-    box  = prices[0] if len(prices) > 0 else ''
-    unit = prices[1] if len(prices) > 1 else ''
+            cells.append(cell)
+    if not cells:
+        return '', ''
+    if len(cells) == 1:
+        return cells[0], ''
+    cells_sorted = sorted(cells, key=_price_val, reverse=True)
+    box, unit = cells_sorted[0], cells_sorted[1]
+    if _price_val(box) == _price_val(unit):
+        return box, ''
     return box, unit
 
 def parse_generic(rows, const_name):
-    """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL,
-    so it works regardless of how many price columns each tab has."""
+    """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL and
+    price columns by header label, so column order/count doesn't matter."""
     items = []
+    box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',): continue
+        if name in ('PRODUCT NAME',):
+            box_col, unit_col = find_price_columns(row)
+            continue
         cann = row[1].strip() if len(row)>1 else ''
-        # Section header: no cannabinoid
         if not cann:
             items.append({'sec':True,'n':name})
             continue
-        # Find pic + coa columns by detecting URLs anywhere in the row
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx)
+        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
@@ -456,7 +496,7 @@ def inject(html, const_name, new_js, next_const):
 
 # ── MAIN ─────────────────────────────────────────────────
 def main():
-    print(f'\n=== EHF Catalog Builder — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
+    print(f'\n=== EHF Catalog Builder v5 (labeled-price-columns) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
 
     # ── Fetch all sheet tabs ──
     print('Fetching sheets...')
