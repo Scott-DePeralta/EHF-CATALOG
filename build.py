@@ -313,11 +313,13 @@ EDIBLES_SECTIONS = {'SWEET TOOTH','SWEETH TOOTH','CBD CANDY','EHF','PESO PESO'}
 def parse_edibles(rows):
     items = []
     box_col = unit_col = -1
+    pieces_col = cat_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',):
             box_col, unit_col = find_price_columns(row)
+            pieces_col, cat_col = find_pieces_columns(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
@@ -329,10 +331,17 @@ def parse_edibles(rows):
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
+        # Read pieces + category from the sheet columns (fallback to hardcoded map)
+        raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
+        raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
+        if raw_pieces or raw_cat:
+            pieces = format_pieces(raw_pieces, raw_cat)
+        else:
+            pieces = piece_label(name)  # fallback to built-in map
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':''})
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,
+                      'note':'','pieces':pieces})
     return items
-
 def build_edibles_js(items):
     lines = ['const EDIBLES=[']
     for i,p in enumerate(items):
@@ -340,11 +349,158 @@ def build_edibles_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pieces:"{esc(p.get("pieces",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
 # ── GENERIC SECTION PARSER (Extracts, Syrup, Topicals, GelCaps) ──────────────
+PIECES = {
+    "WAFFLE": ("snack", "cereal"),
+    "FRUITY": ("snack", "cereal"),
+    "COTTON CANDY": ("snack", "cereal"),
+    "BIRTHDAY CAKE": ("snack", "cereal"),
+    "APPLE KUSH": ("snack", "cereal"),
+    "TAJIN SANDIA": ("snack", "cereal"),
+    "CINNAMON": ("snack", "cereal"),
+    "BANANA SPLITS": ("snack", "cereal"),
+    "SMORES": ("snack", "cereal"),
+    "PINEAPPLE EXPRESS": ("snack", "cereal"),
+    "CUBES": ("10", "gummy"),
+    "DELTA BEARS": ("10", "gummy"),
+    "DELTA STRIPS": ("10", "gummy"),
+    "DELTA BURSTS": ("10", "gummy"),
+    "DELTA ROPE": ("1 rope", "gummy with candy"),
+    "DELTA DROPS": ("10", "gummy"),
+    "CRUNCHY BELT PURPLE PUNCH": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT WILD CHERRY": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT LOUD LEMON": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT HONEY LEMON": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT STRAWBERRY SHERBERT": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT GRAPE LEMONADE": ("1 belt", "gummy with candy"),
+    "CRUNCHY BELT RAINBOW": ("1 belt", "gummy with candy"),
+    "GOOEY BURSTS": ("10", "gummy"),
+    "LITTLES": ("10", "candy"),
+    "VERY BEARY": ("10", "gummy"),
+    "RAINBOW STRIPS": ("10", "gummy"),
+    "APPLE RINGS": ("6", "gummy"),
+    "SOUR WATERMELON SHARKS": ("6", "gummy"),
+    "STRAWBERRY PUFFS": ("6", "gummy"),
+    "PEACH RINGS": ("6", "gummy"),
+    "ALL STAR MIX": ("10", "gummy"),
+    "SOUR OCTOPUS": ("6", "gummy"),
+    "WATERMELON WORMS": ("6", "gummy"),
+    "GUMMY SHARKS": ("6", "gummy"),
+    "SOUR GLOW WORMS": ("6", "gummy"),
+    "PINEAPPLE RINGS": ("6", "gummy"),
+    "TRIPS AHOY PEANUT BUTTER": ("2", "cookie"),
+    "TRIPS AHOY RED VELVET": ("2", "cookie"),
+    "TRIPS AHOY CANDY BLAST": ("2", "cookie"),
+    "TRIPS AHOY CHEWY": ("2", "cookie"),
+    "TRIPS AHOY CHUNKY": ("2", "cookie"),
+    "ASTRO FOOD COOKIES": ("10", "cookie"),
+    "ASTRO FOOD ORBIT O'S": ("10", "cookie"),
+    "POT TARTS STRAWBERRY": ("1", "pastry"),
+    "COOKIE CRISP BAR": ("1", "cereal bar"),
+    "RICE CEREAL TREATS ORIGINAL": ("1", "cereal bar"),
+    "RICE CEREAL TREATS BIRTHDAY CAKE": ("1", "cereal bar"),
+    "CHEDDAR SNACK CRACKERS": ("snack", "chips"),
+    "CAP'N CHRONIC ORIGINAL": ("snack", "cereal"),
+    "CAP'N CHRONIC BERRIES": ("snack", "gummy"),
+    "LOUDEST FLAKES ORIGINAL": ("snack", "gummy"),
+    "LOUDEST FLAKES BANANA CREME": ("snack", "gummy"),
+    "FRUITY CEREAL": ("snack", "gummy"),
+    "FRUITY LOOP CEREAL": ("snack", "gummy"),
+    "TRIX CEREAL": ("snack", "gummy"),
+    "CANNABIS TOAST CRUNCH CHURROS": ("snack", "cereal"),
+    "CANNABIS TOAST CRUNCH CEREAL": ("snack", "cereal"),
+    "STONEY CHARMS CEREAL": ("snack", "cereal"),
+    "DOWEEDOS SPICY SWEET CHILI": ("snack", "chips"),
+    "DOWEEDOS FLAMAS": ("snack", "chips"),
+    "DOWEEDOS TAPATIO": ("snack", "chips"),
+    "DOWEEDOS NACHO CHEESE": ("snack", "chips"),
+    "DOWEEDOS COOL RANCH": ("snack", "chips"),
+    "CORN CHIPS ORIGINAL": ("snack", "chips"),
+    "CORN CHIPS FLAMIN' HOT": ("snack", "chips"),
+    "CORN CHIPS CHILLI CHEESE": ("snack", "chips"),
+    "TAKIS FUEGO": ("snack", "chips"),
+    "CHEESE PUFFS FLAMIN' HOT": ("snack", "chips"),
+    "CHEESE PUFFS ORIGINAL": ("snack", "chips"),
+    "CHEESE PUFFS CRUNCHY": ("snack", "chips"),
+    "CHEESE PUFFS XXTRA FLAMIN' HOT": ("snack", "chips"),
+}
+
+def piece_label(name):
+    """Return a display label like '~10 pieces · gummy' or 'Full Bag · chips'."""
+    import re as _re
+    key = _re.sub(r'\s+', ' ', name).strip().upper()
+    entry = PIECES.get(key)
+    if not entry:
+        # Try without spaces (handles "PINE APPLE" vs "PINEAPPLE")
+        nospace = key.replace(' ', '')
+        for k, v in PIECES.items():
+            if k.replace(' ', '') == nospace:
+                entry = v
+                break
+    if not entry:
+        # Auto-default obvious snacks
+        SNACK_WORDS = ['CHIPS','FUNYUNS','PUFFS','TAKIS','DOWEEDOS','CEREAL',
+                       'FLAKES','CRACKERS','CORN CHIP','POTATO']
+        if any(w in key for w in SNACK_WORDS):
+            return 'Full Bag'
+        return ''
+    val, note = entry
+    v = val.strip().lower()
+    if v == 'snack':
+        count = 'Full Bag'
+    elif 'rope' in v:
+        count = '1 Rope'
+    elif 'belt' in v:
+        count = '1 Belt'
+    elif v.isdigit():
+        n = int(v)
+        count = '1 piece' if n == 1 else f'~{n} pieces'
+    else:
+        count = val
+    if note:
+        return f'{count} \u00b7 {note}'
+    return count
+
+def find_pieces_columns(header):
+    """Locate PIECES PER UNIT and CATEGORY columns by header label."""
+    pieces_idx = cat_idx = -1
+    for i, h in enumerate(header):
+        hl = h.strip().lower()
+        if 'piece' in hl:
+            pieces_idx = i
+        elif hl in ('category','subcategory','sub category','type'):
+            cat_idx = i
+    return pieces_idx, cat_idx
+
+def format_pieces(val, cat):
+    """Build display label from raw pieces value + category, e.g. '~10 pieces \u00b7 gummy'."""
+    val = (val or '').strip()
+    cat = (cat or '').strip()
+    if not val and not cat:
+        return ''
+    v = val.lower()
+    if v == 'snack':
+        count = 'Full Bag'
+    elif 'rope' in v:
+        count = '1 Rope'
+    elif 'belt' in v:
+        count = '1 Belt'
+    elif v.isdigit():
+        n = int(v)
+        count = '1 piece' if n == 1 else f'~{n} pieces'
+    elif val:
+        count = val
+    else:
+        count = ''
+    cat_disp = cat.lower() if cat else ''
+    if count and cat_disp:
+        return f'{count} \u00b7 {cat_disp}'
+    return count or cat_disp
+
 def find_url_columns(row):
     """Find picture and COA columns by detecting URLs — robust to extra price columns."""
     pic_idx = coa_idx = -1
