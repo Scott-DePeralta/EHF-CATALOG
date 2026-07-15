@@ -287,16 +287,11 @@ def parse_vape(rows):
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        # Price = first $-containing cell that isn't the pic/coa column
-        price = ''
-        for i in range(2, len(row)):
-            if i == pic_idx or i == coa_idx: continue
-            if '$' in row[i]:
-                price = row[i].strip(); break
+        price, unit_price = find_prices(row, pic_idx, coa_idx)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
-                      'price':price,'pic':pic,'coa':coa})
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
 
 def build_vape_js(items):
@@ -306,7 +301,7 @@ def build_vape_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -327,15 +322,11 @@ def parse_edibles(rows):
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price = ''
-        for i in range(2, len(row)):
-            if i == pic_idx or i == coa_idx: continue
-            if '$' in row[i]:
-                price = row[i].strip(); break
+        price, unit_price = find_prices(row, pic_idx, coa_idx)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
-                      'price':price,'pic':pic,'coa':coa,'note':''})
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':''})
     return items
 
 def build_edibles_js(items):
@@ -345,7 +336,7 @@ def build_edibles_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -362,6 +353,18 @@ def find_url_columns(row):
             if coa_idx == -1:
                 coa_idx = i
     return pic_idx, coa_idx
+
+def find_prices(row, pic_idx, coa_idx):
+    """Return (box_price, unit_price) — the first two $-containing cells that aren't pic/coa."""
+    prices = []
+    for i in range(2, len(row)):
+        if i == pic_idx or i == coa_idx: continue
+        cell = row[i].strip()
+        if '$' in cell:
+            prices.append(cell)
+    box  = prices[0] if len(prices) > 0 else ''
+    unit = prices[1] if len(prices) > 1 else ''
+    return box, unit
 
 def parse_generic(rows, const_name):
     """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL,
@@ -380,18 +383,11 @@ def parse_generic(rows, const_name):
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        # Price = first cell after cannabinoid/qty that contains a $ (the box-of-10 price)
-        price = ''
-        for i in range(2, len(row)):
-            if i == pic_idx or i == coa_idx: continue
-            cell = row[i].strip()
-            if '$' in cell:
-                price = cell
-                break
+        price, unit_price = find_prices(row, pic_idx, coa_idx)
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
-                      'price':price,'pic':pic,'coa':coa})
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
 
 def build_generic_js(items, const_name):
@@ -401,7 +397,7 @@ def build_generic_js(items, const_name):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"{esc(p.get("size",""))}",price:"{esc(p["price"])}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"{esc(p.get("size",""))}",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
