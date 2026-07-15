@@ -329,35 +329,47 @@ def build_edibles_js(items):
     return '\n'.join(lines)
 
 # ── GENERIC SECTION PARSER (Extracts, Syrup, Topicals, GelCaps) ──────────────
+def find_url_columns(row):
+    """Find picture and COA columns by detecting URLs — robust to extra price columns."""
+    pic_idx = coa_idx = -1
+    for i, cell in enumerate(row):
+        c = cell.strip()
+        if 'drive.google.com' in c or 'leadconnectorhq.com' in c or 'storage.googleapis.com' in c or 'filesafe.space' in c:
+            if pic_idx == -1:
+                pic_idx = i
+        elif '.pdf' in c.lower() or 'shopify.com' in c or 'cdn.' in c:
+            if coa_idx == -1:
+                coa_idx = i
+    return pic_idx, coa_idx
+
 def parse_generic(rows, const_name):
+    """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL,
+    so it works regardless of how many price columns each tab has."""
     items = []
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',): continue
-        cann  = row[1].strip() if len(row)>1 else ''
-        size  = row[2].strip() if len(row)>2 else ''  # some tabs have SIZE column
-        # Detect section headers
+        cann = row[1].strip() if len(row)>1 else ''
+        # Section header: no cannabinoid
         if not cann:
             items.append({'sec':True,'n':name})
             continue
-        # For tabs with SIZE column (extracts): qty is col3, price col4, pic col5, coa col6
-        # For tabs without SIZE (syrup, topicals, gelcaps): qty col2, price col3, pic col4, coa col5
-        # We handle both by checking column count
-        if const_name == 'EXTRACTS':
-            qty   = row[3].strip() if len(row)>3 else ''
-            price = row[4].strip() if len(row)>4 else ''
-            pic_raw = row[5].strip() if len(row)>5 else ''
-            coa   = row[6].strip() if len(row)>6 else ''
-        else:
-            qty   = size  # reuse
-            price = row[3].strip() if len(row)>3 else ''
-            pic_raw = row[4].strip() if len(row)>4 else ''
-            coa   = row[5].strip() if len(row)>5 else ''
-            size  = ''
+        # Find pic + coa columns by detecting URLs anywhere in the row
+        pic_idx, coa_idx = find_url_columns(row)
+        pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
+        coa     = row[coa_idx].strip() if coa_idx != -1 else ''
+        # Price = first cell after cannabinoid/qty that contains a $ (the box-of-10 price)
+        price = ''
+        for i in range(2, len(row)):
+            if i == pic_idx or i == coa_idx: continue
+            cell = row[i].strip()
+            if '$' in cell:
+                price = cell
+                break
         pic = get_pic(pic_raw)
         if not pic or not is_valid_coa(coa): continue
-        items.append({'sec':False,'n':name,'cann':cann,'size':size,
+        items.append({'sec':False,'n':name,'cann':cann,'size':'',
                       'price':price,'pic':pic,'coa':coa})
     return items
 
