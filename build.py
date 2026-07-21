@@ -16,6 +16,23 @@ BASE_URL   = f'https://docs.google.com/spreadsheets/d/{SHEET_ID}/gviz/tq?tqx=out
 HASH_FILE  = 'last_hash.txt'
 HTML_FILE  = 'index.html'
 
+# ── HEADER MARKER ────────────────────────────────────────
+# A subcategory / brand header is a product-name cell wrapped in triple asterisks:
+#   ***KING SIZE PRE ROLLS***   ->  section header "KING SIZE PRE ROLLS"
+# This marker survives CSV export AND the Sheets API, so the catalog and the
+# invoice both detect headers identically (cell color does not survive CSV).
+import re as _re_hdr
+def is_header_marker(name):
+    # DOTALL so the marker still matches when the header text contains newlines
+    # (e.g. "***2G DISPOSABLE VAPE\nBLINKERS BLEND***").
+    return bool(_re_hdr.match(r'^\s*\*\*\*.*\*\*\*\s*$', str(name or ''), _re_hdr.DOTALL))
+def strip_header_marker(name):
+    inner = _re_hdr.sub(r'^\s*\*\*\*\s*|\s*\*\*\*\s*$', '', str(name or '')).strip()
+    # Multi-line header = "Subcategory\nBrand[\nBrand2...]" -> "Subcategory · Brand · ..."
+    parts = [ln.strip() for ln in inner.split('\n') if ln.strip()]
+    return ' · '.join(parts) if len(parts) > 1 else inner
+
+
 NETLIFY_TOKEN   = os.environ.get('NETLIFY_ACCESS_TOKEN', '')
 NETLIFY_SITE_ID = os.environ.get('NETLIFY_SITE_ID', '')
 
@@ -184,6 +201,15 @@ def parse_flower(rows):
         name = row[0].strip()
         if not name or name in skip_names or name.startswith('Last Updated'): continue
 
+        # ***HEADER*** marker = explicit section divider (most reliable signal).
+        # Determine weight vs unit mode from the header text if recognizable.
+        if is_header_marker(name):
+            clean = strip_header_marker(name)
+            if clean.upper() in FLOWER_UNIT_SECTIONS: current_mode = 'unit'
+            else: current_mode = 'weight'
+            items.append({'sec':True,'n':clean})
+            continue
+
         # Detect a section header: a row whose name matches a known unit-section,
         # OR a row with a name but no THCa value and no prices (a divider).
         upper = name.upper()
@@ -194,19 +220,9 @@ def parse_flower(rows):
         except: has_thca = False
         row_prices = [c for c in row[2:8] if '$' in c] if len(row) > 2 else []
 
-        if upper in FLOWER_UNIT_SECTIONS:
-            current_mode = 'unit'
-            items.append({'sec':True,'n':name})
-            continue
-        # Known weight-based section dividers (explicit list — avoids
-        # mistaking a real strain with blank data for a header)
-        WEIGHT_SECTIONS = {'INDICA','SATIVA','HYBRID','INDICA DOMINANT',
-                           'SATIVA DOMINANT','HYBRID DOMINANT','FLOWER','PREMIUM FLOWER',
-                           'EXOTIC','TOP SHELF','SMALLS'}
-        if upper in WEIGHT_SECTIONS:
-            current_mode = 'weight'
-            items.append({'sec':True,'n':name})
-            continue
+        # Old name-based section guessing removed — ***HEADER*** (handled above) is
+        # the only signal now. This prevents real strains (e.g. VANILLA CAKE) with
+        # sparse data from being mistaken for section dividers.
 
         vid    = row[8].strip() if len(row)>8 else ''
         coa    = row[9].strip() if len(row)>9 else ''
@@ -219,16 +235,28 @@ def parse_flower(rows):
         qty = row[2].strip() if len(row)>2 else ''
 
         # Skip only rows with NO usable data at all (no thca, no price, no pic, no coa).
-        row_has_price = any('$' in c for c in row[2:8]) if len(row) > 2 else False
+        def _has_num(c):
+            cs = str(c).replace('$','').replace(',','').strip()
+            try: return float(cs) > 0
+            except: return False
+        row_has_price = any(_has_num(c) for c in row[3:7]) if len(row) > 3 else False
         if thca is None and not row_has_price and not pic and not coa:
             continue
 
         if current_mode == 'unit':
-            # Per-unit (per 3.5g can) pricing. Find the first $ price in the row.
+            # Per-unit (per 3.5g can) pricing. Find the first real price in the row —
+            # accept a plain number (15) or a $-prefixed value ($15). The LB column
+            # holds the per-unit price for these can sections.
             unit_price = ''
-            for c in row[2:8]:
-                if '$' in c and c.strip().upper() != 'N/A':
-                    unit_price = c.strip(); break
+            for c in row[3:8]:
+                cs = str(c).strip()
+                if cs.upper() in ('N/A','NA',''): continue
+                num = cs.replace('$','').replace(',','').strip()
+                try:
+                    if float(num) > 0:
+                        unit_price = '$' + (num if '.' not in num else num.rstrip('0').rstrip('.'))
+                        break
+                except: pass
             special = qty.upper() == 'MADE TO ORDER'
             st, sl = ST_MAP.get(name, auto_st(name))
             isnew = 'true' if name not in KNOWN_PREV else 'false'
@@ -315,14 +343,12 @@ def parse_preroll(rows):
         if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
-        cann = row[1].strip() if len(row)>1 else ''
-        # Section headers: no cannabinoid
-        if not cann:
-            if upper in PREROLL_BRAND_HEADERS:
-                items.append({'sec':True,'n':name,'brand':True})
-            else:
-                items.append({'sec':True,'n':name,'brand':False})
+        # ***HEADER*** marker is the ONLY section-header signal.
+        if is_header_marker(name):
+            clean = strip_header_marker(name)
+            items.append({'sec':True,'n':clean,'brand':clean.upper() in PREROLL_BRAND_HEADERS})
             continue
+        cann = row[1].strip() if len(row)>1 else ''
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
@@ -364,18 +390,20 @@ def parse_vape(rows):
         if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
-        cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
-            items.append({'sec':True,'n':name})
+        # ***HEADER*** marker is the ONLY thing that makes a row a section header.
+        if is_header_marker(name):
+            items.append({'sec':True,'n':strip_header_marker(name)})
             continue
+        cann = row[1].strip() if len(row)>1 else ''
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Keep the product even if pic/COA are missing — the card shows a
-        # "Picture Coming Soon" placeholder rather than dropping the item.
+        # Skip empty/placeholder rows (name but no data) so they don't become blank cards.
+        if not cann and not price and not unit_price and not pic and not coa:
+            continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
@@ -406,17 +434,19 @@ def parse_edibles(rows):
             box_col, unit_col = find_price_columns(row)
             pieces_col, cat_col = find_pieces_columns(row)
             continue
-        cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
-            items.append({'sec':True,'n':name})
+        if is_header_marker(name):
+            items.append({'sec':True,'n':strip_header_marker(name)})
             continue
+        cann = row[1].strip() if len(row)>1 else ''
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Keep the product even without pic/COA (placeholder shown on the card).
+        # Skip empty/placeholder rows (name but no data) so they don't become blank cards.
+        if not cann and not price and not unit_price and not pic and not coa:
+            continue
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
         raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
@@ -674,17 +704,19 @@ def parse_generic(rows, const_name):
         if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
-        cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
-            items.append({'sec':True,'n':name})
+        if is_header_marker(name):
+            items.append({'sec':True,'n':strip_header_marker(name)})
             continue
+        cann = row[1].strip() if len(row)>1 else ''
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Keep the product even without pic/COA (placeholder shown on card).
+        # Skip empty/placeholder rows (name but no data) so they don't become blank cards.
+        if not cann and not price and not unit_price and not pic and not coa:
+            continue
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
