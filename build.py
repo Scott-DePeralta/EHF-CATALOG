@@ -309,7 +309,10 @@ def parse_preroll(rows):
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         upper = name.upper()
-        if name in ('PRODUCT NAME',):
+        # Header row: match by name OR by the 'CANNABINOID' signature in col B,
+        # tolerant of case/whitespace so it never leaks through as a phantom product.
+        _cannhdr = (row[1].strip().upper() if len(row)>1 and row[1] else '')
+        if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
@@ -355,7 +358,10 @@ def parse_vape(rows):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        # Header row: match by name OR by the 'CANNABINOID' signature in col B,
+        # tolerant of case/whitespace so it never leaks through as a phantom product.
+        _cannhdr = (row[1].strip().upper() if len(row)>1 and row[1] else '')
+        if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
@@ -367,7 +373,9 @@ def parse_vape(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Keep the product even if pic/COA are missing — the card shows a
+        # "Picture Coming Soon" placeholder rather than dropping the item.
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
@@ -393,7 +401,8 @@ def parse_edibles(rows):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        _cannhdr = (row[1].strip().upper() if len(row)>1 and row[1] else '')
+        if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             pieces_col, cat_col = find_pieces_columns(row)
             continue
@@ -406,7 +415,8 @@ def parse_edibles(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Keep the product even without pic/COA (placeholder shown on the card).
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
         raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
@@ -658,7 +668,10 @@ def parse_generic(rows, const_name):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        # Header row: match by name OR by the 'CANNABINOID' signature in col B,
+        # tolerant of case/whitespace so it never leaks through as a phantom product.
+        _cannhdr = (row[1].strip().upper() if len(row)>1 and row[1] else '')
+        if name.strip().upper() in ('PRODUCT NAME',) or _cannhdr == 'CANNABINOID':
             box_col, unit_col = find_price_columns(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
@@ -670,7 +683,8 @@ def parse_generic(rows, const_name):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Keep the product even without pic/COA (placeholder shown on card).
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
