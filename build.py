@@ -297,25 +297,38 @@ def build_anim_js(items):
 # ── PREROLL PARSER ───────────────────────────────────────
 SECTION_NAMES = {'KING SIZE PRE ROLLS','DOOBIES','HOTTIES','SINGLE MINI PRE ROLL'}
 
+# All pre-roll section headers get the same large/bold brand styling.
+PREROLL_BRAND_HEADERS = {'DOOBIES','HOTTIES','SINGLE MINI PRE ROLL','SINGLE MINI PRE ROLLS',
+                         'KING SIZE PRE ROLLS','KING SIZE PRE ROLL'}
+PREROLL_CATEGORY_HEADERS = set()
+
 def parse_preroll(rows):
     items = []
+    box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',): continue
-        cann  = row[1].strip() if len(row)>1 else ''
-        qty   = row[2].strip() if len(row)>2 else ''
-        price = row[3].strip() if len(row)>3 else ''
-        pic_raw = row[4].strip() if len(row)>4 else ''
-        coa   = row[5].strip() if len(row)>5 else ''
-        if name in SECTION_NAMES:
-            items.append({'sec':True,'n':name})
+        upper = name.upper()
+        if name in ('PRODUCT NAME',):
+            box_col, unit_col = find_price_columns(row)
             continue
-        if not cann: continue
+        cann = row[1].strip() if len(row)>1 else ''
+        # Section headers: no cannabinoid
+        if not cann:
+            if upper in PREROLL_BRAND_HEADERS:
+                items.append({'sec':True,'n':name,'brand':True})
+            else:
+                items.append({'sec':True,'n':name,'brand':False})
+            continue
+        pic_idx, coa_idx = find_url_columns(row)
+        pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
+        coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
-        items.append({'sec':False,'n':name,'cann':cann,'qty':qty,
-                      'price':price,'pic':pic,'coa':coa,'note':''})
+        coa = coa if is_valid_coa(coa) else ''
+        # Box + unit pricing (like edibles); falls back to single price
+        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
+        items.append({'sec':False,'n':name,'cann':cann,'qty':row[2].strip() if len(row)>2 else '',
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':''})
     return items
 
 def build_preroll_js(items):
@@ -323,10 +336,11 @@ def build_preroll_js(items):
     for i,p in enumerate(items):
         comma = ',' if i < len(items)-1 else ''
         if p['sec']:
-            lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
+            brand = 'true' if p.get('brand') else 'false'
+            lines.append(f'{{sec:true,n:"{esc(p["n"])}",brand:{brand}}}{comma}')
         else:
             note = p.get('note','')
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -747,7 +761,18 @@ def main():
 
     # ── Hash sheet data to detect changes ──
     all_raw = str(flower_rows)+str(preroll_rows)+str(vape_rows)+str(edibles_rows)+str(extracts_rows)+str(syrup_rows)+str(topicals_rows)+str(gelcaps_rows)
-    data_hash = hashlib.md5(all_raw.encode()).hexdigest()
+    # Include the template HTML in the hash so a CODE/layout change (not just sheet
+    # data) also triggers a deploy. Without this, editing index.html and re-running
+    # the workflow silently skips the deploy because the sheet data was unchanged.
+    template_raw = ''
+    try:
+        template_raw = open(HTML_FILE, encoding='utf-8').read()
+        # strip the auto-updated timestamp so it doesn't make every run look "changed"
+        template_raw = re.sub(r'Updated: [^"<\n]+', '', template_raw)
+        template_raw = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+', '', template_raw)
+    except Exception:
+        pass
+    data_hash = hashlib.md5((all_raw + template_raw).encode()).hexdigest()
     prev_hash = ''
     if os.path.exists(HASH_FILE):
         prev_hash = open(HASH_FILE).read().strip()
