@@ -234,13 +234,15 @@ def parse_flower(rows):
         except: thca = None                    # None -> "Testing Pending" on site
         qty = row[2].strip() if len(row)>2 else ''
 
-        # Skip only rows with NO usable data at all (no thca, no price, no pic, no coa).
+        # A flower product needs a PRICE to be sellable. If there is no price in the
+        # row at all, hide it (even if it has a picture) — an unpriced card is broken
+        # and confuses buyers. It reappears automatically once a price is added.
         def _has_num(c):
             cs = str(c).replace('$','').replace(',','').strip()
             try: return float(cs) > 0
             except: return False
-        row_has_price = any(_has_num(c) for c in row[3:7]) if len(row) > 3 else False
-        if thca is None and not row_has_price and not pic and not coa:
+        row_has_price = any(_has_num(c) for c in row[3:8]) if len(row) > 3 else False
+        if not row_has_price:
             continue
 
         if current_mode == 'unit':
