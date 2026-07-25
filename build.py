@@ -190,7 +190,7 @@ KNOWN_PREV = {
 
 # ── FLOWER PARSER ────────────────────────────────────────
 # Flower subcategories priced PER UNIT (3.5g cans) instead of by weight tiers.
-FLOWER_UNIT_SECTIONS = {'MINI SODA CANS','MINI SODA CAN','MINI TUNA CANS','MINI TUNA CAN'}
+FLOWER_UNIT_SECTIONS = {'MINI SODA CANS','MINI SODA CAN','MINI TUNA CANS','MINI TUNA CAN','QUARTER OUNCE JAR','QUARTER OUNCE JARS'}
 
 def parse_flower(rows):
     items = []
