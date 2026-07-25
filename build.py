@@ -304,6 +304,7 @@ PREROLL_CATEGORY_HEADERS = set()
 
 def parse_preroll(rows):
     items = []
+    _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
@@ -311,6 +312,7 @@ def parse_preroll(rows):
         upper = name.upper()
         if name in ('PRODUCT NAME',):
             box_col, unit_col = find_price_columns(row)
+            set_url_columns_from_header(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
         # Section headers: no cannabinoid
@@ -351,23 +353,29 @@ VAPE_SECTIONS = {'2G DISPOSABLE VAPE\nBLINKERS BLEND',
 
 def parse_vape(rows):
     items = []
+    _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',):
             box_col, unit_col = find_price_columns(row)
+            set_url_columns_from_header(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
-            items.append({'sec':True,'n':name})
+            clean_name = ' '.join(name.split())  # collapse embedded newlines/spaces
+            items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Show the product as long as it has a name + cannabinoid + a price.
+        # Picture and COA are optional (placeholders shown on the card).
+        if not price and not unit_price: continue
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
@@ -388,6 +396,7 @@ EDIBLES_SECTIONS = {'SWEET TOOTH','SWEETH TOOTH','CBD CANDY','EHF','PESO PESO'}
 
 def parse_edibles(rows):
     items = []
+    _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     box_col = unit_col = -1
     pieces_col = cat_col = -1
     for row in rows:
@@ -395,6 +404,7 @@ def parse_edibles(rows):
         name = row[0].strip()
         if name in ('PRODUCT NAME',):
             box_col, unit_col = find_price_columns(row)
+            set_url_columns_from_header(row)
             pieces_col, cat_col = find_pieces_columns(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
@@ -577,18 +587,53 @@ def format_pieces(val, cat):
         return f'{count} \u00b7 {cat_disp}'
     return count or cat_disp
 
+# Header-based column locator: set once per sheet from the PRODUCT NAME row.
+_URL_COL_HINTS = {'pic': -1, 'coa': -1}
+
+def set_url_columns_from_header(header):
+    """Detect PICTURE and COA columns by their header labels (reliable regardless
+    of whether both URLs are on the same domain)."""
+    pic = coa = -1
+    for i, h in enumerate(header):
+        hl = str(h).strip().lower()
+        if pic == -1 and ('picture' in hl or 'photo' in hl or 'image' in hl):
+            pic = i
+        if coa == -1 and 'coa' in hl and 'date' not in hl:
+            coa = i
+    _URL_COL_HINTS['pic'] = pic
+    _URL_COL_HINTS['coa'] = coa
+    return pic, coa
+
 def find_url_columns(row):
-    """Find picture and COA columns by detecting URLs — robust to extra price columns."""
-    pic_idx = coa_idx = -1
+    """Find picture and COA columns.
+    1) Prefer the header-detected columns (set via set_url_columns_from_header).
+    2) Fall back to URL sniffing, but handle the case where BOTH pic and COA are
+       the same domain (e.g. two drive.google.com links) by taking them in order."""
+    # Header-based first (most reliable)
+    ph, ch = _URL_COL_HINTS['pic'], _URL_COL_HINTS['coa']
+    if ph != -1 or ch != -1:
+        # Only trust header cols if the cells actually hold something
+        pic_ok = ph != -1 and ph < len(row) and row[ph].strip()
+        coa_ok = ch != -1 and ch < len(row) and row[ch].strip()
+        if pic_ok or coa_ok:
+            return (ph if pic_ok else -1), (ch if coa_ok else -1)
+
+    # Fallback: collect ALL url-bearing cells in order, then assign
+    url_cols = []
     for i, cell in enumerate(row):
         c = cell.strip()
-        if 'drive.google.com' in c or 'leadconnectorhq.com' in c or 'storage.googleapis.com' in c or 'filesafe.space' in c:
-            if pic_idx == -1:
-                pic_idx = i
-        elif '.pdf' in c.lower() or 'shopify.com' in c or 'cdn.' in c:
-            if coa_idx == -1:
-                coa_idx = i
-    return pic_idx, coa_idx
+        if ('http' in c) and ('drive.google.com' in c or 'leadconnectorhq.com' in c
+                or 'storage.googleapis.com' in c or 'filesafe.space' in c
+                or 'shopify.com' in c or 'cdn.' in c or '.pdf' in c.lower()
+                or 'images.' in c):
+            url_cols.append(i)
+    if not url_cols:
+        return -1, -1
+    if len(url_cols) == 1:
+        # Single URL — assume it's the picture (COA optional now)
+        return url_cols[0], -1
+    # Two or more URLs: first = picture, second = COA (matches sheet column order)
+    return url_cols[0], url_cols[1]
 
 def _price_val(s):
     """Extract the leading dollar amount from a price string like '$100/10 UNITS' -> 100.0"""
@@ -654,23 +699,28 @@ def parse_generic(rows, const_name):
     """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL and
     price columns by header label, so column order/count doesn't matter."""
     items = []
+    _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     box_col = unit_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         if name in ('PRODUCT NAME',):
             box_col, unit_col = find_price_columns(row)
+            set_url_columns_from_header(row)
             continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
-            items.append({'sec':True,'n':name})
+            clean_name = ' '.join(name.split())
+            items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Show as long as there's a price. Picture + COA optional (placeholders).
+        if not price and not unit_price: continue
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
