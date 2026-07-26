@@ -890,12 +890,12 @@ def send_slack_audit(report, problems):
         text = ':white_check_mark: *EHF Catalog built clean* — ' + \
                ', '.join(r.split(':')[0] + ' ' + r.split(':')[1].strip().split(' ')[0] for r in report)
     try:
-        req = urllib.request.Request(
+        req = Request(
             SLACK_AUDIT_WEBHOOK,
             data=_json.dumps({'text': text}).encode('utf-8'),
             headers={'Content-Type': 'application/json'},
             method='POST')
-        urllib.request.urlopen(req, timeout=15)
+        urlopen(req, timeout=15)
         print('Slack audit posted.' + (' (ISSUES)' if problems else ' (clean)'))
     except Exception as e:
         print(f'Slack audit failed (non-fatal): {e}')
