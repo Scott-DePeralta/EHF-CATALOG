@@ -723,13 +723,13 @@ textarea.form-input{resize:vertical;min-height:90px;font-family:'DM Sans',sans-s
    ════════════════════════════════════════ */
 *{-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
-.tabs{-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;}
-.tb{scroll-snap-align:start;touch-action:manipulation;}
+.tabs{-webkit-overflow-scrolling:touch;}
+.tb{touch-action:manipulation;}
 .card{touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 .spop-bg{touch-action:pan-y;}
 /* Larger tap targets on mobile */
 @media(max-width:640px){
-  .tb{min-width:64px;padding:10px 8px!important;}
+  .tb{padding:10px 8px!important;}
   .mb{padding:7px 10px!important;font-size:12px!important;}
   .spop-name{font-size:34px!important;}
   .pop-amt-lb{font-size:22px!important;}
@@ -917,17 +917,21 @@ html{scroll-behavior:smooth;}
   /* 2. TABS — wrap to fit, no side-scroll, clean grid of pills */
   .tabs{
     display:grid!important;
-    grid-template-columns:repeat(4,1fr)!important;
-    gap:4px!important;
-    overflow-x:hidden!important;
-    padding:6px 8px!important;
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:5px!important;
+    overflow-x:hidden!important;overflow-y:visible!important;
+    padding:8px!important;
     top:50px!important;
+    scroll-snap-type:none!important;
   }
   .tb{
     flex:none!important;min-width:0!important;width:100%!important;
-    padding:8px 4px!important;font-size:10px!important;letter-spacing:.01em!important;
-    gap:3px!important;border-bottom:none!important;border-radius:9px!important;
-    background:rgba(255,255,255,.03)!important;
+    padding:10px 5px!important;font-size:11px!important;letter-spacing:0!important;
+    gap:4px!important;border-bottom:none!important;border-radius:11px!important;
+    background:rgba(255,255,255,.04)!important;
+    white-space:normal!important;line-height:1.15!important;
+    text-align:center!important;word-break:normal!important;
+    scroll-snap-align:none!important;
   }
   .tb.on{background:rgba(168,85,247,.16)!important;}
   .tb-icon{font-size:17px!important;}
@@ -981,11 +985,30 @@ html{scroll-behavior:smooth;}
 }
 
 @media(max-width:400px){
-  .tabs{grid-template-columns:repeat(4,1fr)!important;}
-  .tb{font-size:9px!important;padding:7px 2px!important;}
+  .tabs{grid-template-columns:repeat(3,1fr)!important;}
+  .tb{font-size:10px!important;padding:9px 3px!important;}
   .tb-icon{font-size:15px!important;}
   .grid{grid-template-columns:1fr!important;}
   .spop-name,.cn{font-size:24px!important;}
+}
+
+
+/* ── SELECTABLE WEIGHT ROWS (flower) ── */
+.wt-grid{display:flex;flex-direction:column;gap:7px;margin:10px 0;}
+.wt-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;
+  width:100%;padding:12px 14px;border:1px solid rgba(168,85,247,.25);border-radius:12px;
+  background:rgba(168,85,247,.06);cursor:pointer;transition:all .18s;
+  font-family:'DM Sans',sans-serif;text-align:left;}
+.wt-row:hover,.wt-row:active{background:rgba(168,85,247,.16);border-color:rgba(168,85,247,.5);}
+.wt-lbl{font-size:16px;font-weight:700;color:#e9e5ff;letter-spacing:.01em;}
+.wt-amt{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:800;color:var(--gold-l);white-space:nowrap;}
+.wt-add{font-size:12px;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--purple),var(--blue));
+  padding:6px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.03em;}
+@media(max-width:640px){
+  .wt-row{padding:14px 14px;grid-template-columns:1fr auto auto;gap:8px;min-height:52px;}
+  .wt-lbl{font-size:16px;}
+  .wt-amt{font-size:16px;}
+  .wt-add{font-size:13px;padding:8px 14px;min-height:38px;display:flex;align-items:center;}
 }
 
 </style>
@@ -1070,7 +1093,7 @@ html{scroll-behavior:smooth;}
   <button class="tb" data-t="extracts"><span class="tb-icon">🧪</span>Extracts</button>
   <button class="tb" data-t="syrup"><span class="tb-icon">🍯</span>Syrup</button>
   <button class="tb" data-t="topicals"><span class="tb-icon">🧴</span>Topicals</button>
-  <button class="tb" data-t="gelcaps"><span class="tb-icon">💊</span>Gel Caps &amp; Tinctures</button>
+  <button class="tb" data-t="gelcaps"><span class="tb-icon">💊</span>Gel Caps</button>
   <button class="tb tb-order" data-t="order"><span class="tb-icon">📋</span>Get Pricing</button>
 </nav>
 
@@ -1776,11 +1799,13 @@ function flowerCard(p,i){
   } else if(!p.lb&&!p.half&&!p.qtr&&!p.oz){
     pricing=`<div class="pd-grid"><div class="pd-row pd-lb call-price"><span class="pd-amt pd-amt-lb">📞 Call for Pricing</span></div></div>`;
   } else {
-    pricing=`<div class="pd-grid">`+
-      `${p.lb?`<div class="pd-row pd-lb"><span class="pd-lbl">LB</span><span class="pd-amt pd-amt-lb">${fmt(p.lb)}</span></div>`:''}`+
-      `${p.half?`<div class="pd-row pd-sm"><span class="pd-lbl">½ LB</span><span class="pd-amt pd-amt-sm">${fmt(p.half)}</span></div>`:''}`+
-      `${p.qtr?`<div class="pd-row pd-sm"><span class="pd-lbl">¼ LB</span><span class="pd-amt pd-amt-sm">${fmt(p.qtr)}</span></div>`:''}`+
-      `${p.oz?`<div class="pd-row pd-sm"><span class="pd-lbl">OZ</span><span class="pd-amt pd-amt-oz">${fmt(p.oz)}</span></div>`:''}`+
+    const nm=(p.n||'').replace(/'/g,"\\'");
+    const wrow=(lbl,val,size)=>val?`<button class="wt-row" onclick="event.stopPropagation();addToCart('${nm} — ${lbl}','${fmt(val)}','flower')"><span class="wt-lbl">${lbl}</span><span class="wt-amt">${fmt(val)}</span><span class="wt-add">+ Add</span></button>`:'';
+    pricing=`<div class="wt-grid">`+
+      wrow('Pound',p.lb)+
+      wrow('½ Pound',p.half)+
+      wrow('¼ Pound',p.qtr)+
+      wrow('Ounce',p.oz)+
       `</div>`;
   }
   const urg=urgBadge(p.qty,p.special);
