@@ -18,6 +18,8 @@ HTML_FILE  = 'index.html'
 
 NETLIFY_TOKEN   = os.environ.get('NETLIFY_ACCESS_TOKEN', '')
 NETLIFY_SITE_ID = os.environ.get('NETLIFY_SITE_ID', '')
+SLACK_AUDIT_WEBHOOK = os.environ.get('SLACK_AUDIT_WEBHOOK', '')  # Slack Incoming Webhook URL for build alerts
+COUNTS_FILE = 'last_counts.json'  # remembers each tab's product count between runs
 
 # ── HELPERS ──────────────────────────────────────────────
 def fetch_sheet(tab):
@@ -183,6 +185,7 @@ def parse_flower(rows):
         if len(row) < 2: continue
         name = row[0].strip()
         if not name or name in skip_names or name.startswith('Last Updated'): continue
+        if is_junk_row(name) and name.upper() not in WEIGHT_SECTIONS and name.upper() not in FLOWER_UNIT_SECTIONS: continue
 
         # Detect a section header: a row whose name matches a known unit-section,
         # OR a row with a name but no THCa value and no prices (a divider).
@@ -310,17 +313,19 @@ def parse_preroll(rows):
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         upper = name.upper()
-        if name in ('PRODUCT NAME',):
+        if name.strip().upper().startswith('PRODUCT NAME'):
             box_col, unit_col = find_price_columns(row)
             set_url_columns_from_header(row)
             continue
+        if is_junk_row(name):
+            continue
         cann = row[1].strip() if len(row)>1 else ''
-        # Section headers: no cannabinoid
+        # Section headers: no cannabinoid. Strip surrounding *** for display + matching.
         if not cann:
-            if upper in PREROLL_BRAND_HEADERS:
-                items.append({'sec':True,'n':name,'brand':True})
-            else:
-                items.append({'sec':True,'n':name,'brand':False})
+            clean = strip_stars(name)
+            cu = clean.upper()
+            is_brand = cu in PREROLL_BRAND_HEADERS
+            items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
@@ -358,13 +363,15 @@ def parse_vape(rows):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        if name.strip().upper().startswith('PRODUCT NAME'):
             box_col, unit_col = find_price_columns(row)
             set_url_columns_from_header(row)
             continue
+        if is_junk_row(name):
+            continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
-            clean_name = ' '.join(name.split())  # collapse embedded newlines/spaces
+            clean_name = strip_stars(' '.join(name.split()))  # collapse newlines + strip ***
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -643,6 +650,21 @@ def _price_val(s):
     m = re.search(r'\$?\s*([\d,]+\.?\d*)', s.replace(',', ''))
     return float(m.group(1)) if m else 0.0
 
+def strip_stars(name):
+    """Remove surrounding *** from a section name: '***DOOBIES***' -> 'DOOBIES'."""
+    return str(name).strip().strip('*').strip()
+
+def is_junk_row(name):
+    """True if this row is a repeated header or metadata — NOT a real product and
+    NOT a section header. Note: '***DOOBIES***' style names are SECTION HEADERS,
+    not junk — only a repeated 'PRODUCT NAME...' header or call/metadata is junk."""
+    n = ' '.join(str(name).split()).strip().upper()
+    if not n: return True
+    if n.startswith('PRODUCT NAME'): return True   # repeated header row (even 'PRODUCT NAME ***KING***')
+    if n.startswith('CALL ') or 'HEMP TO ORDER' in n: return True
+    if n.startswith('LAST UPDATED'): return True
+    return False
+
 def find_price_columns(header):
     """Locate box-price and unit-price columns by their header labels.
     Returns (box_idx, unit_idx) or (-1,-1) if not found by label."""
@@ -706,13 +728,15 @@ def parse_generic(rows, const_name):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        if name.strip().upper().startswith('PRODUCT NAME'):
             box_col, unit_col = find_price_columns(row)
             set_url_columns_from_header(row)
             continue
+        if is_junk_row(name):
+            continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
-            clean_name = ' '.join(name.split())
+            clean_name = strip_stars(' '.join(name.split()))
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -792,6 +816,91 @@ def inject(html, const_name, new_js, next_const):
     return html[:s] + new_js + '\n\n' + html[e:]
 
 # ── MAIN ─────────────────────────────────────────────────
+
+def audit_build(parsed):
+    """Self-audit: account for every data row in every tab, compare product counts
+    to the previous run, and return (report_lines, problems).
+    `parsed` is a dict: tab_name -> (raw_rows, items_list).
+    A 'problem' is: a tab losing >20% of its products vs last run, OR any row with
+    a cannabinoid + price that did NOT become a product (a silent drop)."""
+    import json as _json
+    problems = []
+    report = []
+    counts = {}
+
+    for tab, (rows, items) in parsed.items():
+        prods = [x for x in items if not x.get('sec')]
+        shown = set(' '.join(str(x.get('n','')).split()).upper() for x in prods)
+        secs  = set(' '.join(str(x.get('n','')).split()).upper() for x in items if x.get('sec'))
+        counts[tab] = len(prods)
+
+        # Find rows with real data (cannabinoid + a $ price) that never became products
+        dropped = []
+        for r in rows:
+            if not r or not str(r[0]).strip():
+                continue
+            nm = ' '.join(str(r[0]).split()).upper()
+            if nm.startswith('PRODUCT NAME'):
+                continue
+            if is_junk_row(r[0]):
+                continue
+            clean = strip_stars(nm)
+            if clean in shown or clean in secs or nm in shown or nm in secs:
+                continue
+            cann = str(r[1]).strip() if len(r) > 1 else ''
+            has_price = any('$' in str(c) for c in r[2:8])
+            if cann and has_price:
+                dropped.append(str(r[0]).strip().replace(chr(10), ' '))
+
+        if dropped:
+            problems.append(f'{tab}: {len(dropped)} row(s) with data DROPPED — ' +
+                            ', '.join(dropped[:6]) + (' …' if len(dropped) > 6 else ''))
+        report.append(f'{tab}: {len(prods)} products' +
+                      (f'  ⚠️ {len(dropped)} dropped' if dropped else ''))
+
+    # Compare to previous run's counts
+    prev = {}
+    if os.path.exists(COUNTS_FILE):
+        try: prev = _json.load(open(COUNTS_FILE))
+        except Exception: prev = {}
+    for tab, n in counts.items():
+        p = prev.get(tab)
+        if p is not None and p > 0:
+            drop_pct = (p - n) / p * 100
+            if drop_pct >= 20:  # lost a fifth or more of the tab
+                problems.append(f'{tab}: product count fell {p} → {n} ({drop_pct:.0f}% drop vs last run)')
+    # Save current counts for next time
+    try: _json.dump(counts, open(COUNTS_FILE, 'w'))
+    except Exception: pass
+
+    return report, problems
+
+
+def send_slack_audit(report, problems):
+    """Post the audit to Slack. Only alerts loudly when there are problems."""
+    if not SLACK_AUDIT_WEBHOOK:
+        return
+    import json as _json
+    if problems:
+        text = ':rotating_light: *EHF Catalog build — ISSUES DETECTED*\n' + \
+               '\n'.join('• ' + p for p in problems) + \
+               '\n\n_Counts this run:_\n' + '\n'.join('• ' + r for r in report) + \
+               '\n\n_Check the sheet or ping Claude with the tab CSV._'
+    else:
+        text = ':white_check_mark: *EHF Catalog built clean* — ' + \
+               ', '.join(r.split(':')[0] + ' ' + r.split(':')[1].strip().split(' ')[0] for r in report)
+    try:
+        req = urllib.request.Request(
+            SLACK_AUDIT_WEBHOOK,
+            data=_json.dumps({'text': text}).encode('utf-8'),
+            headers={'Content-Type': 'application/json'},
+            method='POST')
+        urllib.request.urlopen(req, timeout=15)
+        print('Slack audit posted.' + (' (ISSUES)' if problems else ' (clean)'))
+    except Exception as e:
+        print(f'Slack audit failed (non-fatal): {e}')
+
+
 def main():
     print(f'\n=== EHF Catalog Builder v7 (pieces-from-sheet) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
 
@@ -835,6 +944,26 @@ def main():
     gelcaps_items  = parse_generic(gelcaps_rows, 'GELCAPS')
 
     print(f'  Flower: {len(flower_items)} | PreRoll: {len([x for x in preroll_items if not x.get("sec")])} | Vape: {len([x for x in vape_items if not x.get("sec")])} | Edibles: {len([x for x in edibles_items if not x.get("sec")])}')
+
+    # ── SELF-AUDIT: account for every row, compare to last run, alert Slack on problems ──
+    _audit_report, _audit_problems = audit_build({
+        'Flower':   (flower_rows,   flower_items),
+        'PreRoll':  (preroll_rows,  preroll_items),
+        'Vape':     (vape_rows,     vape_items),
+        'Edibles':  (edibles_rows,  edibles_items),
+        'Extracts': (extracts_rows, extracts_items),
+        'Syrup':    (syrup_rows,    syrup_items),
+        'Topicals': (topicals_rows, topicals_items),
+        'GelCaps':  (gelcaps_rows,  gelcaps_items),
+    })
+    print('  --- BUILD AUDIT ---')
+    for _line in _audit_report:
+        print(f'    {_line}')
+    if _audit_problems:
+        print('  !!! AUDIT PROBLEMS !!!')
+        for _p in _audit_problems:
+            print(f'    ⚠️ {_p}')
+    send_slack_audit(_audit_report, _audit_problems)
     # DEBUG: print first 3 edibles prices so we can verify from the log
     _ed_prods = [x for x in edibles_items if not x.get('sec')][:3]
     for _p in _ed_prods:
