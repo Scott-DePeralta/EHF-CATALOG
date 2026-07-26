@@ -56,12 +56,22 @@ def thumb(url):
     fid = get_drive_id(url)
     return f'https://drive.google.com/thumbnail?id={fid}&sz=w600' if fid else ''
 
+# Hosts whose links expire or aren't publicly viewable — never use as images.
+_BAD_IMG_HOSTS = ('slack-files.com', 'slack.com/files')
+
 def is_valid_pic(url):
-    if not url: return False
-    if 'slack-files.com' in url: return False
-    if 'drive.google.com' in url: return bool(get_drive_id(url))
-    if 'leadconnectorhq.com' in url or 'filesafe.space' in url: return True
-    return False
+    """Accept any real http(s) image/CDN URL, except known-expiring hosts.
+    Drive links must have an extractable file id (so we can thumbnail them)."""
+    url = str(url or '').strip()
+    if not url or not url.lower().startswith('http'):
+        return False
+    if any(b in url for b in _BAD_IMG_HOSTS):
+        return False
+    if 'drive.google.com' in url:
+        return bool(get_drive_id(url))
+    # Any other real URL is accepted (leadconnectorhq, filesafe, googleusercontent,
+    # storage.googleapis, shopify cdn, images.*, cloudfront, etc.)
+    return True
 
 def get_pic(raw):
     raw = raw.strip()
@@ -70,15 +80,22 @@ def get_pic(raw):
     return raw
 
 def is_valid_coa(url):
-    if not url: return False
-    if 'slack-files.com' in url: return False
-    return 'drive.google.com' in url or 'shopify.com' in url or 'cdn.' in url
+    """Accept any real http(s) COA URL except known-expiring hosts (Slack)."""
+    url = str(url or '').strip()
+    if not url or not url.lower().startswith('http'):
+        return False
+    if any(b in url for b in _BAD_IMG_HOSTS):
+        return False
+    return True
 
 def esc(s):
     return str(s).replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ').strip()
 
 def clean_price(s):
-    return s.strip().replace('$', '').replace(',', '')
+    s = str(s or '').strip()
+    if s.upper() in ('N/A', 'NA', 'TBD', '-', '—'):
+        return ''
+    return s.replace('$', '').replace(',', '')
 
 # ── STRAIN DEFINITIONS ───────────────────────────────────
 ST_MAP = {
@@ -382,7 +399,8 @@ def parse_vape(rows):
         coa = coa if is_valid_coa(coa) else ''
         # Show the product as long as it has a name + cannabinoid + a price.
         # Picture and COA are optional (placeholders shown on the card).
-        if not price and not unit_price: continue
+        if not price and not unit_price:
+            price = ''; unit_price = ''  # will render 'Call for Pricing'
         items.append({'sec':False,'n':name,'cann':cann,'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
@@ -409,10 +427,12 @@ def parse_edibles(rows):
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name in ('PRODUCT NAME',):
+        if name.strip().upper().startswith('PRODUCT NAME'):
             box_col, unit_col = find_price_columns(row)
             set_url_columns_from_header(row)
             pieces_col, cat_col = find_pieces_columns(row)
+            continue
+        if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann:
@@ -425,7 +445,8 @@ def parse_edibles(rows):
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
         # Show as long as there's a price. Picture + COA optional (placeholders shown).
-        if not price and not unit_price: continue
+        if not price and not unit_price:
+            price = ''; unit_price = ''  # will render 'Call for Pricing'
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
         raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
@@ -665,6 +686,32 @@ def is_junk_row(name):
     if n.startswith('LAST UPDATED'): return True
     return False
 
+
+def classify_row(row, header_has_cannabinoid_col=True):
+    """Unified, defensive row classifier used by all parsers.
+    Returns one of: 'junk', 'section', 'product', 'empty'.
+    - empty:   no name at all
+    - junk:    repeated 'PRODUCT NAME' header, CALL/metadata, 'LAST UPDATED'
+    - section: has a name but no cannabinoid value (a divider/header), incl. ***X***
+    - product: has a name AND a cannabinoid value
+    This is intentionally forgiving: anything with a cannabinoid is a product,
+    anything without is a section header (unless it's junk)."""
+    if not row or not str(row[0]).strip():
+        return 'empty'
+    name = str(row[0]).strip()
+    if is_junk_row(name):
+        return 'junk'
+    cann = str(row[1]).strip() if len(row) > 1 else ''
+    if not cann:
+        return 'section'
+    return 'product'
+
+
+def any_price_in_row(row):
+    """True if any cell in the row holds a $ price (used by the audit + parsers)."""
+    return any('$' in str(c) for c in row)
+
+
 def find_price_columns(header):
     """Locate box-price and unit-price columns by their header labels.
     Returns (box_idx, unit_idx) or (-1,-1) if not found by label."""
@@ -746,7 +793,8 @@ def parse_generic(rows, const_name):
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
         # Show as long as there's a price. Picture + COA optional (placeholders).
-        if not price and not unit_price: continue
+        if not price and not unit_price:
+            price = ''; unit_price = ''  # will render 'Call for Pricing'
         items.append({'sec':False,'n':name,'cann':cann,'size':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
