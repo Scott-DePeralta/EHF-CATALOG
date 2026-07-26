@@ -416,7 +416,9 @@ def parse_edibles(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
         pic = get_pic(pic_raw)
-        if not pic or not is_valid_coa(coa): continue
+        coa = coa if is_valid_coa(coa) else ''
+        # Show as long as there's a price. Picture + COA optional (placeholders shown).
+        if not price and not unit_price: continue
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
         raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
