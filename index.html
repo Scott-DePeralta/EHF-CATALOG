@@ -905,6 +905,89 @@ html{scroll-behavior:smooth;}
 
 
 .call-price .pd-amt2{color:#fbbf24!important;font-size:14px!important;}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE-FIRST OVERHAUL — no side-scroll, fits screen, big taps
+   ═══════════════════════════════════════════════════════ */
+@media(max-width:640px){
+  /* 1. Kill ALL horizontal scrolling site-wide */
+  html,body{overflow-x:hidden!important;max-width:100vw!important;}
+  *{max-width:100vw;}
+
+  /* 2. TABS — wrap to fit, no side-scroll, clean grid of pills */
+  .tabs{
+    display:grid!important;
+    grid-template-columns:repeat(4,1fr)!important;
+    gap:4px!important;
+    overflow-x:hidden!important;
+    padding:6px 8px!important;
+    top:50px!important;
+  }
+  .tb{
+    flex:none!important;min-width:0!important;width:100%!important;
+    padding:8px 4px!important;font-size:10px!important;letter-spacing:.01em!important;
+    gap:3px!important;border-bottom:none!important;border-radius:9px!important;
+    background:rgba(255,255,255,.03)!important;
+  }
+  .tb.on{background:rgba(168,85,247,.16)!important;}
+  .tb-icon{font-size:17px!important;}
+
+  /* 3. CONTROLS (filters/sorts) — wrap, don't overflow */
+  .ctrl{top:auto!important;position:relative!important;flex-wrap:wrap!important;
+    gap:6px!important;padding:10px 12px!important;}
+  .mb{flex:0 0 auto!important;}
+
+  /* 4. PRODUCT GRID — 2 across, tidy */
+  .grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;
+    padding:12px 10px 90px!important;}
+  .card{min-width:0!important;}
+
+  /* 5. ADD-TO-QUOTE button — big, easy tap */
+  .add-btn,.pd-add,.add-cart-btn,button[onclick*="addToCart"]{
+    min-height:44px!important;font-size:13px!important;font-weight:700!important;
+  }
+
+  /* 6. POPUPS — full width, huge close button, no overflow */
+  .spop-inner,.spopInner{width:96vw!important;max-width:96vw!important;
+    max-height:92vh!important;border-radius:18px!important;}
+  .spop-x,.lbx{
+    width:46px!important;height:46px!important;font-size:22px!important;
+    top:10px!important;right:10px!important;
+    background:rgba(0,0,0,.55)!important;border-radius:50%!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    z-index:20!important;
+  }
+
+  /* 7. CART DRAWER + CHECKOUT — full width, easy close */
+  #cartDrawer,.cart-drawer{width:100vw!important;max-width:100vw!important;}
+  .checkout-card{width:96vw!important;max-width:96vw!important;max-height:92vh!important;
+    overflow-y:auto!important;}
+  #cartDrawer button[onclick*="close"],.checkout-card button[onclick*="close"]{
+    min-width:44px!important;min-height:44px!important;font-size:22px!important;}
+
+  /* 8. Floating buttons — clear of each other, thumb-reachable */
+  #cartFab{bottom:88px!important;right:14px!important;width:56px!important;height:56px!important;}
+  .fcta{bottom:14px!important;right:12px!important;left:12px!important;
+    display:flex!important;gap:8px!important;}
+  .fbtn2{flex:1!important;justify-content:center!important;padding:13px 10px!important;
+    font-size:13px!important;min-height:46px!important;}
+
+  /* 9. Header + search fit */
+  .hdr{padding:10px 12px!important;}
+  .search-wrap,.searchbar{width:100%!important;}
+
+  /* 10. Kill any fixed-width elements that force scroll */
+  .comp,.footer,.ctab{max-width:100vw!important;box-sizing:border-box!important;}
+}
+
+@media(max-width:400px){
+  .tabs{grid-template-columns:repeat(4,1fr)!important;}
+  .tb{font-size:9px!important;padding:7px 2px!important;}
+  .tb-icon{font-size:15px!important;}
+  .grid{grid-template-columns:1fr!important;}
+  .spop-name,.cn{font-size:24px!important;}
+}
+
 </style>
 <script src="https://link.datascalepro.com/js/form_embed.js"></script>
 </head>
