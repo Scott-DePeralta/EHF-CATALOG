@@ -192,21 +192,25 @@ KNOWN_PREV = {
 
 # ── FLOWER PARSER ────────────────────────────────────────
 # Flower subcategories priced PER UNIT (3.5g cans) instead of by weight tiers.
-FLOWER_UNIT_SECTIONS = {'MINI SODA CANS','MINI SODA CAN','MINI TUNA CANS','MINI TUNA CAN'}
+FLOWER_UNIT_SECTIONS = {'MINI SODA CANS','MINI SODA CAN','MINI TUNA CANS','MINI TUNA CAN','QUARTER OUNCE JAR','QUARTER OUNCE JARS'}
 
 def parse_flower(rows):
     items = []
     skip_names = {'PRODUCT NAME','CALL (408) 444-HEMP',''}
     current_mode = 'weight'   # 'weight' = LB/half/qtr/oz tiers, 'unit' = per-can
+    current_unit_label = ''
     for row in rows:
         if len(row) < 2: continue
         name = row[0].strip()
+        # Stop at the bottom reference table (sold-out archive) — not real inventory.
+        if 'NOT IN STOCK' in name.upper() or 'FOR REFERENCE ONLY' in name.upper():
+            break
         if not name or name in skip_names or name.startswith('Last Updated'): continue
         if is_junk_row(name) and name.upper() not in WEIGHT_SECTIONS and name.upper() not in FLOWER_UNIT_SECTIONS: continue
 
         # Detect a section header: a row whose name matches a known unit-section,
         # OR a row with a name but no THCa value and no prices (a divider).
-        upper = name.upper()
+        upper = strip_stars(name).upper()
         thca_s = row[1].strip().replace('%','') if len(row)>1 else ''
         has_thca = False
         try:
@@ -216,6 +220,7 @@ def parse_flower(rows):
 
         if upper in FLOWER_UNIT_SECTIONS:
             current_mode = 'unit'
+            current_unit_label = strip_stars(name).title()  # e.g. 'Mini Soda Cans'
             items.append({'sec':True,'n':name})
             continue
         # Known weight-based section dividers (explicit list — avoids
@@ -225,6 +230,7 @@ def parse_flower(rows):
                            'EXOTIC','TOP SHELF','SMALLS'}
         if upper in WEIGHT_SECTIONS:
             current_mode = 'weight'
+            current_unit_label = ''
             items.append({'sec':True,'n':name})
             continue
 
@@ -252,10 +258,14 @@ def parse_flower(rows):
             special = qty.upper() == 'MADE TO ORDER'
             st, sl = ST_MAP.get(name, auto_st(name))
             isnew = 'true' if name not in KNOWN_PREV else 'false'
+            # Unique display name so duplicates (same flavor in flower + cans)
+            # don't collide in the popup's name-based lookup.
+            disp_name = f'{name} ({current_unit_label})' if current_unit_label else name
+            unit_size = '3.5g' if 'CAN' in current_unit_label.upper() else ('7g' if 'QUARTER' in current_unit_label.upper() else '')
             items.append({
-                'n':name,'thca':thca,'qty':qty,'pic':pic,'vid':vid,'coa':coa,
+                'n':disp_name,'thca':thca,'qty':qty,'pic':pic,'vid':vid,'coa':coa,
                 'st':st,'sl':sl,'isnew':isnew,'special':special,
-                'unitmode':True,'unitprice':unit_price,'size':'3.5g',
+                'unitmode':True,'unitprice':unit_price,'size':unit_size,
                 'lb':0,'half':0,'qtr':0,'oz':0,
             })
         else:
@@ -283,6 +293,16 @@ def parse_flower(rows):
                 'qtr':qtr_f,'oz':oz_f,'pic':pic,'vid':vid,'coa':coa,
                 'st':st,'sl':sl,'isnew':isnew,'special':special,'unitmode':False,
             })
+        # De-duplicate identical product names (sheet sometimes lists a flavor twice)
+    seen = {}
+    for it in items:
+        if it.get('sec'): continue
+        nm = it['n']
+        if nm in seen:
+            seen[nm] += 1
+            it['n'] = f"{nm} #{seen[nm]}"
+        else:
+            seen[nm] = 1
     return items
 
 def build_flower_js(items):
@@ -1050,11 +1070,14 @@ def main():
     if anim_s != -1 and anim_e > anim_s:
         html = html[:anim_s] + anim_js + html[anim_e:]
 
-    # Update timestamps
+    # Update timestamps (reflects last CONTENT change — build skips when unchanged).
     now = datetime.now(timezone.utc)
     date_str  = f"{now.month}/{now.day}/{str(now.year)[2:]} {now.hour}:{now.minute:02d}"
     long_date = now.strftime('%B') + f' {now.day}, {now.year}'
-    html = re.sub(r'Updated: [^"<\n]+', f'Updated: {date_str}', html)
+    # Header stamp: match ONLY the id="upd" div, not the footer's "Last Updated".
+    html = re.sub(r'(<div class="hdr-upd" id="upd">)Updated: [^<]+(</div>)',
+                  r'\g<1>Updated: ' + date_str + r'\g<2>', html)
+    # Footer stamp.
     html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
                   f'Catalog v3.4 &nbsp;·&nbsp; Last Updated: {long_date}', html)
 
