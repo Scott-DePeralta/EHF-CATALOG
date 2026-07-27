@@ -407,32 +407,47 @@ PREROLL_SIZE_LABELS = {
 }
 PREROLL_KING_SECTIONS = {'KING SIZE PRE ROLLS','KING SIZE PRE ROLL'}
 
+def _is_header_row(row):
+    """A header row contains 'PRICE' in some column (tier headers) or starts with
+    PRODUCT NAME. Section headers like ***DOOBIES*** ALSO carry tier labels."""
+    joined = ' '.join(str(c).upper() for c in row)
+    return 'PRICE' in joined and ('UNIT' in joined or 'PRODUCT NAME' in joined)
+
 def parse_preroll(rows):
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
-    box_col = unit_col = -1
-    current_size = ''       # size label for the current section
+    tier_cols = []          # (label, idx) tier columns for the CURRENT section
+    current_size = ''
     current_is_king = False
     current_note = ''
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
         upper = name.upper()
+        # Top header row
         if name.strip().upper().startswith('PRODUCT NAME'):
-            box_col, unit_col = find_price_columns(row)
+            tier_cols = find_tier_columns(row)
             set_url_columns_from_header(row)
             continue
         if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
-        # Section headers: no cannabinoid. Strip surrounding *** for display + matching.
-        if not cann:
+        # Section headers: either the cann column is blank, OR it literally says
+        # "CANNABINOID" (combined section+column-header rows like ***DOOBIES***),
+        # OR the name is wrapped in *** ***.
+        is_section = (not cann) or cann.upper() == 'CANNABINOID' or (name.startswith('*') and name.endswith('*'))
+        if is_section:
             clean = strip_stars(name)
             cu = clean.upper()
             is_brand = cu in PREROLL_BRAND_HEADERS
             current_size = PREROLL_SIZE_LABELS.get(cu, '')
             current_is_king = cu in PREROLL_KING_SECTIONS
             current_note = '🫙 Glass jar · 5 mini pre-rolls' if ('DOOBIE' in cu or 'HOTTIE' in cu) else ''
+            # These section rows carry their own tier labels — adopt them.
+            row_tiers = find_tier_columns(row)
+            if row_tiers:
+                tier_cols = row_tiers
+                set_url_columns_from_header(row)
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -440,15 +455,22 @@ def parse_preroll(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Box + unit pricing (like edibles); falls back to single price
-        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
-        # Split the cannabinoid string into a selectable list.
+        # Extract ALL price tiers for this product (1000u/500u/100u/10u/1u as present).
+        tiers = extract_tiers(row, tier_cols)
         cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
         items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':current_note,
+                      'tiers':tiers,'pic':pic,'coa':coa,'note':current_note,
                       'size':current_size,'king':current_is_king})
     return items
+
+def tiers_js(p):
+    """Emit a JS array of {label,qty,price} tier objects for a product."""
+    tiers = p.get('tiers') or []
+    parts = []
+    for t in tiers:
+        parts.append('{label:"%s",qty:%d,price:"%s"}' % (esc(t['label']), t['qty'], esc(t['price'])))
+    return '[' + ','.join(parts) + ']'
 
 def cann_js(p):
     """Emit a JS array literal of the product's cannabinoid options."""
@@ -466,7 +488,7 @@ def build_preroll_js(items):
         else:
             note = p.get('note','')
             king = 'true' if p.get('king') else 'false'
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"{esc(p.get("size",""))}",king:{king},price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"{esc(p.get("size",""))}",king:{king},tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -478,34 +500,38 @@ VAPE_SECTIONS = {'2G DISPOSABLE VAPE\nBLINKERS BLEND',
 def parse_vape(rows):
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
-    box_col = unit_col = -1
+    tier_cols = []
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name.strip().upper().startswith('PRODUCT NAME'):
-            box_col, unit_col = find_price_columns(row)
+        if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
+            row_tiers = find_tier_columns(row)
+            if row_tiers: tier_cols = row_tiers
             set_url_columns_from_header(row)
+            if name.startswith('*') and name.endswith('*'):
+                items.append({'sec':True,'n':strip_stars(' '.join(name.split()))})
             continue
         if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
-            clean_name = strip_stars(' '.join(name.split()))  # collapse newlines + strip ***
+        if not cann or cann.upper() == 'CANNABINOID':
+            clean_name = strip_stars(' '.join(name.split()))
+            row_tiers = find_tier_columns(row)
+            if row_tiers:
+                tier_cols = row_tiers
+                set_url_columns_from_header(row)
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
+        tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Show the product as long as it has a name + cannabinoid + a price.
-        # Picture and COA are optional (placeholders shown on the card).
-        if not price and not unit_price:
-            price = ''; unit_price = ''  # will render 'Call for Pricing'
         items.append({'sec':False,'n':name,'cann':cann,
-                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],'qty':'',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa})
+                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],
+                      'qty':row[2].strip() if len(row)>2 else '',
+                      'tiers':tiers,'pic':pic,'coa':coa})
     return items
 
 def build_vape_js(items):
@@ -515,7 +541,7 @@ def build_vape_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -525,31 +551,40 @@ EDIBLES_SECTIONS = {'SWEET TOOTH','SWEETH TOOTH','CBD CANDY','EHF','PESO PESO'}
 def parse_edibles(rows):
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
-    box_col = unit_col = -1
+    tier_cols = []
     pieces_col = cat_col = -1
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name.strip().upper().startswith('PRODUCT NAME'):
-            box_col, unit_col = find_price_columns(row)
+        if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
+            row_tiers = find_tier_columns(row)
+            if row_tiers: tier_cols = row_tiers
             set_url_columns_from_header(row)
-            pieces_col, cat_col = find_pieces_columns(row)
+            pc, cc = find_pieces_columns(row)
+            if pc != -1: pieces_col = pc
+            if cc != -1: cat_col = cc
+            if name.startswith('*') and name.endswith('*'):
+                items.append({'sec':True,'n':strip_stars(' '.join(name.split()))})
             continue
         if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
-            items.append({'sec':True,'n':name})
+        if not cann or cann.upper() == 'CANNABINOID':
+            row_tiers = find_tier_columns(row)
+            if row_tiers:
+                tier_cols = row_tiers
+                set_url_columns_from_header(row)
+                pc, cc = find_pieces_columns(row)
+                if pc != -1: pieces_col = pc
+                if cc != -1: cat_col = cc
+            items.append({'sec':True,'n':strip_stars(' '.join(name.split()))})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
+        tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Show as long as there's a price. Picture + COA optional (placeholders shown).
-        if not price and not unit_price:
-            price = ''; unit_price = ''  # will render 'Call for Pricing'
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
         raw_cat    = row[cat_col].strip()    if 0 <= cat_col    < len(row) else ''
@@ -558,8 +593,9 @@ def parse_edibles(rows):
         else:
             pieces = piece_label(name)  # fallback to built-in map
         items.append({'sec':False,'n':name,'cann':cann,
-                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],'qty':'',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,
+                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],
+                      'qty':row[2].strip() if len(row)>2 else '',
+                      'tiers':tiers,'pic':pic,'coa':coa,
                       'note':'','pieces':pieces})
     return items
 def build_edibles_js(items):
@@ -569,7 +605,7 @@ def build_edibles_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pieces:"{esc(p.get("pieces",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",tiers:{tiers_js(p)},pieces:"{esc(p.get("pieces",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -828,6 +864,65 @@ def find_price_columns(header):
             unit_idx = i
     return box_idx, unit_idx
 
+
+def find_tier_columns(header):
+    """Scan a header row and return an ordered list of (label, column_index) for
+    every quantity-tier price column. Handles all the variants in the sheet:
+      '1000 UNITS PRICE', '500 UNITS PRICE', '100 UNIT PRICE', '10UNIT PRICE',
+      'SINGLE UNIT PRICE', 'PRICE PER UNIT', '50 UNIT PRICE', etc.
+    The tier label shown to buyers is derived from the number (e.g. '1000u', '1u').
+    """
+    import re as _re
+    tiers = []
+    for i, h in enumerate(header):
+        hl = str(h).strip()
+        hu = hl.upper()
+        if 'PRICE' not in hu:
+            continue
+        # Single-unit variants. NOTE: a bare 'PRICE' header (Edibles' legacy
+        # free-text column like "$100/10 UNITS") is NOT a clean tier — skip it.
+        if 'SINGLE' in hu or 'PER UNIT' in hu:
+            tiers.append(('1u', i))
+            continue
+        if hu == 'PRICE':
+            continue  # legacy combined column — ignore
+        # Numbered tiers: pull the leading number (1000, 500, 100, 50, 10)
+        m = _re.search(r'(\d+)\s*UNIT', hu)
+        if m:
+            n = m.group(1)
+            tiers.append((f'{n}u', i))
+    return tiers
+
+
+def extract_tiers(row, tier_cols):
+    """Given a row and the (label, idx) tier columns, return an ordered list of
+    {'label','qty','price'} for the tiers that actually have a price in this row.
+    Ordered biggest-qty first (best wholesale price shown first)."""
+    out = []
+    for label, idx in tier_cols:
+        if idx >= len(row):
+            continue
+        cell = str(row[idx]).strip()
+        if not cell or cell.upper() in ('N/A', 'NA', 'TBD', '-'):
+            continue
+        if '$' not in cell and not _re_price_digit(cell):
+            continue
+        # Skip combined free-text values like "$100/10 UNITS" — not a clean tier price.
+        if '/' in cell or 'UNIT' in cell.upper():
+            continue
+        price = cell
+        qty = int(label[:-1]) if label[:-1].isdigit() else 1
+        out.append({'label': label, 'qty': qty, 'price': price})
+    # Sort by qty descending (1000u first ... 1u last)
+    out.sort(key=lambda t: -t['qty'])
+    return out
+
+
+def _re_price_digit(s):
+    import re as _re
+    return bool(_re.search(r'\d', str(s)))
+
+
 def find_prices(row, pic_idx, coa_idx, box_col=-1, unit_col=-1):
     """Return (box_price, unit_price).
     Strategy:
@@ -872,36 +967,52 @@ def find_prices(row, pic_idx, coa_idx, box_col=-1, unit_col=-1):
 
 def parse_generic(rows, const_name):
     """Parse Extracts/Syrup/Topicals/GelCaps. Detects pic/COA columns by URL and
-    price columns by header label, so column order/count doesn't matter."""
+    captures ALL price tiers (50u/10u/1u etc.) by header label."""
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
-    box_col = unit_col = -1
+    tier_cols = []
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
-        if name.strip().upper().startswith('PRODUCT NAME'):
-            box_col, unit_col = find_price_columns(row)
+        # Header rows (top or combined section+header) carry the tier labels.
+        if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
+            row_tiers = find_tier_columns(row)
+            if row_tiers:
+                tier_cols = row_tiers
             set_url_columns_from_header(row)
+            # If it's ALSO a *** section *** name, emit the divider.
+            if name.startswith('*') and name.endswith('*'):
+                items.append({'sec':True,'n':strip_stars(' '.join(name.split()))})
             continue
         if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
-        if not cann:
+        if not cann or cann.upper() == 'CANNABINOID':
             clean_name = strip_stars(' '.join(name.split()))
+            row_tiers = find_tier_columns(row)
+            if row_tiers:
+                tier_cols = row_tiers
+                set_url_columns_from_header(row)
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
-        price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
+        tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
         coa = coa if is_valid_coa(coa) else ''
-        # Show as long as there's a price. Picture + COA optional (placeholders).
-        if not price and not unit_price:
-            price = ''; unit_price = ''  # will render 'Call for Pricing'
-        items.append({'sec':False,'n':name,'cann':cann,'size':'',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa})
+        cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
+        items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,'size':'',
+                      'tiers':tiers,'pic':pic,'coa':coa,
+                      'qty':row[2].strip() if len(row)>2 else ''})
     return items
+
+
+def _row_has_tier_header(row):
+    """True if this row carries price-tier column labels (e.g. a combined
+    section+header row like ***EXTRACTS*** ... 50 UNITS PRICE)."""
+    joined = ' '.join(str(c).upper() for c in row)
+    return 'PRICE' in joined and 'UNIT' in joined and row[0].strip().startswith('*')
 
 def build_generic_js(items, const_name):
     lines = [f'const {const_name}=[']
@@ -910,7 +1021,7 @@ def build_generic_js(items, const_name):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"{esc(p.get("size",""))}",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"{esc(p.get("size",""))}",tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
