@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EHF Inventory Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700;800&family=Orbitron:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#03040d; --panel:#0a0b1a; --panel2:#0d0e22;
+    --border:#181a30; --border2:#222440;
+    --purple:#a855f7; --purple-l:#c084fc;
+    --blue:#38bdf8; --blue-l:#7dd3fc;
+    --green:#00ff88; --gold:#e2c46e; --red:#ff6b6b; --orange:#f97316;
+    --text:#e8eaf6; --muted:#6b7db3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;max-width:100vw;}
+  html,body{overflow-x:hidden;}
+  body{
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(168,85,247,.10), transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, rgba(56,189,248,.08), transparent 55%),
+      var(--bg);
+    color:var(--text); font-family:'DM Sans',sans-serif; line-height:1.5;
+    min-height:100vh; padding:0 0 60px;
+  }
+  .wrap{max-width:1100px; margin:0 auto; padding:0 20px;}
+
+  /* Header */
+  header{padding:34px 0 22px; border-bottom:1px solid var(--border); margin-bottom:26px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.28em;
+    text-transform:uppercase; color:var(--purple-l); margin-bottom:10px;}
+  h1{font-family:'Bebas Neue',sans-serif; font-size:52px; letter-spacing:.02em; line-height:.95;
+    background:linear-gradient(100deg,#fff 10%,var(--purple-l) 55%,var(--blue-l));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .sub{color:var(--muted); font-size:14px; margin-top:8px; display:flex; gap:16px; flex-wrap:wrap;}
+  .sub b{color:var(--text); font-weight:700;}
+  .badge-live{display:inline-flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace;
+    font-size:11px; color:var(--green); background:rgba(0,255,136,.08);
+    border:1px solid rgba(0,255,136,.25); border-radius:6px; padding:3px 9px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* Stat strip */
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:30px;}
+  .stat{background:linear-gradient(160deg,var(--panel),var(--panel2)); border:1px solid var(--border);
+    border-radius:14px; padding:18px 18px 16px; position:relative; overflow:hidden;}
+  .stat::before{content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,var(--purple),var(--blue)); opacity:.55;}
+  .stat .n{font-family:'Orbitron',sans-serif; font-size:32px; font-weight:800; line-height:1;
+    color:#fff;}
+  .stat .l{font-size:11px; text-transform:uppercase; letter-spacing:.13em; color:var(--muted);
+    margin-top:8px;}
+  .stat.up .n{color:var(--green);} .stat.down .n{color:var(--red);}
+
+  /* Section */
+  section{margin-bottom:30px;}
+  .sec-hd{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .sec-hd h2{font-family:'Orbitron',sans-serif; font-size:15px; font-weight:700; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--text);}
+  .sec-hd .count{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+    background:var(--panel); border:1px solid var(--border); padding:2px 9px; border-radius:20px;}
+  .sec-hd .ic{font-size:17px;}
+
+  .panel{background:linear-gradient(160deg,var(--panel),var(--panel2)); border:1px solid var(--border);
+    border-radius:14px; padding:6px;}
+  .row{display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+    padding:12px 14px; border-radius:10px; transition:background .15s;}
+  .row:hover{background:rgba(255,255,255,.02);}
+  .row+.row{border-top:1px solid var(--border);}
+  .row .nm{font-weight:700; font-size:15px;}
+  .row .meta{font-size:12px; color:var(--muted); margin-top:2px; font-family:'JetBrains Mono',monospace;}
+  .row .tag{font-family:'JetBrains Mono',monospace; font-size:11px; padding:3px 9px; border-radius:6px;
+    white-space:nowrap;}
+  .tag.add{background:rgba(0,255,136,.1); color:var(--green); border:1px solid rgba(0,255,136,.28);}
+  .tag.rm{background:rgba(255,107,107,.1); color:var(--red); border:1px solid rgba(255,107,107,.28);}
+  .tag.oos{background:rgba(255,107,107,.1); color:var(--red); border:1px solid rgba(255,107,107,.28);}
+  .tag.back{background:rgba(0,255,136,.1); color:var(--green); border:1px solid rgba(0,255,136,.28);}
+  .price-old{color:var(--muted); text-decoration:line-through; font-family:'JetBrains Mono',monospace; font-size:13px;}
+  .price-new{color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:14px; font-weight:600;}
+  .arrow{color:var(--purple-l); margin:0 6px;}
+
+  .empty{text-align:center; color:var(--muted); padding:26px 14px; font-size:14px;}
+  .empty .big{font-size:30px; margin-bottom:8px; opacity:.5;}
+
+  /* tab breakdown bars */
+  .bars{display:flex; flex-direction:column; gap:9px; padding:8px 4px;}
+  .bar-row{display:grid; grid-template-columns:90px 1fr 44px; align-items:center; gap:10px;}
+  .bar-lbl{font-size:13px; font-weight:600;}
+  .bar-track{height:9px; background:var(--border); border-radius:6px; overflow:hidden;}
+  .bar-fill{height:100%; border-radius:6px; background:linear-gradient(90deg,var(--purple),var(--blue));}
+  .bar-val{font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700; text-align:right; color:var(--text);}
+
+  /* history timeline */
+  .tl-item{padding:12px 14px; border-left:2px solid var(--border2); margin-left:6px; position:relative;}
+  .tl-item::before{content:''; position:absolute; left:-6px; top:16px; width:9px; height:9px;
+    border-radius:50%; background:var(--purple); border:2px solid var(--bg);}
+  .tl-ts{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); margin-bottom:5px;}
+  .tl-body{font-size:13px; line-height:1.6;}
+  .tl-body .k{color:var(--purple-l); font-weight:700;}
+
+  footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border);
+    font-size:12px; color:var(--muted); text-align:center; line-height:1.7;}
+  code{font-family:'JetBrains Mono',monospace; background:var(--panel); padding:1px 6px;
+    border-radius:5px; color:var(--blue-l); font-size:12px;}
+
+  @media(max-width:560px){
+    h1{font-size:38px;}
+    .stat .n{font-size:26px;}
+    .bar-row{grid-template-columns:70px 1fr 40px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Exclusive Hemp Farms · Wholesale</div>
+    <h1>Inventory Intelligence</h1>
+    <div class="sub" id="sub">
+      <span class="badge-live"><span class="dot"></span> LIVE</span>
+      <span>Loading build data…</span>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+
+  <section>
+    <div class="sec-hd"><span class="ic">📊</span><h2>Catalog by Category</h2></div>
+    <div class="panel"><div class="bars" id="bars"></div></div>
+  </section>
+
+  <section id="sec-changes">
+    <div class="sec-hd"><span class="ic">🔄</span><h2>Latest Changes</h2><span class="count" id="chg-count">—</span></div>
+    <div id="changes"></div>
+  </section>
+
+  <section>
+    <div class="sec-hd"><span class="ic">🕓</span><h2>Change History</h2><span class="count" id="hist-count">—</span></div>
+    <div class="panel" id="history"></div>
+  </section>
+
+  <footer>
+    Data refreshes each time the catalog builds (every 12 hours, or on a forced rebuild).<br>
+    Reads <code>dashboard_data.json</code> + <code>inventory_history.json</code> from the repo.
+    <span id="foot-ver"></span>
+  </footer>
+</div>
+
+<script>
+// ── Load the JSON the builder writes. Falls back gracefully if not present yet. ──
+async function loadJSON(path){
+  try{
+    const r = await fetch(path + '?t=' + Date.now());
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){ return null; }
+}
+
+function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+function fmtTime(iso){
+  try{
+    const d = new Date(iso);
+    return d.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+  }catch(e){ return iso; }
+}
+
+function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstChild; }
+
+async function init(){
+  const data = await loadJSON('dashboard_data.json');
+  const history = await loadJSON('inventory_history.json') || [];
+
+  const sub = document.getElementById('sub');
+  if(!data){
+    sub.innerHTML = '<span class="badge-live" style="color:var(--muted);border-color:var(--border)">NO DATA YET</span>'+
+      '<span>Run a build to generate the first report.</span>';
+    document.getElementById('stats').innerHTML =
+      '<div class="empty" style="grid-column:1/-1"><div class="big">📦</div>'+
+      'No build data found yet. After the next catalog build, this dashboard will populate '+
+      'with live counts, changes, and price history.</div>';
+    return;
+  }
+
+  // Header sub-line
+  const totalProducts = Object.values(data.counts||{}).reduce((a,b)=>a+b,0);
+  sub.innerHTML =
+    '<span class="badge-live"><span class="dot"></span> LIVE</span>'+
+    `<span>Version <b>v${esc(data.version||'?')}</b></span>`+
+    `<span>Built <b>${fmtTime(data.built)}</b></span>`+
+    `<span><b>${totalProducts}</b> products live</span>`;
+  document.getElementById('foot-ver').textContent = ' · Showing v' + (data.version||'?');
+
+  const ch = data.changes || {};
+
+  // ── Stat cards ──
+  const stats = [
+    {n: totalProducts, l:'Total Products', cls:''},
+    {n: (ch.added||[]).length, l:'Added', cls:(ch.added||[]).length?'up':''},
+    {n: (ch.removed||[]).length, l:'Removed', cls:(ch.removed||[]).length?'down':''},
+    {n: (ch.price_changes||[]).length, l:'Price Changes', cls:''},
+    {n: (ch.went_oos||[]).length, l:'Went Out of Stock', cls:(ch.went_oos||[]).length?'down':''},
+    {n: (ch.back_in||[]).length, l:'Back in Stock', cls:(ch.back_in||[]).length?'up':''},
+  ];
+  document.getElementById('stats').innerHTML =
+    stats.map(s=>`<div class="stat ${s.cls}"><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join('');
+
+  // ── Category bars ──
+  const counts = data.counts || {};
+  const maxC = Math.max(1, ...Object.values(counts));
+  document.getElementById('bars').innerHTML = Object.entries(counts)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([tab,n])=>`
+      <div class="bar-row">
+        <span class="bar-lbl">${esc(tab)}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${(n/maxC*100).toFixed(0)}%"></span></span>
+        <span class="bar-val">${n}</span>
+      </div>`).join('');
+
+  // ── Latest changes ──
+  const changesEl = document.getElementById('changes');
+  const blocks = [];
+  const addRows = (arr, tag, label, fmt) => {
+    if(!arr || !arr.length) return;
+    blocks.push(`<div class="panel" style="margin-bottom:12px">
+      <div style="padding:8px 12px 4px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">${label}</div>` +
+      arr.map(fmt).join('') + `</div>`);
+  };
+  addRows(ch.price_changes, 'price', 'Price Changes', pc=>`
+    <div class="row"><div><div class="nm">${esc(pc.name)}</div>
+    <div class="meta">${esc(pc.tab)}</div></div>
+    <div><span class="price-old">${esc(pc.old.split('|')[0].split(':').pop())}</span>
+    <span class="arrow">→</span><span class="price-new">$${esc(pc.new.split('|')[0].split(':').pop())}</span></div></div>`);
+  addRows(ch.added, 'add', 'New Products', x=>`
+    <div class="row"><div><div class="nm">${esc(x.name)}</div><div class="meta">${esc(x.tab)}</div></div>
+    <span class="tag add">+ NEW</span></div>`);
+  addRows(ch.went_oos, 'oos', 'Went Out of Stock', x=>`
+    <div class="row"><div><div class="nm">${esc(x.name)}</div><div class="meta">${esc(x.tab)}</div></div>
+    <span class="tag oos">● OUT</span></div>`);
+  addRows(ch.back_in, 'back', 'Back in Stock', x=>`
+    <div class="row"><div><div class="nm">${esc(x.name)}</div><div class="meta">${esc(x.tab)}</div></div>
+    <span class="tag back">● IN STOCK</span></div>`);
+  addRows(ch.removed, 'rm', 'Removed', x=>`
+    <div class="row"><div><div class="nm">${esc(x.name)}</div><div class="meta">${esc(x.tab)}</div></div>
+    <span class="tag rm">✕ GONE</span></div>`);
+
+  const totalChanges = ['added','removed','price_changes','went_oos','back_in']
+    .reduce((a,k)=>a+(ch[k]||[]).length,0);
+  document.getElementById('chg-count').textContent = totalChanges + ' change' + (totalChanges===1?'':'s');
+
+  if(blocks.length){
+    changesEl.innerHTML = blocks.join('');
+  }else{
+    changesEl.innerHTML = '<div class="panel"><div class="empty"><div class="big">✓</div>'+
+      'No inventory changes in the latest build. Everything held steady.</div></div>';
+  }
+
+  // ── History timeline ──
+  const histEl = document.getElementById('history');
+  document.getElementById('hist-count').textContent = history.length + ' events';
+  if(history.length){
+    const recent = history.slice().reverse().slice(0, 25);
+    histEl.innerHTML = recent.map(h=>{
+      const bits = [];
+      if(h.added && h.added.length) bits.push(`<span class="k">+${h.added.length} added</span>`);
+      if(h.removed && h.removed.length) bits.push(`<span class="k">−${h.removed.length} removed</span>`);
+      if(h.price_changes && h.price_changes.length) bits.push(`<span class="k">${h.price_changes.length} price</span>`);
+      if(h.went_oos && h.went_oos.length) bits.push(`<span class="k">${h.went_oos.length} OOS</span>`);
+      if(h.back_in && h.back_in.length) bits.push(`<span class="k">${h.back_in.length} restocked</span>`);
+      const detail = [...(h.price_changes||[]), ...(h.added||[]).map(a=>'+ '+a),
+        ...(h.removed||[]).map(r=>'− '+r)].slice(0,4).map(esc).join(' · ');
+      return `<div class="tl-item">
+        <div class="tl-ts">${fmtTime(h.ts)}${h.version?' · v'+esc(h.version):''}</div>
+        <div class="tl-body">${bits.join(' &nbsp; ')}${detail?'<br><span style="color:var(--muted);font-size:12px">'+detail+'</span>':''}</div>
+      </div>`;
+    }).join('');
+  }else{
+    histEl.innerHTML = '<div class="empty"><div class="big">🕓</div>'+
+      'No change history yet. As builds run over time, every add, removal, price change, '+
+      'and stock movement gets logged here.</div>';
+  }
+}
+init();
+</script>
+</body>
+</html>
