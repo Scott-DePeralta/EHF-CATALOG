@@ -2,7 +2,7 @@
 """
 EHF Catalog Auto-Builder
 Fetches Google Sheets data, rebuilds index.html, deploys to Netlify.
-Runs via GitHub Actions every 15 minutes.
+Runs via GitHub Actions every 720 minutes.
 """
 
 import csv, re, io, hashlib, json, os, sys
@@ -342,10 +342,23 @@ PREROLL_BRAND_HEADERS = {'DOOBIES','HOTTIES','SINGLE MINI PRE ROLL','SINGLE MINI
                          'KING SIZE PRE ROLLS','KING SIZE PRE ROLL'}
 PREROLL_CATEGORY_HEADERS = set()
 
+# Preroll sections and their size labels (so buyers know king-size vs mini).
+PREROLL_SIZE_LABELS = {
+    'KING SIZE PRE ROLLS': '2.5g+ King Size',
+    'KING SIZE PRE ROLL': '2.5g+ King Size',
+    'DOOBIES': '1g Doobie',
+    'HOTTIES': '1g Hottie',
+    'SINGLE MINI PRE ROLL': '0.5g Mini',
+    'SINGLE MINI PRE ROLLS': '0.5g Mini',
+}
+PREROLL_KING_SECTIONS = {'KING SIZE PRE ROLLS','KING SIZE PRE ROLL'}
+
 def parse_preroll(rows):
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     box_col = unit_col = -1
+    current_size = ''       # size label for the current section
+    current_is_king = False
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
@@ -362,6 +375,8 @@ def parse_preroll(rows):
             clean = strip_stars(name)
             cu = clean.upper()
             is_brand = cu in PREROLL_BRAND_HEADERS
+            current_size = PREROLL_SIZE_LABELS.get(cu, '')
+            current_is_king = cu in PREROLL_KING_SECTIONS
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -371,9 +386,19 @@ def parse_preroll(rows):
         coa = coa if is_valid_coa(coa) else ''
         # Box + unit pricing (like edibles); falls back to single price
         price, unit_price = find_prices(row, pic_idx, coa_idx, box_col, unit_col)
-        items.append({'sec':False,'n':name,'cann':cann,'qty':row[2].strip() if len(row)>2 else '',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':''})
+        # Split the cannabinoid string into a selectable list.
+        cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
+        items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,
+                      'qty':row[2].strip() if len(row)>2 else '',
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':'',
+                      'size':current_size,'king':current_is_king})
     return items
+
+def cann_js(p):
+    """Emit a JS array literal of the product's cannabinoid options."""
+    lst = p.get('cannList') or []
+    inner = ','.join('"'+esc(x)+'"' for x in lst)
+    return '['+inner+']'
 
 def build_preroll_js(items):
     lines = ['const PREROLL=[']
@@ -384,7 +409,8 @@ def build_preroll_js(items):
             lines.append(f'{{sec:true,n:"{esc(p["n"])}",brand:{brand}}}{comma}')
         else:
             note = p.get('note','')
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
+            king = 'true' if p.get('king') else 'false'
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"{esc(p.get("size",""))}",king:{king},price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(note)}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -421,7 +447,8 @@ def parse_vape(rows):
         # Picture and COA are optional (placeholders shown on the card).
         if not price and not unit_price:
             price = ''; unit_price = ''  # will render 'Call for Pricing'
-        items.append({'sec':False,'n':name,'cann':cann,'qty':'',
+        items.append({'sec':False,'n':name,'cann':cann,
+                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa})
     return items
 
@@ -432,7 +459,7 @@ def build_vape_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -474,7 +501,8 @@ def parse_edibles(rows):
             pieces = format_pieces(raw_pieces, raw_cat)
         else:
             pieces = piece_label(name)  # fallback to built-in map
-        items.append({'sec':False,'n':name,'cann':cann,'qty':'',
+        items.append({'sec':False,'n':name,'cann':cann,
+                      'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],'qty':'',
                       'price':price,'unit':unit_price,'pic':pic,'coa':coa,
                       'note':'','pieces':pieces})
     return items
@@ -485,7 +513,7 @@ def build_edibles_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pieces:"{esc(p.get("pieces",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",price:"{esc(p["price"])}",unit:"{esc(p.get("unit",""))}",pieces:"{esc(p.get("pieces",""))}",pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:"{esc(p.get("note",""))}"}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
