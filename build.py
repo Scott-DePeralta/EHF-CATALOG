@@ -1343,12 +1343,41 @@ def audit_build(parsed):
     return report, problems, warnings
 
 
-def check_invoice_health(catalog_version):
-    """Call the invoice system's ?page=health endpoint and compare versions.
-    Returns a dict: {reachable, version, in_sync, ok, problems, warnings, stats}.
-    Never raises — a down invoice system becomes a reported problem, not a crash."""
-    result = {'reachable': False, 'version': None, 'in_sync': None,
+def check_invoice_health(catalog_version, live_version=None):
+    """Call the invoice system's ?page=health endpoint.
+
+    Version model (fully automatic — no hand-set numbers anywhere):
+      • The catalog owns the version and publishes it to dashboard_data.json.
+      • The invoice READS that same published version at health-check time.
+      • So both systems always reference ONE source of truth. "In sync" simply
+        means the invoice can successfully read the catalog's published version.
+
+    Timing note: during a build, the NEW version has not been deployed yet, so the
+    invoice still sees the PREVIOUS live version. That is expected and is NOT a
+    desync. The caller passes `live_version` = the version that is currently live
+    (captured before dashboard_data.json is overwritten), and we compare the
+    invoice's seen-version against THAT.
+
+    Returns: {reachable, version, live_version, next_version, in_sync, ok,
+              problems, warnings, stats}.
+    Never raises — a down invoice system becomes a reported problem, not a crash.
+    """
+    result = {'reachable': False, 'version': None, 'live_version': None,
+              'next_version': catalog_version, 'in_sync': None,
               'ok': None, 'problems': [], 'warnings': [], 'stats': {}}
+
+    # The version that is CURRENTLY live (previous build). Prefer the value passed
+    # by the caller; fall back to reading the local file if not provided.
+    if live_version is None:
+        try:
+            if os.path.exists('dashboard_data.json'):
+                with open('dashboard_data.json') as _f:
+                    live_version = str((json.load(_f) or {}).get('version', '') or '')
+        except Exception:
+            live_version = ''
+    live_version = str(live_version or '')
+    result['live_version'] = live_version or None
+
     if not INVOICE_EXEC_URL:
         return result
     try:
@@ -1357,15 +1386,23 @@ def check_invoice_health(catalog_version):
         raw = urlopen(req, timeout=30).read().decode('utf-8')
         data = json.loads(raw)
         result['reachable'] = True
-        result['version']  = data.get('version')
+        result['version']  = data.get('version')          # catalog version the invoice can see
         result['ok']       = data.get('ok')
-        result['problems'] = data.get('problems', []) or []
-        result['warnings'] = data.get('warnings', []) or []
+        result['problems'] = list(data.get('problems', []) or [])
+        result['warnings'] = list(data.get('warnings', []) or [])
         result['stats']    = data.get('stats', {}) or {}
-        # Version sync: compare MAJOR version (before the dot) of catalog vs invoice.
-        cat_major = str(catalog_version).split('.')[0] if catalog_version else ''
-        inv_major = str(result['version']).split('.')[0] if result['version'] else ''
-        result['in_sync'] = (cat_major == inv_major) if (cat_major and inv_major) else None
+
+        seen = str(result['version'] or '')
+        if not seen:
+            # Invoice reached, but it could not read the catalog version URL.
+            result['in_sync'] = None
+        elif live_version:
+            # Both known: in sync when the invoice sees the current live version.
+            result['in_sync'] = (seen == live_version)
+        else:
+            # No local live version to compare (e.g. first ever build). If the
+            # invoice can see any version, treat as in sync — same source of truth.
+            result['in_sync'] = True
     except Exception as e:
         result['problems'].append(f'Invoice system unreachable: {e}')
     return result
@@ -1399,30 +1436,44 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
 
     parts = [headline, f'_Newest version: the live site now shows {vtag}._']
 
-    # ── Invoice system health + version sync ──
+    # ── Invoice system health + automatic version sync ──
     if invoice is not None:
         parts.append('')
         if not invoice.get('reachable'):
             parts.append('*:electric_plug: Invoice system:* :red_circle: could not reach it to check. '
-                         'Approvals/quotes may still work, but this build could not confirm.')
+                         'Approvals/quotes may still work, but this build could not confirm. '
+                         '(Deploy Code.gs with the health endpoint if this is the first run.)')
         else:
-            inv_v = invoice.get('version') or '?'
+            seen = invoice.get('version')          # catalog version the invoice can see (currently live)
+            live = invoice.get('live_version')     # what this build knows is currently live
+            nxt  = invoice.get('next_version')     # version this build will publish
             in_sync = invoice.get('in_sync')
-            if in_sync is True:
-                sync_icon = ':white_check_mark:'
-                sync_txt = f'in sync with catalog (both v{str(BUILD_VERSION).split(".")[0]}.x)'
-            elif in_sync is False:
-                sync_icon = ':rotating_light:'
-                sync_txt = (f'*OUT OF SYNC* — catalog is v{BUILD_VERSION}, invoice is v{inv_v}. '
-                            f'Deploy the matching version so they agree.')
-            else:
-                sync_icon = ':grey_question:'
-                sync_txt = 'version comparison unavailable'
             inv_ok = ':white_check_mark:' if invoice.get('ok') else ':red_circle:'
+            inv_word = 'healthy' if invoice.get('ok') else 'ISSUES FOUND'
             stats = invoice.get('stats', {})
             reps = stats.get('repCount')
             rep_txt = f' · {reps} reps' if reps is not None else ''
-            parts.append(f'*:electric_plug: Invoice system:* {inv_ok} v{inv_v}{rep_txt} — {sync_icon} {sync_txt}')
+
+            if in_sync is True:
+                sync_line = (f':white_check_mark: reading catalog v{seen or "?"} '
+                             f'(auto-synced — single source of truth)')
+            elif in_sync is False:
+                sync_line = (f':rotating_light: *version mismatch* — invoice is reading catalog '
+                             f'v{seen or "?"}, but the live catalog is v{live or "?"}. '
+                             f'This usually means the last catalog deploy did not publish, or the '
+                             f'invoice URL points at a stale/cached file. Check that '
+                             f'exclusive-hemp-farms.com/dashboard_data.json shows v{live or "?"}.')
+            else:
+                sync_line = (':grey_question: reached the invoice, but it could not read the catalog '
+                             'version URL (exclusive-hemp-farms.com/dashboard_data.json). '
+                             'Version sync unconfirmed.')
+
+            parts.append(f'*:electric_plug: Invoice system:* {inv_ok} {inv_word}{rep_txt} — {sync_line}')
+            # After THIS build deploys, the live version becomes nxt; the invoice will
+            # read that automatically on its next check. Note it so the flow is clear.
+            if nxt and str(nxt) != str(seen or ''):
+                parts.append(f'   _After this build deploys, the live catalog becomes v{nxt}; '
+                             f'the invoice will read it automatically — nothing to update by hand._')
             for p in invoice.get('problems', []):
                 parts.append(f'   :red_circle: {p}')
             for w in invoice.get('warnings', [])[:8]:
@@ -1594,6 +1645,16 @@ def main():
           f"{len(_c['price_changes'])} price changes, "
           f"{len(_c['went_oos'])} went OOS, {len(_c['back_in'])} back in stock")
 
+    # Capture the version that is CURRENTLY live (previous build) BEFORE we
+    # overwrite dashboard_data.json — the invoice reads this same live value.
+    _prev_live_version = ''
+    try:
+        if os.path.exists('dashboard_data.json'):
+            with open('dashboard_data.json') as _pf:
+                _prev_live_version = str((json.load(_pf) or {}).get('version', '') or '')
+    except Exception:
+        _prev_live_version = ''
+
     # Write a JSON the dashboard can read
     try:
         import json as _dj
@@ -1606,9 +1667,10 @@ def main():
         print(f'    dashboard_data.json write failed: {_e}')
 
     # Check the invoice system's health + version sync (best-effort; never blocks).
-    _invoice = check_invoice_health(BUILD_VERSION)
+    _invoice = check_invoice_health(BUILD_VERSION, _prev_live_version)
     if _invoice.get('reachable'):
-        print(f"  --- INVOICE HEALTH --- v{_invoice.get('version')} "
+        print(f"  --- INVOICE HEALTH --- invoice sees catalog v{_invoice.get('version')} "
+              f"(live now: v{_invoice.get('live_version')}, this build: v{BUILD_VERSION}) "
               f"ok={_invoice.get('ok')} in_sync={_invoice.get('in_sync')} "
               f"({len(_invoice.get('problems',[]))} problems, {len(_invoice.get('warnings',[]))} warnings)")
     else:
