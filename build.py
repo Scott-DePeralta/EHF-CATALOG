@@ -2,7 +2,8 @@
 """
 EHF Catalog Auto-Builder
 Fetches Google Sheets data, rebuilds index.html, deploys to Netlify.
-Runs via GitHub Actions every 15 minutes.
+Runs via GitHub Actions every 720 minutes (12 hours) — schedule set in auto-deploy.yml.
+Skips deploy when the sheet is unchanged, to conserve Netlify credits.
 """
 
 import csv, re, io, hashlib, json, os, sys
@@ -1222,10 +1223,6 @@ def main():
         for _w in _audit_warnings:
             print(f'    [warn] {_w}')
     send_slack_audit(_audit_report, _audit_problems, _audit_warnings)
-    # DEBUG: print first 3 edibles prices so we can verify from the log
-    _ed_prods = [x for x in edibles_items if not x.get('sec')][:3]
-    for _p in _ed_prods:
-        print(f'    EDIBLE {_p["n"]}: box={_p.get("price","")!r} unit={_p.get("unit","")!r} pieces={_p.get("pieces","")!r}')
 
     # ── Build JS arrays ──
     flower_js  = build_flower_js(flower_items)
@@ -1241,7 +1238,7 @@ def main():
     # ── Load and patch HTML ──
     if not os.path.exists(HTML_FILE):
         print(f'ERROR: {HTML_FILE} not found in repo.')
-        print('ACTION REQUIRED: Upload your EHF_Catalog.html renamed as index.html to the GitHub repo root.')
+        print(f'ACTION REQUIRED: Make sure {HTML_FILE} exists in the GitHub repo root.')
         sys.exit(0)  # exit 0 so workflow shows yellow, not red
     html = open(HTML_FILE, encoding='utf-8').read()
 
