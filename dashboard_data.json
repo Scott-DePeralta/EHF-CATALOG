@@ -1,6 +1,6 @@
 {
  "version": "",
- "built": "2026-07-27T18:41:50.221382+00:00",
+ "built": "2026-07-27T22:53:07.076604+00:00",
  "counts": {
   "Flower": 67,
   "PreRoll": 31,
@@ -17,6 +17,6 @@
   "price_changes": [],
   "went_oos": [],
   "back_in": [],
-  "first_run": true
+  "first_run": false
  }
 }
