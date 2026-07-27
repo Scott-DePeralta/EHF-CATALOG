@@ -2408,9 +2408,19 @@ function addTierToCart(nameBase, tierIdx){
   const qtyLabel = t.qty===1 ? '1 unit' : t.qty.toLocaleString()+' units';
   const dispName = `${p.n} — ${qtyLabel}${cannSuffix}`;
   const cartKey = dispName;
-  const unitPrice = priceNum(t.price);  // price of the whole bundle
-  if(!CART[cartKey]) CART[cartKey] = {name:dispName, unitPrice:unitPrice, qty:0, tab:p.tab||'', canns:canns, bundleQty:t.qty};
-  CART[cartKey].qty += 1;  // each add = one bundle
+  const bundlePrice = priceNum(t.price);            // price for the whole bundle (e.g. $1,875)
+  const perUnit = t.qty>0 ? bundlePrice/t.qty : bundlePrice;  // true per-piece price (e.g. $3.75)
+  if(!CART[cartKey]) CART[cartKey] = {
+    name: dispName,
+    unitPrice: bundlePrice,   // shown in the cart as the bundle price
+    qty: 0,                   // number of bundles the buyer added
+    tab: p.tab||'',
+    canns: canns,
+    bundleQty: t.qty,         // pieces per bundle (e.g. 500)
+    perUnit: perUnit,         // true per-piece price (e.g. 3.75)
+    baseName: p.n             // product name without the tier suffix
+  };
+  CART[cartKey].qty += 1;   // each add = one bundle
   renderCart();
   cartCount();
 }
@@ -2499,10 +2509,30 @@ function closeCheckout(){ document.getElementById('checkoutModal').classList.rem
 
 let SELECTED_SHIP = null;  // {method, label, shipEstimate, grandTotal}
 
+// Build the items array sent to the invoice system. For tier bundles, send the
+// REAL total piece count and true per-piece price so the warehouse packs the
+// correct amount and the money still equals the bundle price.
+function cartItemsForPayload(){
+  return Object.values(CART).map(it=>{
+    if(it.bundleQty && it.bundleQty>1){
+      const totalPieces = it.bundleQty * it.qty;   // e.g. 500 × 2 bundles = 1000 pieces
+      return {
+        name: it.baseName || it.name,
+        qty: totalPieces,                          // real pieces to pack
+        unitPrice: it.perUnit,                     // true per-piece price
+        packQty: totalPieces,                      // explicit pack count for warehouse
+        bundleInfo: `${it.qty} × ${it.bundleQty.toLocaleString()}-unit bundle`,
+        canns: it.canns||[]
+      };
+    }
+    return {name:it.name, qty:it.qty, unitPrice:it.unitPrice, canns:it.canns||[]};
+  });
+}
+
 async function getEstimates(){
   const zip=document.getElementById('coZip').value.replace(/\D/g,'');
   if(zip.length<5){ alert('Please enter a valid 5-digit ZIP code.'); return; }
-  const items=Object.values(CART).map(it=>({name:it.name, qty:it.qty, unitPrice:it.unitPrice}));
+  const items=cartItemsForPayload();
   if(!items.length){ alert('Your cart is empty.'); return; }
   const btn=document.getElementById('coEstBtn');
   btn.disabled=true; btn.textContent='Calculating…';
@@ -2553,7 +2583,7 @@ async function submitQuote(){
   if(!name||!phone||!email){ alert('Please enter your name, phone, and email.'); return; }
   if(!shipMethod){ alert('Please choose a shipping speed.'); return; }
 
-  const items=Object.values(CART).map(it=>({name:it.name, qty:it.qty, unitPrice:it.unitPrice}));
+  const items=cartItemsForPayload();
   if(!items.length){ alert('Your cart is empty.'); return; }
 
   const btn=document.getElementById('coSubmit');
