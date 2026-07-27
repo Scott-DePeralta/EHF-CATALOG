@@ -2,7 +2,7 @@ name: Auto-Update EHF Catalog
 
 on:
   schedule:
-    - cron: '0 19 * * *'   # Once daily at 12:00 PM Pacific (19:00 UTC)
+    - cron: '0 */12 * * *'   # Every 720 minutes (12 hours) — saves Netlify credits
   workflow_dispatch:
     inputs:
       force_rebuild:
@@ -40,7 +40,7 @@ jobs:
         run: |
           git config user.name  "EHF Auto Bot"
           git config user.email "bot@exclusivehempfarms.com"
-          git add index.html last_hash.txt last_counts.json 2>/dev/null || true
+          git add index.html last_hash.txt last_counts.json version.txt 2>/dev/null || true
           git diff --staged --quiet && echo "Nothing to commit" && exit 0
           git commit -m "Auto-update: $(date -u '+%Y-%m-%d %H:%M UTC')"
           git pull --rebase --autostash origin main || true
