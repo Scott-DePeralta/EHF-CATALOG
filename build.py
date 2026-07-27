@@ -2,7 +2,7 @@
 """
 EHF Catalog Auto-Builder
 Fetches Google Sheets data, rebuilds index.html, deploys to Netlify.
-Runs via GitHub Actions every 720 minutes.
+Runs via GitHub Actions every 15 minutes.
 """
 
 import csv, re, io, hashlib, json, os, sys
@@ -22,6 +22,30 @@ SLACK_AUDIT_WEBHOOK = os.environ.get('SLACK_AUDIT_WEBHOOK', '')  # Slack Incomin
 COUNTS_FILE = 'last_counts.json'  # remembers each tab's product count between runs
 
 # ── HELPERS ──────────────────────────────────────────────
+
+VERSION_FILE = 'version.txt'
+BUILD_VERSION = ''
+
+def get_next_version():
+    """Read the current version, bump the minor number, persist, and return the new string.
+    e.g. '3.4' -> '3.5'. Always increments so newest is obvious."""
+    try:
+        cur = open(VERSION_FILE).read().strip()
+    except Exception:
+        cur = '3.4'
+    try:
+        major, minor = cur.split('.')
+        minor = str(int(minor) + 1)
+        new_v = f'{major}.{minor}'
+    except Exception:
+        new_v = '3.5'
+    try:
+        open(VERSION_FILE, 'w').write(new_v)
+    except Exception:
+        pass
+    return new_v
+
+
 def fetch_sheet(tab):
     """Fetch a sheet tab as CSV. Uses gviz endpoint with sheet name.
     Retries once and logs row count so failures are visible."""
@@ -194,11 +218,21 @@ KNOWN_PREV = {
 # Flower subcategories priced PER UNIT (3.5g cans) instead of by weight tiers.
 FLOWER_UNIT_SECTIONS = {'MINI SODA CANS','MINI SODA CAN','MINI TUNA CANS','MINI TUNA CAN','QUARTER OUNCE JAR','QUARTER OUNCE JARS'}
 
+
+# Map flower section headers -> (strain filter key, display label) so products
+# inherit strain type for the Indica/Sativa/Hybrid filter WITHOUT showing dividers.
+FLOWER_SECTION_STRAIN = {
+    'INDICA': ('indica','Indica'), 'INDICA DOMINANT': ('indica','Indica'),
+    'SATIVA': ('sativa','Sativa'), 'SATIVA DOMINANT': ('sativa','Sativa'),
+    'HYBRID': ('hybrid','Hybrid'), 'HYBRID DOMINANT': ('hybrid','Hybrid'),
+}
+
 def parse_flower(rows):
     items = []
     skip_names = {'PRODUCT NAME','CALL (408) 444-HEMP',''}
     current_mode = 'weight'   # 'weight' = LB/half/qtr/oz tiers, 'unit' = per-can
     current_unit_label = ''
+    current_strain = None
     for row in rows:
         if len(row) < 2: continue
         name = row[0].strip()
@@ -231,6 +265,12 @@ def parse_flower(rows):
         if upper in WEIGHT_SECTIONS:
             current_mode = 'weight'
             current_unit_label = ''
+            # Capture strain type so products inherit it for filtering.
+            if upper in FLOWER_SECTION_STRAIN:
+                current_strain = FLOWER_SECTION_STRAIN[upper]
+                # Do NOT emit a visible divider for Indica/Sativa/Hybrid.
+                continue
+            current_strain = None
             items.append({'sec':True,'n':name})
             continue
 
@@ -256,7 +296,12 @@ def parse_flower(rows):
                 if '$' in c and c.strip().upper() != 'N/A':
                     unit_price = c.strip(); break
             special = qty.upper() == 'MADE TO ORDER'
-            st, sl = ST_MAP.get(name, auto_st(name))
+            if name in ST_MAP:
+                st, sl = ST_MAP[name]
+            elif current_strain:
+                st, sl = current_strain
+            else:
+                st, sl = auto_st(name)
             isnew = 'true' if name not in KNOWN_PREV else 'false'
             # Unique display name so duplicates (same flavor in flower + cans)
             # don't collide in the popup's name-based lookup.
@@ -266,7 +311,7 @@ def parse_flower(rows):
                 'n':disp_name,'thca':thca,'qty':qty,'pic':pic,'vid':vid,'coa':coa,
                 'st':st,'sl':sl,'isnew':isnew,'special':special,
                 'unitmode':True,'unitprice':unit_price,'size':unit_size,
-                'lb':0,'half':0,'qtr':0,'oz':0,
+                'lb':0,'half':0,'qtr':0,'oz':0,'hideThca':True,
             })
         else:
             def _pv(cell):
@@ -286,7 +331,12 @@ def parse_flower(rows):
             try: oz_f = float(oz)
             except: oz_f = 0
             special = qty.upper() == 'MADE TO ORDER'
-            st, sl = ST_MAP.get(name, auto_st(name))
+            if name in ST_MAP:
+                st, sl = ST_MAP[name]
+            elif current_strain:
+                st, sl = current_strain
+            else:
+                st, sl = auto_st(name)
             isnew = 'true' if name not in KNOWN_PREV else 'false'
             items.append({
                 'n':name,'thca':thca,'qty':qty,'lb':lb_f,'half':half_f,
@@ -320,6 +370,7 @@ def build_flower_js(items):
                f'st:"{p["st"]}",sl:"{p["sl"]}",isnew:{p["isnew"]}')
         if p.get('unitmode'):
             obj += f',unitmode:true,unitprice:"{esc(p.get("unitprice",""))}",size:"{esc(p.get("size","3.5g"))}"'
+        if p.get('hideThca'): obj += ',hideThca:true'
         if p.get('special'): obj += ',special:true'
         obj += '}'
         lines.append(obj + comma)
@@ -359,6 +410,7 @@ def parse_preroll(rows):
     box_col = unit_col = -1
     current_size = ''       # size label for the current section
     current_is_king = False
+    current_note = ''
     for row in rows:
         if not row or not row[0].strip(): continue
         name = row[0].strip()
@@ -377,6 +429,7 @@ def parse_preroll(rows):
             is_brand = cu in PREROLL_BRAND_HEADERS
             current_size = PREROLL_SIZE_LABELS.get(cu, '')
             current_is_king = cu in PREROLL_KING_SECTIONS
+            current_note = '🫙 Glass jar · 5 mini pre-rolls' if 'DOOBIE' in cu else ''
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -390,7 +443,7 @@ def parse_preroll(rows):
         cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
         items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':'',
+                      'price':price,'unit':unit_price,'pic':pic,'coa':coa,'note':current_note,
                       'size':current_size,'king':current_is_king})
     return items
 
@@ -977,14 +1030,16 @@ def send_slack_audit(report, problems):
     if not SLACK_AUDIT_WEBHOOK:
         return
     import json as _json
+    vtag = f'v{BUILD_VERSION}' if BUILD_VERSION else ''
     if problems:
-        text = ':rotating_light: *EHF Catalog build — ISSUES DETECTED*\n' + \
+        text = f':rotating_light: *EHF Catalog {vtag} — ISSUES DETECTED*\n' + \
                '\n'.join('• ' + p for p in problems) + \
                '\n\n_Counts this run:_\n' + '\n'.join('• ' + r for r in report) + \
                '\n\n_Check the sheet or ping Claude with the tab CSV._'
     else:
-        text = ':white_check_mark: *EHF Catalog built clean* — ' + \
-               ', '.join(r.split(':')[0] + ' ' + r.split(':')[1].strip().split(' ')[0] for r in report)
+        text = f':white_check_mark: *EHF Catalog {vtag} built clean* — ' + \
+               ', '.join(r.split(':')[0] + ' ' + r.split(':')[1].strip().split(' ')[0] for r in report) + \
+               f'\n_This is the newest version — the live site now shows {vtag}._'
     try:
         req = Request(
             SLACK_AUDIT_WEBHOOK,
@@ -1105,9 +1160,12 @@ def main():
     # Header stamp: match ONLY the id="upd" div, not the footer's "Last Updated".
     html = re.sub(r'(<div class="hdr-upd" id="upd">)Updated: [^<]+(</div>)',
                   r'\g<1>Updated: ' + date_str + r'\g<2>', html)
-    # Footer stamp.
+    # Bump version every build so newest is always obvious.
+    global BUILD_VERSION
+    BUILD_VERSION = get_next_version()
+    # Footer stamp with the new version.
     html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
-                  f'Catalog v3.4 &nbsp;·&nbsp; Last Updated: {long_date}', html)
+                  f'Catalog v{BUILD_VERSION} &nbsp;·&nbsp; Last Updated: {long_date}', html)
 
     # Write updated HTML back to repo file
     open(HTML_FILE, 'w', encoding='utf-8').write(html)
