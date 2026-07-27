@@ -1,6 +1,22 @@
 {
- "version": "3.4",
- "built": "2026-07-26T00:00:00+00:00",
- "counts": {"Flower": 67, "PreRoll": 31, "Vape": 47, "Edibles": 78, "Extracts": 8, "Syrup": 3, "Topicals": 5, "GelCaps": 7},
- "changes": {"added": [], "removed": [], "price_changes": [], "went_oos": [], "back_in": [], "first_run": true}
+ "version": "",
+ "built": "2026-07-27T18:41:50.221382+00:00",
+ "counts": {
+  "Flower": 67,
+  "PreRoll": 31,
+  "Vape": 47,
+  "Edibles": 68,
+  "Extracts": 8,
+  "Syrup": 3,
+  "Topicals": 5,
+  "GelCaps": 7
+ },
+ "changes": {
+  "added": [],
+  "removed": [],
+  "price_changes": [],
+  "went_oos": [],
+  "back_in": [],
+  "first_run": true
+ }
 }

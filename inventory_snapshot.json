@@ -1,0 +1,1640 @@
+{
+ "Flower::VENOM OG": {
+  "tab": "Flower",
+  "name": "VENOM OG",
+  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::BUBBLEGUM GUSHERS": {
+  "tab": "Flower",
+  "name": "BUBBLEGUM GUSHERS",
+  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
+  "stock": "0.75",
+  "cann": ""
+ },
+ "Flower::BLUEBERRY PANCAKE": {
+  "tab": "Flower",
+  "name": "BLUEBERRY PANCAKE",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "1.5",
+  "cann": ""
+ },
+ "Flower::G47": {
+  "tab": "Flower",
+  "name": "G47",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "5",
+  "cann": ""
+ },
+ "Flower::JUNGLE CAKE": {
+  "tab": "Flower",
+  "name": "JUNGLE CAKE",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::WHITE GUMMIES": {
+  "tab": "Flower",
+  "name": "WHITE GUMMIES",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "1.25",
+  "cann": ""
+ },
+ "Flower::BODHIS CHARMZ": {
+  "tab": "Flower",
+  "name": "BODHIS CHARMZ",
+  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::ORANGE CREAM POP": {
+  "tab": "Flower",
+  "name": "ORANGE CREAM POP",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::KANDY KUSH": {
+  "tab": "Flower",
+  "name": "KANDY KUSH",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "2",
+  "cann": ""
+ },
+ "Flower::DIRTY SPRITE": {
+  "tab": "Flower",
+  "name": "DIRTY SPRITE",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::CANDY FUMES": {
+  "tab": "Flower",
+  "name": "CANDY FUMES",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::ZOAPAYA": {
+  "tab": "Flower",
+  "name": "ZOAPAYA",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::MOCHI": {
+  "tab": "Flower",
+  "name": "MOCHI",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::BLUZZI": {
+  "tab": "Flower",
+  "name": "BLUZZI",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::PURPLE URKLE": {
+  "tab": "Flower",
+  "name": "PURPLE URKLE",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "3.25",
+  "cann": ""
+ },
+ "Flower::KINGLATO": {
+  "tab": "Flower",
+  "name": "KINGLATO",
+  "price": "LB:1600.0|\u00bdLB:880.0|\u00bcLB:460.0|OZ:125.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::SLAPZ": {
+  "tab": "Flower",
+  "name": "SLAPZ",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::GARLIC COOKIES": {
+  "tab": "Flower",
+  "name": "GARLIC COOKIES",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::BLACK RUNTZ": {
+  "tab": "Flower",
+  "name": "BLACK RUNTZ",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::TRIPLE BURGER": {
+  "tab": "Flower",
+  "name": "TRIPLE BURGER",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "1.25",
+  "cann": ""
+ },
+ "Flower::PURPLE PUSH POP": {
+  "tab": "Flower",
+  "name": "PURPLE PUSH POP",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "1.25",
+  "cann": ""
+ },
+ "Flower::APPLES AND BANANAS": {
+  "tab": "Flower",
+  "name": "APPLES AND BANANAS",
+  "price": "LB:1000.0|\u00bdLB:550.0|\u00bcLB:290.0|OZ:80.0",
+  "stock": "0.75",
+  "cann": ""
+ },
+ "Flower::VANILLA CAKE": {
+  "tab": "Flower",
+  "name": "VANILLA CAKE",
+  "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+  "stock": "2.5",
+  "cann": ""
+ },
+ "Flower::RAINBOW RUNTZ": {
+  "tab": "Flower",
+  "name": "RAINBOW RUNTZ",
+  "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+  "stock": "3.25",
+  "cann": ""
+ },
+ "Flower::GELATO CAKE": {
+  "tab": "Flower",
+  "name": "GELATO CAKE",
+  "price": "LB:1000.0|\u00bdLB:550.0|\u00bcLB:290.0|OZ:80.0",
+  "stock": "2",
+  "cann": ""
+ },
+ "Flower::MODIFIED GRAPES": {
+  "tab": "Flower",
+  "name": "MODIFIED GRAPES",
+  "price": "LB:1050.0|\u00bdLB:580.0|\u00bcLB:305.0|OZ:85.0",
+  "stock": "2.75",
+  "cann": ""
+ },
+ "Flower::SUGAR DONUTS": {
+  "tab": "Flower",
+  "name": "SUGAR DONUTS",
+  "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
+  "stock": "0.75",
+  "cann": ""
+ },
+ "Flower::GRAPE CANDY": {
+  "tab": "Flower",
+  "name": "GRAPE CANDY",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "3",
+  "cann": ""
+ },
+ "Flower::RASPBERRY": {
+  "tab": "Flower",
+  "name": "RASPBERRY",
+  "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
+  "stock": "2",
+  "cann": ""
+ },
+ "Flower::PINK PINA": {
+  "tab": "Flower",
+  "name": "PINK PINA",
+  "price": "LB:1500.0|\u00bdLB:825.0|\u00bcLB:435.0|OZ:120.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::GRAPE CHERRY GELATO": {
+  "tab": "Flower",
+  "name": "GRAPE CHERRY GELATO",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "1",
+  "cann": ""
+ },
+ "Flower::LEMON CHERRY GELATO": {
+  "tab": "Flower",
+  "name": "LEMON CHERRY GELATO",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::GUAVA": {
+  "tab": "Flower",
+  "name": "GUAVA",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "3.5",
+  "cann": ""
+ },
+ "Flower::SUPER SILVER HAZE": {
+  "tab": "Flower",
+  "name": "SUPER SILVER HAZE",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "stock": "5.25",
+  "cann": ""
+ },
+ "Flower::SPACE QUEEN": {
+  "tab": "Flower",
+  "name": "SPACE QUEEN",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "1.75",
+  "cann": ""
+ },
+ "Flower::DULCE DE UVA": {
+  "tab": "Flower",
+  "name": "DULCE DE UVA",
+  "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+  "stock": "1",
+  "cann": ""
+ },
+ "Flower::GRAPE GAS": {
+  "tab": "Flower",
+  "name": "GRAPE GAS",
+  "price": "LB:1000.0|\u00bdLB:550.0|\u00bcLB:290.0|OZ:80.0",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::ORANGE DONUTS": {
+  "tab": "Flower",
+  "name": "ORANGE DONUTS",
+  "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+  "stock": "3",
+  "cann": ""
+ },
+ "Flower::ANIMAL FACE": {
+  "tab": "Flower",
+  "name": "ANIMAL FACE",
+  "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+  "stock": "0.75",
+  "cann": ""
+ },
+ "Flower::ESCOBARS": {
+  "tab": "Flower",
+  "name": "ESCOBARS",
+  "price": "LB:2000.0|\u00bdLB:1100.0|\u00bcLB:575.0|OZ:160.0",
+  "stock": "unknown",
+  "cann": ""
+ },
+ "Flower::BUBBLEGUM GUSHERS (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "BUBBLEGUM GUSHERS (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::CHERRY PIE (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "CHERRY PIE (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::COLDEST CALI CANDY (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "COLDEST CALI CANDY (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::COTTON CANDY (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "COTTON CANDY (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::DIRTY BUBBLE POP (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "DIRTY BUBBLE POP (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::FRENCH TOAST (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "FRENCH TOAST (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::G PREMIUM GREEN (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "G PREMIUM GREEN (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::G PREMIUM ORANGE (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "G PREMIUM ORANGE (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::GELATO POP (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "GELATO POP (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::GREEN APPLE (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "GREEN APPLE (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::LEMON HAZE (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "LEMON HAZE (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::PINK RUNTZ (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "PINK RUNTZ (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::PUSH POP (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "PUSH POP (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::GREEN APPLE (Mini Soda Cans) #2": {
+  "tab": "Flower",
+  "name": "GREEN APPLE (Mini Soda Cans) #2",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::SOUR PINK LEMONADE (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "SOUR PINK LEMONADE (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::STRAWBERRY DREAMS (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "STRAWBERRY DREAMS (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::STRAWBERRY (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "STRAWBERRY (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::STRAWBERRY SPLASH (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "STRAWBERRY SPLASH (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::ULTRA VICE GUAVA (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "ULTRA VICE GUAVA (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::WATERMELON (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "WATERMELON (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::WATERMELON SPLASH (Mini Soda Cans)": {
+  "tab": "Flower",
+  "name": "WATERMELON SPLASH (Mini Soda Cans)",
+  "price": "Unit:$15",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::BUBBLEGUM GUSHERS (Mini Tuna Can)": {
+  "tab": "Flower",
+  "name": "BUBBLEGUM GUSHERS (Mini Tuna Can)",
+  "price": "Unit:$15",
+  "stock": "130",
+  "cann": ""
+ },
+ "Flower::GEMBERRY (Mini Tuna Can)": {
+  "tab": "Flower",
+  "name": "GEMBERRY (Mini Tuna Can)",
+  "price": "Unit:$15",
+  "stock": "198",
+  "cann": ""
+ },
+ "Flower::ZAZA OBAMA RUNTZ (Quarter Ounce Jar)": {
+  "tab": "Flower",
+  "name": "ZAZA OBAMA RUNTZ (Quarter Ounce Jar)",
+  "price": "Unit:$27",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::ZAZA BLUE ZUSHI (Quarter Ounce Jar)": {
+  "tab": "Flower",
+  "name": "ZAZA BLUE ZUSHI (Quarter Ounce Jar)",
+  "price": "Unit:$27",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::ZAZA GRANDI GUAVA (Quarter Ounce Jar)": {
+  "tab": "Flower",
+  "name": "ZAZA GRANDI GUAVA (Quarter Ounce Jar)",
+  "price": "Unit:$27",
+  "stock": "128",
+  "cann": ""
+ },
+ "Flower::ZAZA ICE CREAM CAKE (Quarter Ounce Jar)": {
+  "tab": "Flower",
+  "name": "ZAZA ICE CREAM CAKE (Quarter Ounce Jar)",
+  "price": "Unit:$27",
+  "stock": "128",
+  "cann": ""
+ },
+ "PreRoll::REGULAR": {
+  "tab": "PreRoll",
+  "name": "REGULAR",
+  "price": "Box:$27.00|Unit:$3.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::TARANTULA": {
+  "tab": "PreRoll",
+  "name": "TARANTULA",
+  "price": "Box:$54.00|Unit:$6.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::RAINBOW": {
+  "tab": "PreRoll",
+  "name": "RAINBOW",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::STRAWBERRY": {
+  "tab": "PreRoll",
+  "name": "STRAWBERRY",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::WHITE CHERRY": {
+  "tab": "PreRoll",
+  "name": "WHITE CHERRY",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::PINEAPPLE": {
+  "tab": "PreRoll",
+  "name": "PINEAPPLE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::BLUEBERRY": {
+  "tab": "PreRoll",
+  "name": "BLUEBERRY",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::GRAPE": {
+  "tab": "PreRoll",
+  "name": "GRAPE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::WHITE CHERRY WATERMELON": {
+  "tab": "PreRoll",
+  "name": "WHITE CHERRY WATERMELON",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::BANANA SPLIT": {
+  "tab": "PreRoll",
+  "name": "BANANA SPLIT",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::PURPLE QUEEN": {
+  "tab": "PreRoll",
+  "name": "PURPLE QUEEN",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::RAINBOW SHERBERT": {
+  "tab": "PreRoll",
+  "name": "RAINBOW SHERBERT",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "10000",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::PINEAPPLE EXPRESS": {
+  "tab": "PreRoll",
+  "name": "PINEAPPLE EXPRESS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::OG KUSH": {
+  "tab": "PreRoll",
+  "name": "OG KUSH",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::GELATO": {
+  "tab": "PreRoll",
+  "name": "GELATO",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::SUNDAE DRIVER": {
+  "tab": "PreRoll",
+  "name": "SUNDAE DRIVER",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::GIRL SCOUT COOKIES": {
+  "tab": "PreRoll",
+  "name": "GIRL SCOUT COOKIES",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::CHERRY PIE": {
+  "tab": "PreRoll",
+  "name": "CHERRY PIE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::SOUR DIESEL": {
+  "tab": "PreRoll",
+  "name": "SOUR DIESEL",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::GRAND DADDY PURPLE": {
+  "tab": "PreRoll",
+  "name": "GRAND DADDY PURPLE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::DO SI DO": {
+  "tab": "PreRoll",
+  "name": "DO SI DO",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::LONDON POUND CAKE": {
+  "tab": "PreRoll",
+  "name": "LONDON POUND CAKE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::SOUR LEMON": {
+  "tab": "PreRoll",
+  "name": "SOUR LEMON",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::GORILLA GLUE": {
+  "tab": "PreRoll",
+  "name": "GORILLA GLUE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::TROPICAL ZKITTLES": {
+  "tab": "PreRoll",
+  "name": "TROPICAL ZKITTLES",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::WEDDING CAKE": {
+  "tab": "PreRoll",
+  "name": "WEDDING CAKE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::APPLE JACK": {
+  "tab": "PreRoll",
+  "name": "APPLE JACK",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::HAWAIIAN HAZE": {
+  "tab": "PreRoll",
+  "name": "HAWAIIAN HAZE",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "PreRoll::BLUE DREAM": {
+  "tab": "PreRoll",
+  "name": "BLUE DREAM",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "1000+",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::DUTCH LEMON OG": {
+  "tab": "Vape",
+  "name": "DUTCH LEMON OG",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::LA CONFIDENTIAL": {
+  "tab": "Vape",
+  "name": "LA CONFIDENTIAL",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::WILD APPLE RUNTZ": {
+  "tab": "Vape",
+  "name": "WILD APPLE RUNTZ",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::MELONADE MAMBA": {
+  "tab": "Vape",
+  "name": "MELONADE MAMBA",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::WHITE GUMMI": {
+  "tab": "Vape",
+  "name": "WHITE GUMMI",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SOUR APPLE GLUE": {
+  "tab": "Vape",
+  "name": "SOUR APPLE GLUE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SPACE CAKE": {
+  "tab": "Vape",
+  "name": "SPACE CAKE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::JUICY PEACH RINGS": {
+  "tab": "Vape",
+  "name": "JUICY PEACH RINGS",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::HAZEY WATERMELON": {
+  "tab": "Vape",
+  "name": "HAZEY WATERMELON",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::JACKED BERRY KUSH": {
+  "tab": "Vape",
+  "name": "JACKED BERRY KUSH",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::APPLE JUICE": {
+  "tab": "Vape",
+  "name": "APPLE JUICE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::LYCHEE MARTINI": {
+  "tab": "Vape",
+  "name": "LYCHEE MARTINI",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::PINK LEMONADE": {
+  "tab": "Vape",
+  "name": "PINK LEMONADE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::STRAW BUBBLE": {
+  "tab": "Vape",
+  "name": "STRAW BUBBLE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::STRAWBERRY LIMEAID": {
+  "tab": "Vape",
+  "name": "STRAWBERRY LIMEAID",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::STRAWNANA": {
+  "tab": "Vape",
+  "name": "STRAWNANA",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::RAINBOW": {
+  "tab": "Vape",
+  "name": "RAINBOW",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SPARKLING POMEGRANATE": {
+  "tab": "Vape",
+  "name": "SPARKLING POMEGRANATE",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::VANILLA COOKIES": {
+  "tab": "Vape",
+  "name": "VANILLA COOKIES",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::YUMMY GUMMY": {
+  "tab": "Vape",
+  "name": "YUMMY GUMMY",
+  "price": "Box:$135.00|Unit:$15.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::PINEAPPLE EXPRESS": {
+  "tab": "Vape",
+  "name": "PINEAPPLE EXPRESS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::OG KUSH": {
+  "tab": "Vape",
+  "name": "OG KUSH",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::GELATO": {
+  "tab": "Vape",
+  "name": "GELATO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SUNDAE DRIVER": {
+  "tab": "Vape",
+  "name": "SUNDAE DRIVER",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::GIRL SCOUT COOKIES": {
+  "tab": "Vape",
+  "name": "GIRL SCOUT COOKIES",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::CHERRY PIE": {
+  "tab": "Vape",
+  "name": "CHERRY PIE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SOUR DIESEL": {
+  "tab": "Vape",
+  "name": "SOUR DIESEL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::GRAND DADDY PURPLE": {
+  "tab": "Vape",
+  "name": "GRAND DADDY PURPLE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::DO SI DO": {
+  "tab": "Vape",
+  "name": "DO SI DO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::LONDON POUND CAKE": {
+  "tab": "Vape",
+  "name": "LONDON POUND CAKE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SOUR LEMON": {
+  "tab": "Vape",
+  "name": "SOUR LEMON",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::GORILLA GLUE": {
+  "tab": "Vape",
+  "name": "GORILLA GLUE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::TROPICAL ZKITTLES": {
+  "tab": "Vape",
+  "name": "TROPICAL ZKITTLES",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::WEDDING CAKE": {
+  "tab": "Vape",
+  "name": "WEDDING CAKE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::APPLE JACK": {
+  "tab": "Vape",
+  "name": "APPLE JACK",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::HAWAIIAN HAZE": {
+  "tab": "Vape",
+  "name": "HAWAIIAN HAZE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::BLUE DREAM": {
+  "tab": "Vape",
+  "name": "BLUE DREAM",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::ORANGE CREAMSICLE": {
+  "tab": "Vape",
+  "name": "ORANGE CREAMSICLE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::HIGHSENBERG": {
+  "tab": "Vape",
+  "name": "HIGHSENBERG",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::PKO": {
+  "tab": "Vape",
+  "name": "PKO",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::STRAWBERRY NAPALM": {
+  "tab": "Vape",
+  "name": "STRAWBERRY NAPALM",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::THE JEFFERY": {
+  "tab": "Vape",
+  "name": "THE JEFFERY",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::BUBBLY": {
+  "tab": "Vape",
+  "name": "BUBBLY",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::GOLD WIDOW": {
+  "tab": "Vape",
+  "name": "GOLD WIDOW",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::SLURRICANE KATRINA": {
+  "tab": "Vape",
+  "name": "SLURRICANE KATRINA",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::CITRUS CRUSH": {
+  "tab": "Vape",
+  "name": "CITRUS CRUSH",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Vape::PB & J": {
+  "tab": "Vape",
+  "name": "PB & J",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD/THCp"
+ },
+ "Edibles::WAFFLE": {
+  "tab": "Edibles",
+  "name": "WAFFLE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::FRUITY": {
+  "tab": "Edibles",
+  "name": "FRUITY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::COTTON CANDY": {
+  "tab": "Edibles",
+  "name": "COTTON CANDY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::BIRTHDAY CAKE": {
+  "tab": "Edibles",
+  "name": "BIRTHDAY CAKE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::APPLE KUSH": {
+  "tab": "Edibles",
+  "name": "APPLE KUSH",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TAJIN SANDIA": {
+  "tab": "Edibles",
+  "name": "TAJIN SANDIA",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CINNAMON": {
+  "tab": "Edibles",
+  "name": "CINNAMON",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::BANANA SPLITS": {
+  "tab": "Edibles",
+  "name": "BANANA SPLITS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::SMORES": {
+  "tab": "Edibles",
+  "name": "SMORES",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::PINEAPPLE EXPRESS": {
+  "tab": "Edibles",
+  "name": "PINEAPPLE EXPRESS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CUBES": {
+  "tab": "Edibles",
+  "name": "CUBES",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DELTA BEARS": {
+  "tab": "Edibles",
+  "name": "DELTA BEARS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DELTA STRIPS": {
+  "tab": "Edibles",
+  "name": "DELTA STRIPS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DELTA BURSTS": {
+  "tab": "Edibles",
+  "name": "DELTA BURSTS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DELTA ROPE": {
+  "tab": "Edibles",
+  "name": "DELTA ROPE",
+  "price": "Box:$70.00|Unit:$7.50",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::GOOEY BURSTS": {
+  "tab": "Edibles",
+  "name": "GOOEY BURSTS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Edibles::LITTLES": {
+  "tab": "Edibles",
+  "name": "LITTLES",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Edibles::VERY BEARY": {
+  "tab": "Edibles",
+  "name": "VERY BEARY",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Edibles::RAINBOW STRIPS": {
+  "tab": "Edibles",
+  "name": "RAINBOW STRIPS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Edibles::APPLE RINGS": {
+  "tab": "Edibles",
+  "name": "APPLE RINGS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::SOUR WATERMELON SHARKS": {
+  "tab": "Edibles",
+  "name": "SOUR WATERMELON SHARKS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::STRAWBERRY PUFFS": {
+  "tab": "Edibles",
+  "name": "STRAWBERRY PUFFS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::PEACH RINGS": {
+  "tab": "Edibles",
+  "name": "PEACH RINGS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::SOUR OCTOPUS": {
+  "tab": "Edibles",
+  "name": "SOUR OCTOPUS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::WATERMELON WORMS": {
+  "tab": "Edibles",
+  "name": "WATERMELON WORMS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::GUMMY SHARKS": {
+  "tab": "Edibles",
+  "name": "GUMMY SHARKS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::SOUR GLOW WORMS": {
+  "tab": "Edibles",
+  "name": "SOUR GLOW WORMS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::PINEAPPLE RINGS": {
+  "tab": "Edibles",
+  "name": "PINEAPPLE RINGS",
+  "price": "Box:$45.00|Unit:$5.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIPS AHOY PEANUT BUTTER": {
+  "tab": "Edibles",
+  "name": "TRIPS AHOY PEANUT BUTTER",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIPS AHOY RED VELVET": {
+  "tab": "Edibles",
+  "name": "TRIPS AHOY RED VELVET",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIPS AHOY CANDY BLAST": {
+  "tab": "Edibles",
+  "name": "TRIPS AHOY CANDY BLAST",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIPS AHOY CHEWY": {
+  "tab": "Edibles",
+  "name": "TRIPS AHOY CHEWY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIPS AHOY CHUNKY": {
+  "tab": "Edibles",
+  "name": "TRIPS AHOY CHUNKY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::ASTRO FOOD COOKIES": {
+  "tab": "Edibles",
+  "name": "ASTRO FOOD COOKIES",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::ASTRO FOOD ORBIT O'S": {
+  "tab": "Edibles",
+  "name": "ASTRO FOOD ORBIT O'S",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CHEDDAR SNACK CRACKERS": {
+  "tab": "Edibles",
+  "name": "CHEDDAR SNACK CRACKERS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::POT TARTS STRAWBERRY": {
+  "tab": "Edibles",
+  "name": "POT TARTS STRAWBERRY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::RICE CEREAL TREATS ORIGINAL": {
+  "tab": "Edibles",
+  "name": "RICE CEREAL TREATS ORIGINAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::RICE CEREAL TREATS BIRTHDAY CAKE": {
+  "tab": "Edibles",
+  "name": "RICE CEREAL TREATS BIRTHDAY CAKE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CAP'N CHRONIC ORIGINAL": {
+  "tab": "Edibles",
+  "name": "CAP'N CHRONIC ORIGINAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CAP'N CHRONIC BERRIES": {
+  "tab": "Edibles",
+  "name": "CAP'N CHRONIC BERRIES",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::LOUDEST FLAKES ORIGINAL": {
+  "tab": "Edibles",
+  "name": "LOUDEST FLAKES ORIGINAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::LOUDEST FLAKES BANANA CREME": {
+  "tab": "Edibles",
+  "name": "LOUDEST FLAKES BANANA CREME",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::COOKIE CRISP BAR": {
+  "tab": "Edibles",
+  "name": "COOKIE CRISP BAR",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::FRUITY CEREAL": {
+  "tab": "Edibles",
+  "name": "FRUITY CEREAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::FRUITY LOOP CEREAL": {
+  "tab": "Edibles",
+  "name": "FRUITY LOOP CEREAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TRIX CEREAL": {
+  "tab": "Edibles",
+  "name": "TRIX CEREAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CANNABIS TOAST CRUNCH CHURROS": {
+  "tab": "Edibles",
+  "name": "CANNABIS TOAST CRUNCH CHURROS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CANNABIS TOAST CRUNCH CEREAL": {
+  "tab": "Edibles",
+  "name": "CANNABIS TOAST CRUNCH CEREAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::STONEY CHARMS CEREAL": {
+  "tab": "Edibles",
+  "name": "STONEY CHARMS CEREAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DOWEEDOS SPICY SWEET CHILI": {
+  "tab": "Edibles",
+  "name": "DOWEEDOS SPICY SWEET CHILI",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DOWEEDOS FLAMAS": {
+  "tab": "Edibles",
+  "name": "DOWEEDOS FLAMAS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DOWEEDOS TAPATIO": {
+  "tab": "Edibles",
+  "name": "DOWEEDOS TAPATIO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DOWEEDOS NACHO CHEESE": {
+  "tab": "Edibles",
+  "name": "DOWEEDOS NACHO CHEESE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::DOWEEDOS COOL RANCH": {
+  "tab": "Edibles",
+  "name": "DOWEEDOS COOL RANCH",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CORN CHIPS ORIGINAL": {
+  "tab": "Edibles",
+  "name": "CORN CHIPS ORIGINAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CORN CHIPS FLAMIN' HOT": {
+  "tab": "Edibles",
+  "name": "CORN CHIPS FLAMIN' HOT",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CORN CHIPS CHILLI CHEESE": {
+  "tab": "Edibles",
+  "name": "CORN CHIPS CHILLI CHEESE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::TAKIS FUEGO": {
+  "tab": "Edibles",
+  "name": "TAKIS FUEGO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CHEESE PUFFS FLAMIN' HOT": {
+  "tab": "Edibles",
+  "name": "CHEESE PUFFS FLAMIN' HOT",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CHEESE PUFFS ORIGINAL": {
+  "tab": "Edibles",
+  "name": "CHEESE PUFFS ORIGINAL",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CHEESE PUFFS CRUNCHY": {
+  "tab": "Edibles",
+  "name": "CHEESE PUFFS CRUNCHY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::CHEESE PUFFS XXTRA FLAMIN' HOT": {
+  "tab": "Edibles",
+  "name": "CHEESE PUFFS XXTRA FLAMIN' HOT",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::POTATO CHIPS QUESO": {
+  "tab": "Edibles",
+  "name": "POTATO CHIPS QUESO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::POTATO CHIPS SOUR CREAM & CHEDDAR": {
+  "tab": "Edibles",
+  "name": "POTATO CHIPS SOUR CREAM & CHEDDAR",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::POTATO CHIPS BBQ": {
+  "tab": "Edibles",
+  "name": "POTATO CHIPS BBQ",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::POTATO CHIPS LIMON": {
+  "tab": "Edibles",
+  "name": "POTATO CHIPS LIMON",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Edibles::FUNYUNS": {
+  "tab": "Edibles",
+  "name": "FUNYUNS",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "D9/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::DISTILLATE SYRINGE": {
+  "tab": "Extracts",
+  "name": "DISTILLATE SYRINGE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::DIAMOND": {
+  "tab": "Extracts",
+  "name": "DIAMOND",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::DIAMOND SAUCE": {
+  "tab": "Extracts",
+  "name": "DIAMOND SAUCE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::CRUMBLE": {
+  "tab": "Extracts",
+  "name": "CRUMBLE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::SUGAR": {
+  "tab": "Extracts",
+  "name": "SUGAR",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::SHATTER": {
+  "tab": "Extracts",
+  "name": "SHATTER",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::1G DISTILLATE": {
+  "tab": "Extracts",
+  "name": "1G DISTILLATE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Extracts::1G ISOLATE": {
+  "tab": "Extracts",
+  "name": "1G ISOLATE",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "THCa/HHC/D8/D10/THCo/CBD"
+ },
+ "Syrup::PEACH MANGO": {
+  "tab": "Syrup",
+  "name": "PEACH MANGO",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "DELTA8"
+ },
+ "Syrup::GRAPE": {
+  "tab": "Syrup",
+  "name": "GRAPE",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "DELTA8"
+ },
+ "Syrup::CHERRY": {
+  "tab": "Syrup",
+  "name": "CHERRY",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "DELTA8"
+ },
+ "Topicals::BATH BOMB": {
+  "tab": "Topicals",
+  "name": "BATH BOMB",
+  "price": "Box:$90.00|Unit:$10.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Topicals::HAND AND FOOT CREAM": {
+  "tab": "Topicals",
+  "name": "HAND AND FOOT CREAM",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Topicals::BODY BUTTER": {
+  "tab": "Topicals",
+  "name": "BODY BUTTER",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Topicals::FACE SERUM": {
+  "tab": "Topicals",
+  "name": "FACE SERUM",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "Topicals::ROLL ON GEL": {
+  "tab": "Topicals",
+  "name": "ROLL ON GEL",
+  "price": "Box:$225.00|Unit:$25.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::RELAX CAPSULES": {
+  "tab": "GelCaps",
+  "name": "RELAX CAPSULES",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::BRAIN CAPSULES": {
+  "tab": "GelCaps",
+  "name": "BRAIN CAPSULES",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::NIGHT CAPSULES": {
+  "tab": "GelCaps",
+  "name": "NIGHT CAPSULES",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::NIGHT - WITH MELATONIN": {
+  "tab": "GelCaps",
+  "name": "NIGHT - WITH MELATONIN",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::DAY - WITH B12": {
+  "tab": "GelCaps",
+  "name": "DAY - WITH B12",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::MOOD - WITH ASHWAGANDA": {
+  "tab": "GelCaps",
+  "name": "MOOD - WITH ASHWAGANDA",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ },
+ "GelCaps::LOVE - WITH MACA ROOT": {
+  "tab": "GelCaps",
+  "name": "LOVE - WITH MACA ROOT",
+  "price": "Box:$180.00|Unit:$20.00",
+  "stock": "unknown",
+  "cann": "CBD"
+ }
+}
