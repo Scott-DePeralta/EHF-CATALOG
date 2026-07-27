@@ -1122,6 +1122,42 @@ html{scroll-behavior:smooth;}
 }
 
 
+/* ═══ TEXAS COMPLIANCE MARQUEE ═══ */
+.tx-marquee{
+  position:relative;overflow:hidden;white-space:nowrap;
+  background:linear-gradient(90deg,#7f1d1d,#b91c1c 30%,#b91c1c 70%,#7f1d1d);
+  border-top:2px solid #fbbf24;border-bottom:2px solid #fbbf24;
+  padding:14px 0;box-shadow:0 4px 24px rgba(185,28,28,.45);
+}
+.tx-track{
+  display:inline-block;white-space:nowrap;
+  animation:txScroll 38s linear infinite;
+  will-change:transform;
+}
+.tx-marquee:hover .tx-track{animation-play-state:paused}
+.tx-item{
+  display:inline-block;color:#fff;
+  font-family:'DM Sans',sans-serif;font-size:19px;font-weight:600;
+  letter-spacing:.02em;padding:0 14px;
+  text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.tx-item b{color:#fde68a;font-weight:800}
+.tx-sep{color:#fbbf24;font-size:16px;padding:0 6px;vertical-align:1px}
+@keyframes txScroll{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@media(max-width:640px){
+  .tx-marquee{padding:11px 0}
+  .tx-item{font-size:16px}
+  .tx-track{animation-duration:30s}
+}
+@media(prefers-reduced-motion:reduce){
+  .tx-track{animation:none}
+  .tx-marquee{white-space:normal;text-align:center;padding:12px 8px}
+  .tx-item{white-space:normal}
+}
+
 /* ── Wholesale tier pricing (cards) ── */
 .tier-grid{display:flex;flex-direction:column;gap:4px;margin:6px 0;}
 .tier-row{display:flex;justify-content:space-between;align-items:center;
@@ -1201,6 +1237,28 @@ html{scroll-behavior:smooth;}
 </div>
 
 <!-- HEADER -->
+<!-- ═══ TEXAS COMPLIANCE MARQUEE ═══ -->
+<div class="tx-marquee" role="region" aria-label="Texas compliance announcement">
+  <div class="tx-track">
+    <span class="tx-item">🤠 <b>TEXAS RETAILERS:</b> New THC rules start <b>JULY 31</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">✅ Our <b>DELTA-9 EDIBLES</b> are ALREADY Texas-compliant — <b>IN STOCK NOW</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">🌿 Compliant <b>CBD + CBG + CBN FLOWER</b> — <b>COMING SOON</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">📞 Keep your shelves full — <b>(408) 444-HEMP</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">🤠 <b>TEXAS RETAILERS:</b> New THC rules start <b>JULY 31</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">✅ Our <b>DELTA-9 EDIBLES</b> are ALREADY Texas-compliant — <b>IN STOCK NOW</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">🌿 Compliant <b>CBD + CBG + CBN FLOWER</b> — <b>COMING SOON</b></span>
+    <span class="tx-sep">★</span>
+    <span class="tx-item">📞 Keep your shelves full — <b>(408) 444-HEMP</b></span>
+    <span class="tx-sep">★</span>
+  </div>
+</div>
+
 <header class="hdr">
   <div class="hdr-left">
     <div class="brand-eye">Northern California Grown Cannabis</div>
@@ -1236,7 +1294,7 @@ html{scroll-behavior:smooth;}
   <button class="tb" data-t="syrup"><span class="tb-icon">🍯</span>Syrup</button>
   <button class="tb" data-t="topicals"><span class="tb-icon">🧴</span>Topicals</button>
   <button class="tb" data-t="gelcaps"><span class="tb-icon">💊</span>Gel Caps</button>
-  <button class="tb tb-order" data-t="order"><span class="tb-icon">📋</span>Get Pricing</button>
+  <button class="tb tb-order" data-t="order"><span class="tb-icon">📋</span>Sign Up for a Wholesale Account</button>
 </nav>
 
 <!-- CONTROLS -->
