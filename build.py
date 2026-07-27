@@ -429,7 +429,7 @@ def parse_preroll(rows):
             is_brand = cu in PREROLL_BRAND_HEADERS
             current_size = PREROLL_SIZE_LABELS.get(cu, '')
             current_is_king = cu in PREROLL_KING_SECTIONS
-            current_note = '🫙 Glass jar · 5 mini pre-rolls' if 'DOOBIE' in cu else ''
+            current_note = '🫙 Glass jar · 5 mini pre-rolls' if ('DOOBIE' in cu or 'HOTTIE' in cu) else ''
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -967,15 +967,17 @@ def inject(html, const_name, new_js, next_const):
 # ── MAIN ─────────────────────────────────────────────────
 
 def audit_build(parsed):
-    """Self-audit: account for every data row in every tab, compare product counts
-    to the previous run, and return (report_lines, problems).
-    `parsed` is a dict: tab_name -> (raw_rows, items_list).
-    A 'problem' is: a tab losing >20% of its products vs last run, OR any row with
-    a cannabinoid + price that did NOT become a product (a silent drop)."""
+    """Detailed self-audit. Returns (report_lines, problems, warnings).
+    Checks every tab for: silently dropped rows, big count changes vs last run,
+    missing images, missing prices, missing COAs, duplicate product names,
+    and empty tabs. The Slack message explains what each finding means and
+    what to check, so a non-technical reader knows exactly what to do."""
     import json as _json
-    problems = []
-    report = []
+    problems = []      # serious — something is broken or data is being lost
+    warnings = []      # worth knowing — not broken, but a shop owner would notice
+    report = []        # per-tab summary line
     counts = {}
+    details = {}       # tab -> dict of counts (imgs, prices, coas, etc.)
 
     for tab, (rows, items) in parsed.items():
         prods = [x for x in items if not x.get('sec')]
@@ -983,31 +985,81 @@ def audit_build(parsed):
         secs  = set(' '.join(str(x.get('n','')).split()).upper() for x in items if x.get('sec'))
         counts[tab] = len(prods)
 
-        # Find rows with real data (cannabinoid + a $ price) that never became products
+        # --- Silent drops: a row with cannabinoid + price that never became a product ---
         dropped = []
         for r in rows:
             if not r or not str(r[0]).strip():
                 continue
             nm = ' '.join(str(r[0]).split()).upper()
-            if nm.startswith('PRODUCT NAME'):
+            if nm.startswith('PRODUCT NAME') or 'NOT IN STOCK' in nm or 'FOR REFERENCE ONLY' in nm:
                 continue
             if is_junk_row(r[0]):
                 continue
             clean = strip_stars(nm)
             if clean in shown or clean in secs or nm in shown or nm in secs:
                 continue
+            # account for renamed unit products (e.g. "X (Mini Soda Cans)")
+            if any(clean in s for s in shown):
+                continue
             cann = str(r[1]).strip() if len(r) > 1 else ''
             has_price = any('$' in str(c) for c in r[2:8])
             if cann and has_price:
                 dropped.append(str(r[0]).strip().replace(chr(10), ' '))
 
-        if dropped:
-            problems.append(f'{tab}: {len(dropped)} row(s) with data DROPPED — ' +
-                            ', '.join(dropped[:6]) + (' …' if len(dropped) > 6 else ''))
-        report.append(f'{tab}: {len(prods)} products' +
-                      (f'  ⚠️ {len(dropped)} dropped' if dropped else ''))
+        # --- Quality checks on the products that DID make it ---
+        _clean = lambda s: ' '.join(str(s).split())
+        no_img   = [_clean(p['n']) for p in prods if not str(p.get('pic','')).strip()]
+        no_price = [_clean(p['n']) for p in prods if not any(str(p.get(k,'')).strip()
+                    for k in ('price','unit','case','lb','half','qtr','oz','unitprice'))]
+        no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
 
-    # Compare to previous run's counts
+        # duplicate product names within a tab
+        names = [_clean(p.get('n','')) for p in prods]
+        seen = {}
+        dupes = []
+        for n in names:
+            seen[n] = seen.get(n, 0) + 1
+        dupes = [n for n, c2 in seen.items() if c2 > 1]
+
+        details[tab] = {
+            'products': len(prods), 'dropped': len(dropped),
+            'no_img': len(no_img), 'no_price': len(no_price),
+            'no_coa': len(no_coa), 'dupes': len(dupes),
+        }
+
+        # --- Escalate to problems / warnings ---
+        if dropped:
+            problems.append(f'*{tab}* — {len(dropped)} row(s) with a cannabinoid AND a price '
+                            f'did NOT show up on the site (silently dropped). '
+                            f'Check these rows in the sheet: ' +
+                            ', '.join(dropped[:6]) + (' …' if len(dropped) > 6 else ''))
+        if dupes:
+            warnings.append(f'*{tab}* — {len(dupes)} duplicate name(s): ' +
+                            ', '.join(dupes[:5]) + (' …' if len(dupes) > 5 else '') +
+                            '  (buyers will see the same product listed twice)')
+        if len(prods) == 0:
+            problems.append(f'*{tab}* — 0 products! This tab is EMPTY on the site. '
+                            f'Check the sheet tab has data and correct headers.')
+        if no_img and len(prods) > 0:
+            pct = len(no_img) / len(prods) * 100
+            lvl = problems if pct >= 50 else warnings
+            lvl.append(f'*{tab}* — {len(no_img)}/{len(prods)} products have NO image ({pct:.0f}%). '
+                       f'These show a grey placeholder. Likely cause: the image link in the sheet '
+                       f'is blank, a Slack link (expires), or a Drive file not shared "Anyone with the link". '
+                       f'Examples: ' + ', '.join(no_img[:4]) + (' …' if len(no_img) > 4 else ''))
+        if no_price:
+            warnings.append(f'*{tab}* — {len(no_price)} product(s) show "Call for Pricing" (no price in sheet): ' +
+                            ', '.join(no_price[:4]) + (' …' if len(no_price) > 4 else ''))
+
+        # per-tab report line
+        flags = []
+        if dropped:  flags.append(f'{len(dropped)} dropped')
+        if no_img:   flags.append(f'{len(no_img)} no-img')
+        if no_price: flags.append(f'{len(no_price)} no-price')
+        if dupes:    flags.append(f'{len(dupes)} dupe')
+        report.append(f'{tab}: {len(prods)} products' + (f'  ⚠️ ' + ', '.join(flags) if flags else '  ✓'))
+
+    # --- Compare product counts to the previous run ---
     prev = {}
     if os.path.exists(COUNTS_FILE):
         try: prev = _json.load(open(COUNTS_FILE))
@@ -1015,31 +1067,81 @@ def audit_build(parsed):
     for tab, n in counts.items():
         p = prev.get(tab)
         if p is not None and p > 0:
+            change = n - p
             drop_pct = (p - n) / p * 100
-            if drop_pct >= 20:  # lost a fifth or more of the tab
-                problems.append(f'{tab}: product count fell {p} → {n} ({drop_pct:.0f}% drop vs last run)')
-    # Save current counts for next time
+            if drop_pct >= 20:
+                problems.append(f'*{tab}* — product count DROPPED {p} → {n} '
+                                f'({drop_pct:.0f}% fewer than last build). '
+                                f'Did you remove products on purpose? If not, something broke the parser.')
+            elif change >= max(5, p * 0.5):
+                warnings.append(f'*{tab}* — product count jumped {p} → {n} (+{change}). '
+                                f'Expected if you added inventory; worth a glance if not.')
     try: _json.dump(counts, open(COUNTS_FILE, 'w'))
     except Exception: pass
 
-    return report, problems
+    return report, problems, warnings
 
 
-def send_slack_audit(report, problems):
-    """Post the audit to Slack. Only alerts loudly when there are problems."""
+def send_slack_audit(report, problems, warnings=None):
+    """Post a detailed audit to Slack that a non-technical reader can act on.
+    Structure:
+      • Headline with version + overall status
+      • PROBLEMS (things broken / data lost) — with what to check
+      • WARNINGS (worth a look, not broken)
+      • Per-tab summary line
+      • A short 'what this audit checks' legend
+    """
     if not SLACK_AUDIT_WEBHOOK:
         return
     import json as _json
+    warnings = warnings or []
     vtag = f'v{BUILD_VERSION}' if BUILD_VERSION else ''
+    total = 0
+    for r in report:
+        try: total += int(r.split(':')[1].strip().split(' ')[0])
+        except Exception: pass
+
     if problems:
-        text = f':rotating_light: *EHF Catalog {vtag} — ISSUES DETECTED*\n' + \
-               '\n'.join('• ' + p for p in problems) + \
-               '\n\n_Counts this run:_\n' + '\n'.join('• ' + r for r in report) + \
-               '\n\n_Check the sheet or ping Claude with the tab CSV._'
+        headline = f':rotating_light: *EHF Catalog {vtag} — {len(problems)} PROBLEM(S) NEED ATTENTION*'
+    elif warnings:
+        headline = f':warning: *EHF Catalog {vtag} built — {len(warnings)} thing(s) to review*'
     else:
-        text = f':white_check_mark: *EHF Catalog {vtag} built clean* — ' + \
-               ', '.join(r.split(':')[0] + ' ' + r.split(':')[1].strip().split(' ')[0] for r in report) + \
-               f'\n_This is the newest version — the live site now shows {vtag}._'
+        headline = f':white_check_mark: *EHF Catalog {vtag} built clean — all {total} products look good*'
+
+    parts = [headline, f'_Newest version: the live site now shows {vtag}._']
+
+    if problems:
+        parts.append('')
+        parts.append('*:red_circle: PROBLEMS (something is broken or products are missing):*')
+        for p in problems:
+            parts.append(f'• {p}')
+
+    if warnings:
+        parts.append('')
+        parts.append('*:large_yellow_circle: WARNINGS (worth a look — not broken):*')
+        for w in warnings:
+            parts.append(f'• {w}')
+
+    # Per-tab summary (always included)
+    parts.append('')
+    parts.append('*:bar_chart: Per-tab summary:*')
+    for r in report:
+        parts.append(f'• {r}')
+
+    # Legend so a non-technical reader knows what was checked
+    parts.append('')
+    parts.append('_This audit checks each tab for: silently dropped rows (data in the '
+                 'sheet that never reached the site), big product-count changes vs the last '
+                 'build, missing images, missing prices (shows "Call for Pricing"), and '
+                 'duplicate names. ✓ = clean. If you see a PROBLEM, check the named rows in '
+                 'the sheet, or send Claude the tab. Images usually fail because a Drive file '
+                 "isn't shared \"Anyone with the link\"._")
+
+    text = '\n'.join(parts)
+    # Slack has a ~40k char limit per message; trim defensively.
+    if len(text) > 38000:
+        text = text[:38000] + '\n… (truncated)'
+
     try:
         req = Request(
             SLACK_AUDIT_WEBHOOK,
@@ -1047,7 +1149,8 @@ def send_slack_audit(report, problems):
             headers={'Content-Type': 'application/json'},
             method='POST')
         urlopen(req, timeout=15)
-        print('Slack audit posted.' + (' (ISSUES)' if problems else ' (clean)'))
+        status = 'ISSUES' if problems else ('warnings' if warnings else 'clean')
+        print(f'Slack audit posted. ({status})')
     except Exception as e:
         print(f'Slack audit failed (non-fatal): {e}')
 
@@ -1097,7 +1200,7 @@ def main():
     print(f'  Flower: {len(flower_items)} | PreRoll: {len([x for x in preroll_items if not x.get("sec")])} | Vape: {len([x for x in vape_items if not x.get("sec")])} | Edibles: {len([x for x in edibles_items if not x.get("sec")])}')
 
     # ── SELF-AUDIT: account for every row, compare to last run, alert Slack on problems ──
-    _audit_report, _audit_problems = audit_build({
+    _audit_report, _audit_problems, _audit_warnings = audit_build({
         'Flower':   (flower_rows,   flower_items),
         'PreRoll':  (preroll_rows,  preroll_items),
         'Vape':     (vape_rows,     vape_items),
@@ -1113,8 +1216,12 @@ def main():
     if _audit_problems:
         print('  !!! AUDIT PROBLEMS !!!')
         for _p in _audit_problems:
-            print(f'    ⚠️ {_p}')
-    send_slack_audit(_audit_report, _audit_problems)
+            print(f'    [PROBLEM] {_p}')
+    if _audit_warnings:
+        print('  --- audit warnings ---')
+        for _w in _audit_warnings:
+            print(f'    [warn] {_w}')
+    send_slack_audit(_audit_report, _audit_problems, _audit_warnings)
     # DEBUG: print first 3 edibles prices so we can verify from the log
     _ed_prods = [x for x in edibles_items if not x.get('sec')][:3]
     for _p in _ed_prods:
