@@ -20,6 +20,11 @@ HTML_FILE  = 'index.html'
 NETLIFY_TOKEN   = os.environ.get('NETLIFY_ACCESS_TOKEN', '')
 NETLIFY_SITE_ID = os.environ.get('NETLIFY_SITE_ID', '')
 SLACK_AUDIT_WEBHOOK = os.environ.get('SLACK_AUDIT_WEBHOOK', '')  # Slack Incoming Webhook URL for build alerts
+# Invoice system (Google Apps Script) health endpoint. The build audit calls this
+# to confirm the invoice system is alive, healthy for all reps, and on a matching
+# version. Set INVOICE_EXEC_URL to the /exec URL; leave blank to skip the check.
+INVOICE_EXEC_URL = os.environ.get('INVOICE_EXEC_URL',
+    'https://script.google.com/macros/s/AKfycbw_3jfvJY1Y2UVXs_XODHDbUMTNzB36kwraR_UZle-l8Rq94pHB_qEgo4DPxsvR-D22fg/exec')
 COUNTS_FILE = 'last_counts.json'  # remembers each tab's product count between runs
 SNAPSHOT_FILE = 'inventory_snapshot.json'  # last build's full product state (for diffing)
 HISTORY_FILE = 'inventory_history.json'    # running log of all changes over time
@@ -1338,7 +1343,35 @@ def audit_build(parsed):
     return report, problems, warnings
 
 
-def send_slack_audit(report, problems, warnings=None, changes=None):
+def check_invoice_health(catalog_version):
+    """Call the invoice system's ?page=health endpoint and compare versions.
+    Returns a dict: {reachable, version, in_sync, ok, problems, warnings, stats}.
+    Never raises — a down invoice system becomes a reported problem, not a crash."""
+    result = {'reachable': False, 'version': None, 'in_sync': None,
+              'ok': None, 'problems': [], 'warnings': [], 'stats': {}}
+    if not INVOICE_EXEC_URL:
+        return result
+    try:
+        url = INVOICE_EXEC_URL + ('&' if '?' in INVOICE_EXEC_URL else '?') + 'page=health'
+        req = Request(url, headers={'User-Agent': 'EHF-build-audit/1.0'})
+        raw = urlopen(req, timeout=30).read().decode('utf-8')
+        data = json.loads(raw)
+        result['reachable'] = True
+        result['version']  = data.get('version')
+        result['ok']       = data.get('ok')
+        result['problems'] = data.get('problems', []) or []
+        result['warnings'] = data.get('warnings', []) or []
+        result['stats']    = data.get('stats', {}) or {}
+        # Version sync: compare MAJOR version (before the dot) of catalog vs invoice.
+        cat_major = str(catalog_version).split('.')[0] if catalog_version else ''
+        inv_major = str(result['version']).split('.')[0] if result['version'] else ''
+        result['in_sync'] = (cat_major == inv_major) if (cat_major and inv_major) else None
+    except Exception as e:
+        result['problems'].append(f'Invoice system unreachable: {e}')
+    return result
+
+
+def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None):
     """Post a detailed audit to Slack that a non-technical reader can act on.
     Structure:
       • Headline with version + overall status
@@ -1365,6 +1398,37 @@ def send_slack_audit(report, problems, warnings=None, changes=None):
         headline = f':white_check_mark: *EHF Catalog {vtag} built clean — all {total} products look good*'
 
     parts = [headline, f'_Newest version: the live site now shows {vtag}._']
+
+    # ── Invoice system health + version sync ──
+    if invoice is not None:
+        parts.append('')
+        if not invoice.get('reachable'):
+            parts.append('*:electric_plug: Invoice system:* :red_circle: could not reach it to check. '
+                         'Approvals/quotes may still work, but this build could not confirm.')
+        else:
+            inv_v = invoice.get('version') or '?'
+            in_sync = invoice.get('in_sync')
+            if in_sync is True:
+                sync_icon = ':white_check_mark:'
+                sync_txt = f'in sync with catalog (both v{str(BUILD_VERSION).split(".")[0]}.x)'
+            elif in_sync is False:
+                sync_icon = ':rotating_light:'
+                sync_txt = (f'*OUT OF SYNC* — catalog is v{BUILD_VERSION}, invoice is v{inv_v}. '
+                            f'Deploy the matching version so they agree.')
+            else:
+                sync_icon = ':grey_question:'
+                sync_txt = 'version comparison unavailable'
+            inv_ok = ':white_check_mark:' if invoice.get('ok') else ':red_circle:'
+            stats = invoice.get('stats', {})
+            reps = stats.get('repCount')
+            rep_txt = f' · {reps} reps' if reps is not None else ''
+            parts.append(f'*:electric_plug: Invoice system:* {inv_ok} v{inv_v}{rep_txt} — {sync_icon} {sync_txt}')
+            for p in invoice.get('problems', []):
+                parts.append(f'   :red_circle: {p}')
+            for w in invoice.get('warnings', [])[:8]:
+                parts.append(f'   :large_yellow_circle: {w}')
+            if len(invoice.get('warnings', [])) > 8:
+                parts.append(f'   _…and {len(invoice["warnings"])-8} more invoice warning(s)._')
 
     if problems:
         parts.append('')
@@ -1541,7 +1605,16 @@ def main():
     except Exception as _e:
         print(f'    dashboard_data.json write failed: {_e}')
 
-    send_slack_audit(_audit_report, _audit_problems, _audit_warnings, _changes)
+    # Check the invoice system's health + version sync (best-effort; never blocks).
+    _invoice = check_invoice_health(BUILD_VERSION)
+    if _invoice.get('reachable'):
+        print(f"  --- INVOICE HEALTH --- v{_invoice.get('version')} "
+              f"ok={_invoice.get('ok')} in_sync={_invoice.get('in_sync')} "
+              f"({len(_invoice.get('problems',[]))} problems, {len(_invoice.get('warnings',[]))} warnings)")
+    else:
+        print("  --- INVOICE HEALTH --- unreachable")
+
+    send_slack_audit(_audit_report, _audit_problems, _audit_warnings, _changes, _invoice)
 
     # ── Build JS arrays ──
     flower_js  = build_flower_js(flower_items)
