@@ -1014,13 +1014,17 @@ def audit_build(parsed):
                     for k in ('price','unit','case','lb','half','qtr','oz','unitprice'))]
         no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
 
-        # duplicate product names within a tab
-        names = [_clean(p.get('n','')) for p in prods]
+        # duplicate product names within a tab — a REAL dupe is the same name AND
+        # the same product line/size (e.g. two "STRAWBERRY" both 1g Doobie).
+        # Same name in DIFFERENT lines (Strawberry Doobie vs Strawberry Hottie) is
+        # NOT a dupe — the size tag distinguishes them for buyers.
         seen = {}
-        dupes = []
-        for n in names:
-            seen[n] = seen.get(n, 0) + 1
-        dupes = [n for n, c2 in seen.items() if c2 > 1]
+        for p in prods:
+            nm = _clean(p.get('n',''))
+            key = (nm, str(p.get('size','')).strip())  # name + line/size
+            seen[key] = seen.get(key, 0) + 1
+        dupes = [f'{nm} ({sz})' if sz else nm
+                 for (nm, sz), c2 in seen.items() if c2 > 1]
 
         details[tab] = {
             'products': len(prods), 'dropped': len(dropped),
