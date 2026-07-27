@@ -21,6 +21,8 @@ NETLIFY_TOKEN   = os.environ.get('NETLIFY_ACCESS_TOKEN', '')
 NETLIFY_SITE_ID = os.environ.get('NETLIFY_SITE_ID', '')
 SLACK_AUDIT_WEBHOOK = os.environ.get('SLACK_AUDIT_WEBHOOK', '')  # Slack Incoming Webhook URL for build alerts
 COUNTS_FILE = 'last_counts.json'  # remembers each tab's product count between runs
+SNAPSHOT_FILE = 'inventory_snapshot.json'  # last build's full product state (for diffing)
+HISTORY_FILE = 'inventory_history.json'    # running log of all changes over time
 
 # ── HELPERS ──────────────────────────────────────────────
 
@@ -914,38 +916,49 @@ def build_generic_js(items, const_name):
 
 # ── NETLIFY DEPLOY ───────────────────────────────────────
 def deploy_to_netlify(html_content):
+    """Deploy the catalog plus the dashboard and its data files in one Netlify deploy.
+    The dashboard becomes available at /dashboard.html and reads the JSON alongside it."""
     if not NETLIFY_TOKEN or not NETLIFY_SITE_ID:
         print('  No Netlify credentials — skipping deploy')
         return False
-    content_bytes = html_content.encode('utf-8')
-    sha1 = hashlib.sha1(content_bytes).hexdigest()
-    headers_json = {
-        'Authorization': f'Bearer {NETLIFY_TOKEN}',
-        'Content-Type': 'application/json'
-    }
-    # Create deploy
-    body = json.dumps({'files': {'/index.html': sha1}}).encode()
+
+    # Gather every file to publish: catalog + dashboard + data JSON (if present).
+    files = {'/index.html': html_content.encode('utf-8')}
+    for extra in ('dashboard.html', 'dashboard_data.json', 'inventory_history.json'):
+        if os.path.exists(extra):
+            try:
+                files['/' + extra] = open(extra, 'rb').read()
+            except Exception as e:
+                print(f'  (skipping {extra}: {e})')
+
+    # Declare all files with their sha1 hashes.
+    digests = {path: hashlib.sha1(data).hexdigest() for path, data in files.items()}
+    headers_json = {'Authorization': f'Bearer {NETLIFY_TOKEN}', 'Content-Type': 'application/json'}
+    body = json.dumps({'files': digests}).encode()
     req = Request(
         f'https://api.netlify.com/api/v1/sites/{NETLIFY_SITE_ID}/deploys',
         data=body, headers=headers_json, method='POST'
     )
     resp = urlopen(req, timeout=60).read()
     deploy = json.loads(resp)
-    deploy_id = deploy.get('id','')
+    deploy_id = deploy.get('id', '')
     if not deploy_id:
         print('  ERROR: No deploy ID returned')
         return False
-    # Upload file
-    headers_bin = {
-        'Authorization': f'Bearer {NETLIFY_TOKEN}',
-        'Content-Type': 'application/octet-stream'
-    }
-    req2 = Request(
-        f'https://api.netlify.com/api/v1/deploys/{deploy_id}/files/index.html',
-        data=content_bytes, headers=headers_bin, method='PUT'
-    )
-    urlopen(req2, timeout=120)
-    print(f'  Deployed to Netlify (deploy {deploy_id})')
+
+    # Netlify tells us which files it still needs; upload those.
+    required = deploy.get('required', [])
+    headers_bin = {'Authorization': f'Bearer {NETLIFY_TOKEN}', 'Content-Type': 'application/octet-stream'}
+    for path, data in files.items():
+        # Upload if Netlify asked for this hash, or always upload index.html to be safe.
+        if not required or digests[path] in required or path == '/index.html':
+            req2 = Request(
+                f'https://api.netlify.com/api/v1/deploys/{deploy_id}/files{path}',
+                data=data, headers=headers_bin, method='PUT'
+            )
+            urlopen(req2, timeout=120)
+    print(f'  Deployed to Netlify (deploy {deploy_id}) — {len(files)} file(s): ' +
+          ', '.join(sorted(p.lstrip("/") for p in files)))
     return True
 
 # ── INJECT INTO HTML ─────────────────────────────────────
@@ -966,6 +979,133 @@ def inject(html, const_name, new_js, next_const):
     return html[:s] + new_js + '\n\n' + html[e:]
 
 # ── MAIN ─────────────────────────────────────────────────
+
+
+_PRICE_LABELS = {'lb':'LB','half':'½LB','qtr':'¼LB','oz':'OZ',
+                 'price':'Box','unit':'Unit','case':'Case','unitprice':'Unit'}
+
+def _product_prices(p):
+    """Return an ordered dict-like list of (label, value) prices for a product."""
+    out = []
+    if p.get('unitmode'):
+        if p.get('unitprice'): out.append(('Unit', str(p.get('unitprice'))))
+        return out
+    for k in ('lb','half','qtr','oz','price','unit','case'):
+        v = p.get(k)
+        if v: out.append((_PRICE_LABELS[k], str(v)))
+    return out
+
+def _product_price_str(p):
+    """A single comparable price string (stable key for diffing)."""
+    return '|'.join(f'{lbl}:{val}' for lbl, val in _product_prices(p))
+
+def _price_diff_pretty(old_str, new_str):
+    """Given two 'LB:1275|½LB:705' strings, show only what changed, human-readable."""
+    def _parse(s):
+        d = {}
+        for part in str(s).split('|'):
+            if ':' in part:
+                k, v = part.split(':', 1); d[k] = v
+        return d
+    o, n = _parse(old_str), _parse(new_str)
+    diffs = []
+    for k in n:
+        if k in o and o[k] != n[k]:
+            diffs.append(f'{k} ${o[k]}→${n[k]}')
+    return ', '.join(diffs) if diffs else 'pricing updated'
+
+
+def snapshot_products(parsed):
+    """Build a flat {tab::name: {price, stock, cann}} snapshot of everything live."""
+    snap = {}
+    for tab, (rows, items) in parsed.items():
+        for p in items:
+            if p.get('sec'):
+                continue
+            nm = ' '.join(str(p.get('n','')).split())
+            key = f'{tab}::{nm}'
+            snap[key] = {
+                'tab': tab,
+                'name': nm,
+                'price': _product_price_str(p),
+                'stock': ' '.join(str(p.get('qty','')).split()) or 'unknown',
+                'cann': p.get('cann',''),
+            }
+    return snap
+
+
+def _is_out_of_stock(stock_str):
+    s = str(stock_str).upper()
+    return 'SOLD OUT' in s or 'OUT OF STOCK' in s or s.strip() in ('0','0 LBS','NONE')
+
+
+def diff_inventory(new_snap):
+    """Compare the new snapshot to the last one. Returns a dict of change lists.
+    Also appends changes to the running history file with a timestamp."""
+    import json as _json
+    old_snap = {}
+    if os.path.exists(SNAPSHOT_FILE):
+        try: old_snap = _json.load(open(SNAPSHOT_FILE))
+        except Exception: old_snap = {}
+
+    added, removed, price_changes, went_oos, back_in = [], [], [], [], []
+
+    # First run — nothing to diff against
+    first_run = not old_snap
+
+    for key, cur in new_snap.items():
+        prev = old_snap.get(key)
+        if prev is None:
+            if not first_run:
+                added.append(cur)
+            continue
+        # price change
+        if cur['price'] != prev.get('price') and cur['price'] and prev.get('price'):
+            price_changes.append({'tab':cur['tab'],'name':cur['name'],
+                                  'old':prev.get('price',''),'new':cur['price']})
+        # stock transitions
+        was_oos = _is_out_of_stock(prev.get('stock',''))
+        now_oos = _is_out_of_stock(cur['stock'])
+        if now_oos and not was_oos:
+            went_oos.append(cur)
+        elif was_oos and not now_oos:
+            back_in.append(cur)
+
+    for key, prev in old_snap.items():
+        if key not in new_snap:
+            removed.append(prev)
+
+    changes = {
+        'added': added, 'removed': removed, 'price_changes': price_changes,
+        'went_oos': went_oos, 'back_in': back_in, 'first_run': first_run,
+    }
+
+    # Persist the new snapshot for next time
+    try: _json.dump(new_snap, open(SNAPSHOT_FILE,'w'), indent=1)
+    except Exception: pass
+
+    # Append to running history (only if there were real changes)
+    if not first_run and any([added, removed, price_changes, went_oos, back_in]):
+        hist = []
+        if os.path.exists(HISTORY_FILE):
+            try: hist = _json.load(open(HISTORY_FILE))
+            except Exception: hist = []
+        entry = {
+            'ts': datetime.now(timezone.utc).isoformat(),
+            'version': BUILD_VERSION,
+            'added': [f"{c['tab']}: {c['name']}" for c in added],
+            'removed': [f"{c['tab']}: {c['name']}" for c in removed],
+            'price_changes': [f"{c['tab']}: {c['name']} ({c['old']} -> {c['new']})" for c in price_changes],
+            'went_oos': [f"{c['tab']}: {c['name']}" for c in went_oos],
+            'back_in': [f"{c['tab']}: {c['name']}" for c in back_in],
+        }
+        hist.append(entry)
+        hist = hist[-500:]  # keep the last 500 change-events
+        try: _json.dump(hist, open(HISTORY_FILE,'w'), indent=1)
+        except Exception: pass
+
+    return changes
+
 
 def audit_build(parsed):
     """Detailed self-audit. Returns (report_lines, problems, warnings).
@@ -1087,7 +1227,7 @@ def audit_build(parsed):
     return report, problems, warnings
 
 
-def send_slack_audit(report, problems, warnings=None):
+def send_slack_audit(report, problems, warnings=None, changes=None):
     """Post a detailed audit to Slack that a non-technical reader can act on.
     Structure:
       • Headline with version + overall status
@@ -1133,6 +1273,38 @@ def send_slack_audit(report, problems, warnings=None):
     for r in report:
         parts.append(f'• {r}')
 
+    # Inventory change report
+    if changes and not changes.get('first_run'):
+        c = changes
+        if any([c['added'], c['removed'], c['price_changes'], c['went_oos'], c['back_in']]):
+            parts.append('')
+            parts.append('*:package: Catalog changes since last build:*')
+            if c['added']:
+                parts.append(f":new: *{len(c['added'])} added:* " +
+                             ', '.join(x['name'] for x in c['added'][:8]) +
+                             (' …' if len(c['added'])>8 else ''))
+            if c['removed']:
+                parts.append(f":x: *{len(c['removed'])} removed:* " +
+                             ', '.join(x['name'] for x in c['removed'][:8]) +
+                             (' …' if len(c['removed'])>8 else ''))
+            if c['price_changes']:
+                parts.append(f":heavy_dollar_sign: *{len(c['price_changes'])} price change(s):*")
+                for pc in c['price_changes'][:8]:
+                    parts.append(f"   • {pc['name']}: {_price_diff_pretty(pc['old'], pc['new'])}")
+                if len(c['price_changes'])>8:
+                    parts.append('   • …')
+            if c['went_oos']:
+                parts.append(f":red_circle: *{len(c['went_oos'])} went out of stock:* " +
+                             ', '.join(x['name'] for x in c['went_oos'][:8]) +
+                             (' …' if len(c['went_oos'])>8 else ''))
+            if c['back_in']:
+                parts.append(f":green_circle: *{len(c['back_in'])} back in stock:* " +
+                             ', '.join(x['name'] for x in c['back_in'][:8]) +
+                             (' …' if len(c['back_in'])>8 else ''))
+        else:
+            parts.append('')
+            parts.append('_:package: No inventory changes since last build._')
+
     # Legend so a non-technical reader knows what was checked
     parts.append('')
     parts.append('_This audit checks each tab for: silently dropped rows (data in the '
@@ -1161,6 +1333,7 @@ def send_slack_audit(report, problems, warnings=None):
 
 
 def main():
+    global BUILD_VERSION
     print(f'\n=== EHF Catalog Builder v7 (pieces-from-sheet) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
 
     # ── Fetch all sheet tabs ──
@@ -1226,7 +1399,38 @@ def main():
         print('  --- audit warnings ---')
         for _w in _audit_warnings:
             print(f'    [warn] {_w}')
-    send_slack_audit(_audit_report, _audit_problems, _audit_warnings)
+
+    # ── Inventory change tracking (added/removed/price/stock) ──
+    _parsed_for_diff = {
+        'Flower':   (flower_rows,   flower_items),
+        'PreRoll':  (preroll_rows,  preroll_items),
+        'Vape':     (vape_rows,     vape_items),
+        'Edibles':  (edibles_rows,  edibles_items),
+        'Extracts': (extracts_rows, extracts_items),
+        'Syrup':    (syrup_rows,    syrup_items),
+        'Topicals': (topicals_rows, topicals_items),
+        'GelCaps':  (gelcaps_rows,  gelcaps_items),
+    }
+    _snap = snapshot_products(_parsed_for_diff)
+    _changes = diff_inventory(_snap)
+    _c = _changes
+    print('  --- INVENTORY CHANGES ---')
+    print(f"    +{len(_c['added'])} added, -{len(_c['removed'])} removed, "
+          f"{len(_c['price_changes'])} price changes, "
+          f"{len(_c['went_oos'])} went OOS, {len(_c['back_in'])} back in stock")
+
+    # Write a JSON the dashboard can read
+    try:
+        import json as _dj
+        _dj.dump({'version': BUILD_VERSION,
+                  'built': datetime.now(timezone.utc).isoformat(),
+                  'counts': {t: len([x for x in it if not x.get('sec')])
+                             for t,(r,it) in _parsed_for_diff.items()},
+                  'changes': _changes}, open('dashboard_data.json','w'), indent=1)
+    except Exception as _e:
+        print(f'    dashboard_data.json write failed: {_e}')
+
+    send_slack_audit(_audit_report, _audit_problems, _audit_warnings, _changes)
 
     # ── Build JS arrays ──
     flower_js  = build_flower_js(flower_items)
@@ -1269,7 +1473,6 @@ def main():
     html = re.sub(r'(<div class="hdr-upd" id="upd">)Updated: [^<]+(</div>)',
                   r'\g<1>Updated: ' + date_str + r'\g<2>', html)
     # Bump version every build so newest is always obvious.
-    global BUILD_VERSION
     BUILD_VERSION = get_next_version()
     # Footer stamp with the new version.
     html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
