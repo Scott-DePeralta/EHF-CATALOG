@@ -1266,8 +1266,19 @@ def audit_build(parsed):
         # --- Quality checks on the products that DID make it ---
         _clean = lambda s: ' '.join(str(s).split())
         no_img   = [_clean(p['n']) for p in prods if not str(p.get('pic','')).strip()]
-        no_price = [_clean(p['n']) for p in prods if not any(str(p.get(k,'')).strip()
-                    for k in ('price','unit','case','lb','half','qtr','oz','unitprice'))]
+        # A product has a price if EITHER (a) any of the legacy per-unit keys are
+        # populated (Flower still uses lb/half/qtr/oz), OR (b) it has a non-empty
+        # `tiers` list with at least one priced tier (PreRoll/Vape/Edibles/Extracts/
+        # Syrup/Topicals/GelCaps store prices this way now). Missing this second
+        # branch was the bug that made every tiered product look like "Call for
+        # Pricing" in the audit even though the catalog showed correct prices.
+        _LEGACY_PRICE_KEYS = ('price','unit','case','lb','half','qtr','oz','unitprice')
+        def _has_price(p):
+            if any(str(p.get(k,'')).strip() for k in _LEGACY_PRICE_KEYS):
+                return True
+            tiers = p.get('tiers') or []
+            return any(str(t.get('price','')).strip() for t in tiers if isinstance(t, dict))
+        no_price = [_clean(p['n']) for p in prods if not _has_price(p)]
         no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
 
         # duplicate product names within a tab — a REAL dupe is the same name AND
