@@ -407,8 +407,8 @@ PREROLL_SIZE_LABELS = {
     'KING SIZE PRE ROLL': '2.5g+ with tube',
     'DOOBIES': '1g Doobie',
     'HOTTIES': '1g Hottie',
-    'SINGLE MINI PRE ROLL': '0.5g Mini',
-    'SINGLE MINI PRE ROLLS': '0.5g Mini',
+    'SINGLE MINI PRE ROLL': '1g Mini',
+    'SINGLE MINI PRE ROLLS': '1g Mini',
 }
 PREROLL_KING_SECTIONS = {'KING SIZE PRE ROLLS','KING SIZE PRE ROLL'}
 
