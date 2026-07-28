@@ -403,8 +403,8 @@ PREROLL_CATEGORY_HEADERS = set()
 
 # Preroll sections and their size labels (so buyers know king-size vs mini).
 PREROLL_SIZE_LABELS = {
-    'KING SIZE PRE ROLLS': '2.5g+ King Size',
-    'KING SIZE PRE ROLL': '2.5g+ King Size',
+    'KING SIZE PRE ROLLS': '2.5g+ with tube',
+    'KING SIZE PRE ROLL': '2.5g+ with tube',
     'DOOBIES': '1g Doobie',
     'HOTTIES': '1g Hottie',
     'SINGLE MINI PRE ROLL': '0.5g Mini',
@@ -1572,6 +1572,12 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
 def main():
     global BUILD_VERSION
     print(f'\n=== EHF Catalog Builder v7 (pieces-from-sheet) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
+    # Bump the version FIRST so it is available to every downstream write:
+    # dashboard_data.json (which the invoice reads for sync), Slack audit, HTML
+    # footer stamp. Setting it late produced dashboard_data.json with an empty
+    # "version" field, which broke the invoice's version-sync check.
+    BUILD_VERSION = get_next_version()
+    print(f'  Build version: v{BUILD_VERSION}')
 
     # ── Fetch all sheet tabs ──
     print('Fetching sheets...')
@@ -1729,9 +1735,7 @@ def main():
     # Header stamp: match ONLY the id="upd" div, not the footer's "Last Updated".
     html = re.sub(r'(<div class="hdr-upd" id="upd">)Updated: [^<]+(</div>)',
                   r'\g<1>Updated: ' + date_str + r'\g<2>', html)
-    # Bump version every build so newest is always obvious.
-    BUILD_VERSION = get_next_version()
-    # Footer stamp with the new version.
+    # Footer stamp with the version bumped at the top of main().
     html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
                   f'Catalog v{BUILD_VERSION} &nbsp;·&nbsp; Last Updated: {long_date}', html)
 
