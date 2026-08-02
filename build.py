@@ -58,13 +58,7 @@ def fetch_sheet(tab):
     """Fetch a sheet tab as CSV. Uses gviz endpoint with sheet name.
     Retries once and logs row count so failures are visible."""
     from urllib.parse import quote
-    # headers=0 tells gviz NOT to treat the first row(s) as a header. That matters
-    # twice over: (a) it stops gviz merging rows 0+1 into one header row, and
-    # (b) with no header assumed, a column holding BOTH currency and label text
-    # is typed as text, so labels like "100 UNIT PRICE" survive. Without it gviz
-    # types the price columns numeric and BLANKS every text cell in them — which
-    # silently erased each section's own price ladder.
-    url = BASE_URL + quote(tab) + '&headers=0'
+    url = BASE_URL + quote(tab)
     for attempt in range(2):
         try:
             req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -398,6 +392,40 @@ def build_anim_js(items):
         lines.append(f"  '{esc(p['n'])}':'{cls}'" + (',' if i < len(items)-1 else ''))
     lines.append('};')
     return '\n'.join(lines)
+
+# ── SECTION PRICE LADDERS ────────────────────────────────────────────────────
+# WHY THIS IS HARD-DECLARED AND NOT READ FROM THE SHEET:
+# The builder reads the sheet through Google's gviz CSV endpoint. gviz types each
+# COLUMN, and the tier columns are full of currency, so it types them numeric —
+# then BLANKS any cell in them holding text. Every section's header labels
+# ("100 UNIT PRICE", "50 UNIT PRICE") are exactly such cells, so they arrive
+# empty. The old parser therefore kept whatever ladder it read first, which is
+# how Doobies and Hotties were published at 1,000 units for $1,700 when the sheet
+# says 100. The prices were right and the quantities were off by 10x.
+#
+# TO ADD OR CHANGE A SECTION: add its name here with the unit count of each price
+# column, LEFT TO RIGHT, matching the sheet's column order. Any section that is
+# missing here AND whose labels cannot be read is reported in the build audit.
+SECTION_LADDERS = {
+    'KING SIZE PRE ROLLS':  (1000, 500, 100, 1),
+    'KING SIZE PRE ROLL':   (1000, 500, 100, 1),
+    'DOOBIES':              (100,  50,  10,  1),
+    'HOTTIES':              (100,  50,  10,  1),
+    'SINGLE MINI PRE ROLL': (1000, 500, 100, 1),
+    'SINGLE MINI PRE ROLLS':(1000, 500, 100, 1),
+}
+
+
+def ladder_from_map(section, current):
+    """Rebuild tier columns from SECTION_LADDERS, keeping the column positions we
+    already know and replacing only the quantities. Returns None if the section
+    is not declared or the tier count does not match."""
+    key = str(section or '').strip().upper()
+    units = SECTION_LADDERS.get(key)
+    if not units or not current or len(units) != len(current):
+        return None
+    return [(f'{n}u', col) for n, (_lbl, col) in zip(units, current)]
+
 
 # ── PREROLL PARSER ───────────────────────────────────────
 SECTION_NAMES = {'KING SIZE PRE ROLLS','DOOBIES','HOTTIES','SINGLE MINI PRE ROLL'}
@@ -903,6 +931,10 @@ def ladder_for_section(row, current, tab, section):
     if found:
         set_url_columns_from_header(row)
         return found
+    mapped = ladder_from_map(section, current)
+    if mapped:
+        set_url_columns_from_header(row)
+        return mapped
     if is_full_header_row(row):
         UNRESOLVED_LADDERS.append(f'{tab} / {section or "(unnamed section)"}')
         return []
