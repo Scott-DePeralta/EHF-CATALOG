@@ -426,7 +426,14 @@ def parse_preroll(rows):
     current_is_king = False
     current_note = ''
     for row in rows:
-        if not row or not row[0].strip(): continue
+        if not row: continue
+        if not row[0].strip():
+            # A tier-header row can arrive with a BLANK first cell when the
+            # section title beside it is a MERGED cell in the sheet. Skipping it
+            # leaves the PREVIOUS section's tier labels in force — which is how
+            # a "100 UNIT PRICE" column ends up displayed as "1,000 units".
+            tier_cols = adopt_tier_header(row, tier_cols)
+            continue
         name = row[0].strip()
         upper = name.upper()
         # Top header row
@@ -449,10 +456,7 @@ def parse_preroll(rows):
             current_is_king = cu in PREROLL_KING_SECTIONS
             current_note = '🫙 Glass jar · 5 mini pre-rolls' if ('DOOBIE' in cu or 'HOTTIE' in cu) else ''
             # These section rows carry their own tier labels — adopt them.
-            row_tiers = find_tier_columns(row)
-            if row_tiers:
-                tier_cols = row_tiers
-                set_url_columns_from_header(row)
+            tier_cols = adopt_tier_header(row, tier_cols)
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -507,7 +511,10 @@ def parse_vape(rows):
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     tier_cols = []
     for row in rows:
-        if not row or not row[0].strip(): continue
+        if not row: continue
+        if not row[0].strip():
+            tier_cols = adopt_tier_header(row, tier_cols)
+            continue
         name = row[0].strip()
         if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
             row_tiers = find_tier_columns(row)
@@ -521,10 +528,7 @@ def parse_vape(rows):
         cann = row[1].strip() if len(row)>1 else ''
         if not cann or cann.upper() == 'CANNABINOID':
             clean_name = strip_stars(' '.join(name.split()))
-            row_tiers = find_tier_columns(row)
-            if row_tiers:
-                tier_cols = row_tiers
-                set_url_columns_from_header(row)
+            tier_cols = adopt_tier_header(row, tier_cols)
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -559,7 +563,10 @@ def parse_edibles(rows):
     tier_cols = []
     pieces_col = cat_col = -1
     for row in rows:
-        if not row or not row[0].strip(): continue
+        if not row: continue
+        if not row[0].strip():
+            tier_cols = adopt_tier_header(row, tier_cols)
+            continue
         name = row[0].strip()
         if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
             row_tiers = find_tier_columns(row)
@@ -832,6 +839,37 @@ def is_junk_row(name):
     return False
 
 
+def is_tier_header_row(row):
+    """True if this row carries price-tier COLUMN LABELS ('100 UNIT PRICE',
+    'SINGLE UNIT PRICE') rather than product data.
+
+    WHY THIS EXISTS: every pre-roll section has its OWN price ladder — King Size
+    runs 1000/500/100/1 while Doobies and Hotties run 100/50/10/1. Those repeated
+    header rows frequently arrive from the CSV export with a BLANK first cell,
+    because the coloured section title sitting beside them is a merged cell and
+    gviz only puts the value in the first row of a merge. The old parser skipped
+    any row with an empty first cell, so the section below silently inherited the
+    ladder above it and every quantity printed 10x too high.
+    """
+    for c in row:
+        u = ' '.join(str(c).upper().split())
+        if 'PRICE' in u and ('UNIT' in u or 'SINGLE' in u):
+            return True
+    return False
+
+
+def adopt_tier_header(row, current):
+    """If `row` carries tier labels, return the new tier columns (and refresh the
+    picture/COA column hints). Otherwise return `current` unchanged."""
+    if not is_tier_header_row(row):
+        return current
+    found = find_tier_columns(row)
+    if found:
+        set_url_columns_from_header(row)
+        return found
+    return current
+
+
 def classify_row(row, header_has_cannabinoid_col=True):
     """Unified, defensive row classifier used by all parsers.
     Returns one of: 'junk', 'section', 'product', 'empty'.
@@ -881,7 +919,7 @@ def find_tier_columns(header):
     tiers = []
     for i, h in enumerate(header):
         hl = str(h).strip()
-        hu = hl.upper()
+        hu = ' '.join(hl.upper().split())   # collapse newlines inside a wrapped header cell
         if 'PRICE' not in hu:
             continue
         # Single-unit variants. NOTE: a bare 'PRICE' header (Edibles' legacy
@@ -977,7 +1015,10 @@ def parse_generic(rows, const_name):
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     tier_cols = []
     for row in rows:
-        if not row or not row[0].strip(): continue
+        if not row: continue
+        if not row[0].strip():
+            tier_cols = adopt_tier_header(row, tier_cols)
+            continue
         name = row[0].strip()
         # Header rows (top or combined section+header) carry the tier labels.
         if name.strip().upper().startswith('PRODUCT NAME') or _row_has_tier_header(row):
@@ -994,10 +1035,7 @@ def parse_generic(rows, const_name):
         cann = row[1].strip() if len(row)>1 else ''
         if not cann or cann.upper() == 'CANNABINOID':
             clean_name = strip_stars(' '.join(name.split()))
-            row_tiers = find_tier_columns(row)
-            if row_tiers:
-                tier_cols = row_tiers
-                set_url_columns_from_header(row)
+            tier_cols = adopt_tier_header(row, tier_cols)
             items.append({'sec':True,'n':clean_name})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -1223,6 +1261,39 @@ def diff_inventory(new_snap):
     return changes
 
 
+def audit_tier_ladders(parsed):
+    """Report the price ladder each section actually resolved to.
+
+    A section inheriting the ladder above it is silent and expensive: the prices
+    stay right while every QUANTITY prints wrong. This surfaces the ladder per
+    section so a wrong one is obvious in the build log and the Slack audit."""
+    lines, problems = [], []
+    for tab in ('PreRoll', 'Vape', 'Edibles', 'Extracts', 'Syrup', 'Topicals', 'GelCaps'):
+        if tab not in parsed:
+            continue
+        rows, items = parsed[tab]
+        section = '(top of tab)'
+        ladders = {}
+        for p in items:
+            if p.get('sec'):
+                section = p.get('n', '')
+                continue
+            t = p.get('tiers') or []
+            if not t:
+                continue
+            key = '/'.join(str(x['qty']) for x in t)
+            ladders.setdefault(section, set()).add(key)
+        for sec, keys in ladders.items():
+            for k in keys:
+                lines.append(f'{tab} · {sec or "(unnamed)"}: {k}')
+            if len(keys) > 1:
+                problems.append(f'*{tab} / {sec}* — products in the SAME section resolved to '
+                                f'different quantity ladders ({", ".join(sorted(keys))}). '
+                                f'One of them is inheriting the wrong header row. '
+                                f'Check the tier labels on that section header in the sheet.')
+    return lines, problems
+
+
 def audit_build(parsed):
     """Detailed self-audit. Returns (report_lines, problems, warnings).
     Checks every tab for: silently dropped rows, big count changes vs last run,
@@ -1330,6 +1401,13 @@ def audit_build(parsed):
         if no_price: flags.append(f'{len(no_price)} no-price')
         if dupes:    flags.append(f'{len(dupes)} dupe')
         report.append(f'{tab}: {len(prods)} products' + (f'  ⚠️ ' + ', '.join(flags) if flags else '  ✓'))
+
+    # --- Price-ladder audit: catches a section inheriting the wrong header ---
+    ladder_lines, ladder_problems = audit_tier_ladders(parsed)
+    problems.extend(ladder_problems)
+    if ladder_lines:
+        report.append('— price ladders (units per tier) —')
+        report.extend(ladder_lines)
 
     # --- Compare product counts to the previous run ---
     prev = {}
@@ -1546,8 +1624,9 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
     parts.append('')
     parts.append('_This audit checks each tab for: silently dropped rows (data in the '
                  'sheet that never reached the site), big product-count changes vs the last '
-                 'build, missing images, missing prices (shows "Call for Pricing"), and '
-                 'duplicate names. ✓ = clean. If you see a PROBLEM, check the named rows in '
+                 'build, missing images, missing prices (shows "Call for Pricing"), '
+                 'duplicate names, and the quantity ladder each section resolved to. ✓ = clean. '
+                 'If you see a PROBLEM, check the named rows in '
                  'the sheet, or send Claude the tab. Images usually fail because a Drive file '
                  "isn't shared \"Anyone with the link\"._")
 
@@ -1571,7 +1650,7 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
 
 def main():
     global BUILD_VERSION
-    print(f'\n=== EHF Catalog Builder v7 (pieces-from-sheet) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
+    print(f'\n=== EHF Catalog Builder v8 (per-section price ladders) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
     # Bump the version FIRST so it is available to every downstream write:
     # dashboard_data.json (which the invoice reads for sync), Slack audit, HTML
     # footer stamp. Setting it late produced dashboard_data.json with an empty
@@ -1735,9 +1814,15 @@ def main():
     # Header stamp: match ONLY the id="upd" div, not the footer's "Last Updated".
     html = re.sub(r'(<div class="hdr-upd" id="upd">)Updated: [^<]+(</div>)',
                   r'\g<1>Updated: ' + date_str + r'\g<2>', html)
-    # Footer stamp with the version bumped at the top of main().
-    html = re.sub(r'Catalog v[\d.]+ &nbsp;·&nbsp; Last Updated: [^<"]+',
-                  f'Catalog v{BUILD_VERSION} &nbsp;·&nbsp; Last Updated: {long_date}', html)
+    # Footer version stamp. NOTE: this used to require the literal text
+    # "Last Updated:" after the version, but the footer actually reads
+    # "Prices current as of:" — so the pattern never matched and the site showed
+    # a frozen "Catalog v3.4" no matter how many times version.txt incremented.
+    # Matching the version token alone is both correct and layout-independent.
+    html = re.sub(r'Catalog v[\d.]+', f'Catalog v{BUILD_VERSION}', html)
+    # Keep the "Prices current as of" stamp honest — it moves with every rebuild.
+    html = re.sub(r'Prices current as of: [^&<]+',
+                  f'Prices current as of: {long_date} ', html)
 
     # Write updated HTML back to repo file
     open(HTML_FILE, 'w', encoding='utf-8').write(html)
