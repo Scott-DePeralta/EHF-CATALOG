@@ -536,6 +536,20 @@ def build_preroll_js(items):
     lines.append('];')
     return '\n'.join(lines)
 
+# ── FIXED-BLEND SECTIONS ─────────────────────────────────────────────────────
+# Most products let the buyer CHOOSE which cannabinoid they want. A few ship as a
+# pre-set combination — the listed cannabinoids are the ingredients inside that
+# device, not a menu. Those must render read-only, or the popup implies a choice
+# that does not exist and stamps a fake "selection" onto the quote line.
+# Matched as a substring against the cleaned, upper-cased section name.
+FIXED_BLEND_SECTIONS = ('ESCO BAR',)
+
+
+def is_fixed_blend(section):
+    u = ' '.join(str(section or '').upper().split())
+    return any(k in u for k in FIXED_BLEND_SECTIONS)
+
+
 # ── VAPE PARSER ──────────────────────────────────────────
 VAPE_SECTIONS = {'2G DISPOSABLE VAPE\nBLINKERS BLEND',
                  '2G DISPOSABLE VAPE\nLIVE RESIN DIAMONDS\nPACKS POD',
@@ -545,6 +559,7 @@ def parse_vape(rows):
     items = []
     _URL_COL_HINTS['pic'] = _URL_COL_HINTS['coa'] = -1  # reset per-tab
     tier_cols = []
+    current_fixed = False   # is the current section a pre-set blend?
     for row in rows:
         if not row: continue
         if not row[0].strip():
@@ -556,13 +571,16 @@ def parse_vape(rows):
             if row_tiers: tier_cols = row_tiers
             set_url_columns_from_header(row)
             if name.startswith('*') and name.endswith('*'):
-                items.append({'sec':True,'n':strip_stars(' '.join(name.split()))})
+                _sec = strip_stars(' '.join(name.split()))
+                current_fixed = is_fixed_blend(_sec)
+                items.append({'sec':True,'n':_sec})
             continue
         if is_junk_row(name):
             continue
         cann = row[1].strip() if len(row)>1 else ''
         if not cann or cann.upper() == 'CANNABINOID':
             clean_name = strip_stars(' '.join(name.split()))
+            current_fixed = is_fixed_blend(clean_name)
             tier_cols = adopt_tier_header(row, tier_cols)
             items.append({'sec':True,'n':clean_name})
             continue
@@ -575,7 +593,8 @@ def parse_vape(rows):
         items.append({'sec':False,'n':name,'cann':cann,
                       'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'tiers':tiers,'pic':pic,'coa':coa})
+                      'tiers':tiers,'pic':pic,'coa':coa,
+                      'fixedBlend':current_fixed})
     return items
 
 def build_vape_js(items):
@@ -585,7 +604,8 @@ def build_vape_js(items):
         if p['sec']:
             lines.append(f'{{sec:true,n:"{esc(p["n"])}"}}{comma}')
         else:
-            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
+            fb = ',fixedBlend:true' if p.get('fixedBlend') else ''
+            lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"",tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""{fb}}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
 
@@ -1138,6 +1158,114 @@ def build_generic_js(items, const_name):
             lines.append(f'{{n:"{esc(p["n"])}",cann:"{esc(p["cann"])}",cannList:{cann_js(p)},size:"{esc(p.get("size",""))}",tiers:{tiers_js(p)},pic:"{esc(p["pic"])}",coa:"{esc(p["coa"])}",note:""}}{comma}')
     lines.append('];')
     return '\n'.join(lines)
+
+# ── FRONT-END PATCHES (applied to index.html on every build) ─────────────────
+# build.py normally only swaps the product data arrays. These two fixes live in
+# the page's JavaScript, so they are applied here — idempotent, and re-applied
+# automatically if index.html is ever restored from an older copy.
+FRONTEND_PATCHES = [
+    (
+        "unit-mode add-to-cart",
+        # Mini soda cans / tuna cans / quarter-ounce jars have NO weight tiers —
+        # lb/half/qtr/oz are all 0 — so the pricing block rendered empty and the
+        # popup had no quantity box and no Add button. Nothing to click.
+        """  const wRow=(lbl,val)=>val?`<div class="pop-wrow">
+      <span class="pop-wlbl">${lbl}</span>
+      <span class="pop-wamt">${fmt(val)}</span>
+      <span class="pop-wqty">
+        <button class="pop-qbtn" onclick="popQty('${nmE}','${lbl}',-1)">−</button>
+        <input class="pop-qin" id="q_${lbl.replace(/[^A-Za-z]/g,'')}" value="1" inputmode="numeric" onchange="popQtyFix(this)">
+        <button class="pop-qbtn" onclick="popQty('${nmE}','${lbl}',1)">+</button>
+      </span>
+      <button class="pop-wadd" onclick="addQtyToCart('${nmE} — ${lbl}','${fmt(val)}','flower','${lbl.replace(/[^A-Za-z]/g,'')}')">+ Add</button>
+    </div>`:'';
+  const pricing=`<div class="pop-pricing">
+      <div class="pop-price-hd">Select size & quantity, then add to quote:</div>`+
+    wRow('Pound',p.lb)+
+    wRow('½ Pound',p.half)+
+    wRow('¼ Pound',p.qtr)+
+    wRow('Ounce',p.oz)+
+    '</div>';""",
+        """  const wRow=(lbl,val)=>{
+      if(!val) return '';
+      // Weight tiers arrive as numbers; unit-mode products arrive already
+      // formatted ("$15"), so only run fmt() on the numeric case.
+      const amt=(typeof val==='number')?fmt(val):String(val);
+      const key=lbl.replace(/[^A-Za-z]/g,'');
+      return `<div class="pop-wrow">
+      <span class="pop-wlbl">${lbl}</span>
+      <span class="pop-wamt">${amt}</span>
+      <span class="pop-wqty">
+        <button class="pop-qbtn" onclick="popQty('${nmE}','${lbl}',-1)">−</button>
+        <input class="pop-qin" id="q_${key}" value="1" inputmode="numeric" onchange="popQtyFix(this)">
+        <button class="pop-qbtn" onclick="popQty('${nmE}','${lbl}',1)">+</button>
+      </span>
+      <button class="pop-wadd" onclick="addQtyToCart('${nmE} — ${lbl}','${amt}','flower','${key}')">+ Add</button>
+    </div>`;
+    };
+  // Unit-mode products price per can/jar, not by weight. Without this branch the
+  // pricing block came out empty and the product could not be added at all.
+  const pricing=p.unitmode
+    ? `<div class="pop-pricing">
+      <div class="pop-price-hd">Choose quantity, then add to quote:</div>`+
+      wRow(p.size?('Per Unit '+p.size):'Per Unit', p.unitprice)+
+      '</div>'
+    : `<div class="pop-pricing">
+      <div class="pop-price-hd">Select size & quantity, then add to quote:</div>`+
+    wRow('Pound',p.lb)+
+    wRow('½ Pound',p.half)+
+    wRow('¼ Pound',p.qtr)+
+    wRow('Ounce',p.oz)+
+    '</div>';""",
+    ),
+    (
+        "fixed-blend popup (Esco Bars)",
+        # A pre-set blend is not a menu. Showing tickboxes implies a choice that
+        # does not exist and stamps a fabricated "selection" onto the quote line.
+        """        ${(p.cannList&&p.cannList.length)?`<div class="cann-picker">
+          <div class="cann-picker-hd">Available cannabinoids — pick one or more:</div>
+          <div class="cann-picker-note">These are the options available. Choose what you want (or all).</div>
+          <div class="cann-picker-grid">
+            ${p.cannList.map((x,i)=>`<label class="cann-opt"><input type="checkbox" class="cann-cb" data-cann="${x}" ${i===0?'checked':''}> <span>${x}</span></label>`).join('')}
+          </div>
+        </div>`:''}""",
+        """        ${(p.cannList&&p.cannList.length)?(p.fixedBlend?`<div class="cann-picker">
+          <div class="cann-picker-hd">Blend — pre-set, not selectable</div>
+          <div class="cann-picker-note">These cannabinoids are the ingredients inside this device. It ships as a fixed combination.</div>
+          <div class="cann-avail" style="margin-top:8px;justify-content:flex-start">${p.cannList.map(x=>`<span class="cann-chip">${x}</span>`).join('')}</div>
+        </div>`:`<div class="cann-picker">
+          <div class="cann-picker-hd">Available cannabinoids — pick one or more:</div>
+          <div class="cann-picker-note">These are the options available. Choose what you want (or all).</div>
+          <div class="cann-picker-grid">
+            ${p.cannList.map((x,i)=>`<label class="cann-opt"><input type="checkbox" class="cann-cb" data-cann="${x}" ${i===0?'checked':''}> <span>${x}</span></label>`).join('')}
+          </div>
+        </div>`):''}""",
+    ),
+    (
+        "fixed-blend card label",
+        """    ? `<div class="cann-avail"><span class="cann-avail-lbl">Available:</span>${item.cannList.map(x=>`<span class="cann-chip">${x}</span>`).join('')}</div>`""",
+        """    ? `<div class="cann-avail"><span class="cann-avail-lbl">${item.fixedBlend?'Blend:':'Available:'}</span>${item.cannList.map(x=>`<span class="cann-chip">${x}</span>`).join('')}</div>`""",
+    ),
+]
+
+
+def apply_frontend_patches(html):
+    """Apply the JS fixes above. Returns (html, problems).
+    A patch that is already applied is fine and silent. A patch that can neither
+    be found NOR is already applied is reported loudly — it means index.html
+    drifted and the fix is silently missing from the live site."""
+    problems = []
+    for name, old, new in FRONTEND_PATCHES:
+        if new in html:
+            continue                      # already applied
+        if old in html:
+            html = html.replace(old, new, 1)
+            print(f'    front-end patch applied: {name}')
+        else:
+            problems.append(f'*Front-end patch "{name}" could not be applied* — the target code in '
+                            f'index.html did not match and the fix is NOT on the live site. '
+                            f'index.html has probably been edited by hand. Send Claude index.html.')
+    return html, problems
 
 # ── NETLIFY DEPLOY ───────────────────────────────────────
 def deploy_to_netlify(html_content):
@@ -1868,6 +1996,11 @@ def main():
         print(f'ACTION REQUIRED: Make sure {HTML_FILE} exists in the GitHub repo root.')
         sys.exit(0)  # exit 0 so workflow shows yellow, not red
     html = open(HTML_FILE, encoding='utf-8').read()
+
+    html, _fe_problems = apply_frontend_patches(html)
+    for _fp in _fe_problems:
+        print(f'    [PROBLEM] {_fp}')
+        _audit_problems.append(_fp)
 
     html = inject(html, 'FLOWER',   flower_js,   'PREROLL')
     html = inject(html, 'PREROLL',  preroll_js,  'VAPE')
