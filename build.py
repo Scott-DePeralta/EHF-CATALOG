@@ -58,7 +58,13 @@ def fetch_sheet(tab):
     """Fetch a sheet tab as CSV. Uses gviz endpoint with sheet name.
     Retries once and logs row count so failures are visible."""
     from urllib.parse import quote
-    url = BASE_URL + quote(tab)
+    # headers=0 tells gviz NOT to treat the first row(s) as a header. That matters
+    # twice over: (a) it stops gviz merging rows 0+1 into one header row, and
+    # (b) with no header assumed, a column holding BOTH currency and label text
+    # is typed as text, so labels like "100 UNIT PRICE" survive. Without it gviz
+    # types the price columns numeric and BLANKS every text cell in them — which
+    # silently erased each section's own price ladder.
+    url = BASE_URL + quote(tab) + '&headers=0'
     for attempt in range(2):
         try:
             req = Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -455,8 +461,9 @@ def parse_preroll(rows):
             current_size = PREROLL_SIZE_LABELS.get(cu, '')
             current_is_king = cu in PREROLL_KING_SECTIONS
             current_note = '🫙 Glass jar · 5 mini pre-rolls' if ('DOOBIE' in cu or 'HOTTIE' in cu) else ''
-            # These section rows carry their own tier labels — adopt them.
-            tier_cols = adopt_tier_header(row, tier_cols)
+            # Each section carries its OWN price ladder. Resolve it here, and
+            # refuse to inherit the section above if this one can't be read.
+            tier_cols = ladder_for_section(row, tier_cols, 'PreRoll', clean)
             items.append({'sec':True,'n':clean,'brand':is_brand})
             continue
         pic_idx, coa_idx = find_url_columns(row)
@@ -867,6 +874,38 @@ def adopt_tier_header(row, current):
     if found:
         set_url_columns_from_header(row)
         return found
+    return current
+
+
+def is_full_header_row(row):
+    """True if this row is a section's own COLUMN-HEADER row — it names the
+    CANNABINOID / QUANTITY AVAILABLE columns. Such a row is expected to carry its
+    section's price ladder."""
+    joined = ' '.join(str(c).upper() for c in row)
+    return 'CANNABINOID' in joined and ('QUANTITY AVAILABLE' in joined or 'QTY AVAILABLE' in joined)
+
+
+# Sections whose header row we saw but could not read a ladder from. Their
+# products are published with NO prices rather than the previous section's
+# numbers — a blank price is a phone call, a wrong price is a lawsuit.
+UNRESOLVED_LADDERS = []
+
+
+def ladder_for_section(row, current, tab, section):
+    """Resolve the price ladder for a new section.
+
+    If the section's own header row carries readable tier labels, use them.
+    If it is plainly a header row but the labels are missing or unreadable,
+    return [] — DO NOT fall through to the previous section's ladder. Inheriting
+    silently is what published Doobies at "1,000 units for $1,700" when the sheet
+    said 100."""
+    found = find_tier_columns(row)
+    if found:
+        set_url_columns_from_header(row)
+        return found
+    if is_full_header_row(row):
+        UNRESOLVED_LADDERS.append(f'{tab} / {section or "(unnamed section)"}')
+        return []
     return current
 
 
@@ -1404,6 +1443,12 @@ def audit_build(parsed):
 
     # --- Price-ladder audit: catches a section inheriting the wrong header ---
     ladder_lines, ladder_problems = audit_tier_ladders(parsed)
+    for sec in UNRESOLVED_LADDERS:
+        problems.append(f'*{sec}* — this section\'s header row was found but its price-tier '
+                        f'labels could not be read, so its products were published with NO '
+                        f'prices ("Call for Pricing") rather than inheriting the wrong ones. '
+                        f'Check that the tier labels on that header row read like '
+                        f'"100 UNIT PRICE" and are plain text.')
     problems.extend(ladder_problems)
     if ladder_lines:
         report.append('— price ladders (units per tier) —')
@@ -1820,6 +1865,22 @@ def main():
     # a frozen "Catalog v3.4" no matter how many times version.txt incremented.
     # Matching the version token alone is both correct and layout-independent.
     html = re.sub(r'Catalog v[\d.]+', f'Catalog v{BUILD_VERSION}', html)
+    # Pricing-error protection. Injected on every build so it can never be lost
+    # by an index.html edit. Idempotent — only added when not already present.
+    if 'Pricing Errors:' not in html:
+        html = html.replace(
+            '<strong>Age Restriction:</strong>',
+            '<strong>Pricing Errors:</strong> All prices, quantities, tier breaks and product '
+            'descriptions shown in this catalog are provided for reference only and are subject '
+            'to change without notice. They are an invitation to enquire, not a binding offer. '
+            'In the event of a typographical, clerical, data-entry or system error affecting any '
+            'price, unit quantity, tier quantity, or description, EHF reserves the right to '
+            'correct the error and to decline, cancel or amend any order or quotation placed at '
+            'the erroneous figure, whether or not that order has been acknowledged. '
+            '<strong>EHF does not honor pricing or quantity errors.</strong> No order is binding '
+            'until confirmed in writing by EHF on a formal invoice.<br><br>'
+            '<strong>Age Restriction:</strong>', 1)
+
     # Keep the "Prices current as of" stamp honest — it moves with every rebuild.
     html = re.sub(r'Prices current as of: [^&<]+',
                   f'Prices current as of: {long_date} ', html)
