@@ -1721,14 +1721,27 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
         try: total += int(r.split(':')[1].strip().split(' ')[0])
         except Exception: pass
 
-    if problems:
-        headline = f':rotating_light: *EHF Catalog {vtag} — {len(problems)} PROBLEM(S) NEED ATTENTION*'
-    elif warnings:
-        headline = f':warning: *EHF Catalog {vtag} built — {len(warnings)} thing(s) to review*'
-    else:
-        headline = f':white_check_mark: *EHF Catalog {vtag} built clean — all {total} products look good*'
+    # A clean build should be one line. Nobody reads a wall of green ticks, and a
+    # message people skim is a message that hides the one line that mattered.
+    if not problems and not warnings:
+        clean = f':white_check_mark: *Catalog {vtag} built clean* — {total} products, {len(report)} tabs, nothing to fix.'
+        if invoice is not None and invoice.get('reachable') and not invoice.get('ok'):
+            clean += '\n:red_circle: _But the invoice system reported issues — see the console._'
+        try:
+            req = Request(SLACK_AUDIT_WEBHOOK, data=_json.dumps({'text': clean}).encode('utf-8'),
+                          headers={'Content-Type': 'application/json'}, method='POST')
+            urlopen(req, timeout=15)
+            print('Slack audit posted. (clean, one line)')
+        except Exception as e:
+            print(f'Slack audit failed (non-fatal): {e}')
+        return
 
-    parts = [headline, f'_Newest version: the live site now shows {vtag}._']
+    if problems:
+        headline = f':rotating_light: *Catalog {vtag} — {len(problems)} problem(s)*'
+    else:
+        headline = f':warning: *Catalog {vtag} — {len(warnings)} thing(s) to review*'
+
+    parts = [headline]
 
     # ── Invoice system health + automatic version sync ──
     if invoice is not None:
@@ -1762,12 +1775,13 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
                              'version URL (exclusive-hemp-farms.com/dashboard_data.json). '
                              'Version sync unconfirmed.')
 
-            parts.append(f'*:electric_plug: Invoice system:* {inv_ok} {inv_word}{rep_txt} — {sync_line}')
+            if invoice.get('ok') and in_sync is True:
+                parts.append(f'_Invoice system healthy{rep_txt}, versions in sync._')
+            else:
+                parts.append(f'*:electric_plug: Invoice system:* {inv_ok} {inv_word}{rep_txt} — {sync_line}')
             # After THIS build deploys, the live version becomes nxt; the invoice will
             # read that automatically on its next check. Note it so the flow is clear.
-            if nxt and str(nxt) != str(seen or ''):
-                parts.append(f'   _After this build deploys, the live catalog becomes v{nxt}; '
-                             f'the invoice will read it automatically — nothing to update by hand._')
+            # (Version drift after a deploy is expected and not worth a line.)
             for p in invoice.get('problems', []):
                 parts.append(f'   :red_circle: {p}')
             for w in invoice.get('warnings', [])[:8]:
@@ -1787,11 +1801,13 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
         for w in warnings:
             parts.append(f'• {w}')
 
-    # Per-tab summary (always included)
-    parts.append('')
-    parts.append('*:bar_chart: Per-tab summary:*')
-    for r in report:
-        parts.append(f'• {r}')
+    # Only the tabs that actually have something wrong. A clean tab needs no line.
+    bad_tabs = [r for r in report if '⚠️' in r]
+    if bad_tabs:
+        parts.append('')
+        parts.append('*Tabs with something wrong:*')
+        for r in bad_tabs:
+            parts.append(f'• {r}')
 
     # Inventory change report
     if changes and not changes.get('first_run'):
@@ -1821,19 +1837,10 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
                 parts.append(f":green_circle: *{len(c['back_in'])} back in stock:* " +
                              ', '.join(x['name'] for x in c['back_in'][:8]) +
                              (' …' if len(c['back_in'])>8 else ''))
-        else:
-            parts.append('')
-            parts.append('_:package: No inventory changes since last build._')
+        # (No changes needs no line.)
 
-    # Legend so a non-technical reader knows what was checked
     parts.append('')
-    parts.append('_This audit checks each tab for: silently dropped rows (data in the '
-                 'sheet that never reached the site), big product-count changes vs the last '
-                 'build, missing images, missing prices (shows "Call for Pricing"), '
-                 'duplicate names, and the quantity ladder each section resolved to. ✓ = clean. '
-                 'If you see a PROBLEM, check the named rows in '
-                 'the sheet, or send Claude the tab. Images usually fail because a Drive file '
-                 "isn't shared \"Anyone with the link\"._")
+    parts.append('_Send this to Claude if you want it fixed._')
 
     text = '\n'.join(parts)
     # Slack has a ~40k char limit per message; trim defensively.
