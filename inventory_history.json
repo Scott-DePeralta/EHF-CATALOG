@@ -1,1 +1,32 @@
-[]
+[
+ {
+  "ts": "2026-08-08T00:57:01.558478+00:00",
+  "version": "3.43",
+  "added": [
+   "Flower: FAT PURPLE CANDY",
+   "Flower: NIGHT WALKER",
+   "Flower: GALACTIC WARHEADS",
+   "Flower: SUGAR COOKIES",
+   "Flower: APPLE TART"
+  ],
+  "removed": [
+   "Flower: VENOM OG",
+   "Flower: ORANGE CREAM POP",
+   "Flower: ZOAPAYA",
+   "Flower: MOCHI",
+   "Flower: BLUZZI",
+   "Flower: KINGLATO",
+   "Flower: GARLIC COOKIES",
+   "Flower: BLACK RUNTZ",
+   "Flower: TRIPLE BURGER",
+   "Flower: PURPLE PUSH POP",
+   "Flower: SUGAR DONUTS",
+   "Flower: PINK PINA",
+   "Flower: GUAVA",
+   "Flower: ANIMAL FACE"
+  ],
+  "price_changes": [],
+  "went_oos": [],
+  "back_in": []
+ }
+]
