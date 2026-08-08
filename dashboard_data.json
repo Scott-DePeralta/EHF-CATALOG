@@ -1,6 +1,6 @@
 {
- "version": "3.43",
- "built": "2026-08-08T00:57:01.558605+00:00",
+ "version": "3.44",
+ "built": "2026-08-08T12:28:05.446950+00:00",
  "counts": {
   "Flower": 58,
   "PreRoll": 31,
@@ -12,143 +12,8 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [
-   {
-    "tab": "Flower",
-    "name": "FAT PURPLE CANDY",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "1",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "NIGHT WALKER",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "4",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GALACTIC WARHEADS",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "4",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "SUGAR COOKIES",
-    "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "stock": "0.75",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "APPLE TART",
-    "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-    "stock": "1",
-    "cann": ""
-   }
-  ],
-  "removed": [
-   {
-    "tab": "Flower",
-    "name": "VENOM OG",
-    "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "ORANGE CREAM POP",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "0.5",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "ZOAPAYA",
-    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "MOCHI",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "BLUZZI",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "KINGLATO",
-    "price": "LB:1600.0|\u00bdLB:880.0|\u00bcLB:460.0|OZ:125.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GARLIC COOKIES",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "BLACK RUNTZ",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "0.5",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "TRIPLE BURGER",
-    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "stock": "1.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "PURPLE PUSH POP",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "1.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "SUGAR DONUTS",
-    "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "stock": "0.75",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "PINK PINA",
-    "price": "LB:1500.0|\u00bdLB:825.0|\u00bcLB:435.0|OZ:120.0",
-    "stock": "0.5",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GUAVA",
-    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "stock": "3.5",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "ANIMAL FACE",
-    "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-    "stock": "0.75",
-    "cann": ""
-   }
-  ],
+  "added": [],
+  "removed": [],
   "price_changes": [],
   "went_oos": [],
   "back_in": [],
