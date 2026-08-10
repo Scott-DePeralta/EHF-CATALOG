@@ -1268,6 +1268,55 @@ def apply_frontend_patches(html):
     return html, problems
 
 # ── NETLIFY DEPLOY ───────────────────────────────────────
+
+# ── SHORT LINKS AND CACHE RULES ──────────────────────────────────────────────
+# Apps Script web apps cannot live on a custom domain — Google serves them from
+# script.google.com and they will not answer to a CNAME. What CAN be done is a
+# branded entry point that redirects, so reps type something they can remember
+# and the browser lands on the real URL.
+#
+# These are 302s, not proxies. A proxy would break the app: Apps Script runs
+# inside a sandboxed iframe and its google.script.run calls depend on being on
+# the script.google.com origin.
+APPS_SCRIPT_EXEC = ('https://script.google.com/macros/s/'
+                    'AKfycbw_3jfvJY1Y2UVXs_XODHDbUMTNzB36kwraR_UZle-l8Rq94pHB_qEgo4DPxsvR-D22fg/exec')
+
+REDIRECTS = f"""# Branded short links for the team. 302 so the address is never cached by a
+# browser — if the deployment URL changes, updating this file is enough.
+/sales      {APPS_SCRIPT_EXEC}                 302
+/order      {APPS_SCRIPT_EXEC}                 302
+/invoice    {APPS_SCRIPT_EXEC}                 302
+/quote      {APPS_SCRIPT_EXEC}                 302
+
+# The console. Deliberately NOT /admin — a guessable path to an owner console
+# gated by one shared code is an invitation. Change this string whenever you
+# would change the code itself.
+/ops-console  {APPS_SCRIPT_EXEC}?page=admin    302
+"""
+
+HEADERS = """/*
+  Cache-Control: public, max-age=0, must-revalidate
+  Netlify-CDN-Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/dashboard.html
+  X-Robots-Tag: noindex, nofollow
+"""
+
+def ensure_site_config():
+    """Write _headers and _redirects if the repo has not got them, so a deploy
+    can never publish a site without cache rules or short links."""
+    for name, body in (('_redirects', REDIRECTS), ('_headers', HEADERS)):
+        if not os.path.exists(name):
+            try:
+                open(name, 'w').write(body)
+                print(f'  Created {name}')
+            except Exception as e:
+                print(f'  Could not write {name}: {e}')
+
+
+
 def deploy_to_netlify(html_content):
     """Deploy the catalog plus the dashboard and its data files in one Netlify deploy.
     The dashboard becomes available at /dashboard.html and reads the JSON alongside it."""
@@ -1275,9 +1324,16 @@ def deploy_to_netlify(html_content):
         print('  No Netlify credentials — skipping deploy')
         return False
 
-    # Gather every file to publish: catalog + dashboard + data JSON (if present).
+    # Gather every file to publish.
+    #
+    # A Netlify API deploy publishes ONLY the files listed here — anything absent
+    # is gone from the live site. _headers and _redirects were never in this list,
+    # so every build silently wiped the cache rules and any short links. They are
+    # included now, and generated below if the repo does not have them.
     files = {'/index.html': html_content.encode('utf-8')}
-    for extra in ('dashboard.html', 'dashboard_data.json', 'inventory_history.json'):
+    ensure_site_config()
+    for extra in ('dashboard.html', 'dashboard_data.json', 'inventory_history.json',
+                  '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
                 files['/' + extra] = open(extra, 'rb').read()
@@ -1840,7 +1896,7 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
         # (No changes needs no line.)
 
     parts.append('')
-    parts.append('_Send this to Claude if you want it fixed._')
+    parts.append('_Copy this message into your Claude chat if you want it fixed._')
 
     text = '\n'.join(parts)
     # Slack has a ~40k char limit per message; trim defensively.
