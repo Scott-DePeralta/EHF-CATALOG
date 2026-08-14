@@ -1,6 +1,6 @@
 {
- "version": "3.55",
- "built": "2026-08-14T01:08:58.987382+00:00",
+ "version": "3.56",
+ "built": "2026-08-14T12:42:47.544168+00:00",
  "counts": {
   "Flower": 57,
   "PreRoll": 31,
@@ -12,53 +12,9 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [
-   {
-    "tab": "Flower",
-    "name": "PURPLE PUSH POP",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "0.5",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GUAVA",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "1.75",
-    "cann": ""
-   }
-  ],
-  "removed": [
-   {
-    "tab": "Flower",
-    "name": "KANDY KUSH",
-    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GELATO CAKE",
-    "price": "LB:1000.0|\u00bdLB:550.0|\u00bcLB:290.0|OZ:80.0",
-    "stock": "0.25",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "LEMON CHERRY GELATO",
-    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "stock": "0.25",
-    "cann": ""
-   }
-  ],
-  "price_changes": [
-   {
-    "tab": "Flower",
-    "name": "WHITE GUMMIES",
-    "old": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "new": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0"
-   }
-  ],
+  "added": [],
+  "removed": [],
+  "price_changes": [],
   "went_oos": [],
   "back_in": [],
   "first_run": false
