@@ -28,5 +28,23 @@
   "price_changes": [],
   "went_oos": [],
   "back_in": []
+ },
+ {
+  "ts": "2026-08-14T01:08:58.987116+00:00",
+  "version": "3.55",
+  "added": [
+   "Flower: PURPLE PUSH POP",
+   "Flower: GUAVA"
+  ],
+  "removed": [
+   "Flower: KANDY KUSH",
+   "Flower: GELATO CAKE",
+   "Flower: LEMON CHERRY GELATO"
+  ],
+  "price_changes": [
+   "Flower: WHITE GUMMIES (LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0 -> LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0)"
+  ],
+  "went_oos": [],
+  "back_in": []
  }
 ]
