@@ -13,20 +13,6 @@
   "stock": "0.5",
   "cann": ""
  },
- "Flower::BLUEBERRY PANCAKE": {
-  "tab": "Flower",
-  "name": "BLUEBERRY PANCAKE",
-  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-  "stock": "0.5",
-  "cann": ""
- },
- "Flower::G47": {
-  "tab": "Flower",
-  "name": "G47",
-  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-  "stock": "0.5",
-  "cann": ""
- },
  "Flower::JUNGLE CAKE": {
   "tab": "Flower",
   "name": "JUNGLE CAKE",
@@ -41,11 +27,18 @@
   "stock": "1",
   "cann": ""
  },
- "Flower::BODHIS CHARMZ": {
+ "Flower::SUB ZERO": {
   "tab": "Flower",
-  "name": "BODHIS CHARMZ",
+  "name": "SUB ZERO",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "0.5",
+  "cann": ""
+ },
+ "Flower::MAGIC MARKER": {
+  "tab": "Flower",
+  "name": "MAGIC MARKER",
   "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
-  "stock": "0.25",
+  "stock": "2.25",
   "cann": ""
  },
  "Flower::PURPLE PUSH POP": {
@@ -66,20 +59,13 @@
   "tab": "Flower",
   "name": "SLAPZ",
   "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-  "stock": "3.5",
+  "stock": "1",
   "cann": ""
  },
  "Flower::DIRTY SPRITE": {
   "tab": "Flower",
   "name": "DIRTY SPRITE",
   "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-  "stock": "1.5",
-  "cann": ""
- },
- "Flower::PURPLE URKLE": {
-  "tab": "Flower",
-  "name": "PURPLE URKLE",
-  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
   "stock": "0.75",
   "cann": ""
  },
@@ -87,14 +73,14 @@
   "tab": "Flower",
   "name": "NIGHT WALKER",
   "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-  "stock": "3.75",
+  "stock": "5",
   "cann": ""
  },
  "Flower::GALACTIC WARHEADS": {
   "tab": "Flower",
   "name": "GALACTIC WARHEADS",
   "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-  "stock": "3.5",
+  "stock": "3.25",
   "cann": ""
  },
  "Flower::APPLES AND BANANAS": {
@@ -108,14 +94,14 @@
   "tab": "Flower",
   "name": "VANILLA CAKE",
   "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-  "stock": "1.5",
+  "stock": "0.25",
   "cann": ""
  },
  "Flower::RAINBOW RUNTZ": {
   "tab": "Flower",
   "name": "RAINBOW RUNTZ",
   "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-  "stock": "1",
+  "stock": "0.5",
   "cann": ""
  },
  "Flower::MODIFIED GRAPES": {
@@ -136,21 +122,21 @@
   "tab": "Flower",
   "name": "GRAPE CANDY",
   "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-  "stock": "1.75",
+  "stock": "0.25",
   "cann": ""
  },
  "Flower::RASPBERRY": {
   "tab": "Flower",
   "name": "RASPBERRY",
   "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
-  "stock": "1.5",
+  "stock": "0.25",
   "cann": ""
  },
  "Flower::GUAVA": {
   "tab": "Flower",
   "name": "GUAVA",
   "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-  "stock": "1.75",
+  "stock": "1",
   "cann": ""
  },
  "Flower::GRAPE CHERRY GELATO": {
@@ -160,6 +146,13 @@
   "stock": "0.25",
   "cann": ""
  },
+ "Flower::PINK PINA": {
+  "tab": "Flower",
+  "name": "PINK PINA",
+  "price": "",
+  "stock": "1",
+  "cann": ""
+ },
  "Flower::SUPER SILVER HAZE": {
   "tab": "Flower",
   "name": "SUPER SILVER HAZE",
@@ -167,24 +160,10 @@
   "stock": "1.75",
   "cann": ""
  },
- "Flower::SPACE QUEEN": {
-  "tab": "Flower",
-  "name": "SPACE QUEEN",
-  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-  "stock": "0.25",
-  "cann": ""
- },
  "Flower::DULCE DE UVA": {
   "tab": "Flower",
   "name": "DULCE DE UVA",
   "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-  "stock": "0.25",
-  "cann": ""
- },
- "Flower::GRAPE GAS": {
-  "tab": "Flower",
-  "name": "GRAPE GAS",
-  "price": "LB:1000.0|\u00bdLB:550.0|\u00bcLB:290.0|OZ:80.0",
   "stock": "0.25",
   "cann": ""
  },
