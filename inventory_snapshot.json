@@ -139,6 +139,13 @@
   "stock": "1",
   "cann": ""
  },
+ "Flower::NOSE CANDY": {
+  "tab": "Flower",
+  "name": "NOSE CANDY",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "3.5",
+  "cann": ""
+ },
  "Flower::GRAPE CHERRY GELATO": {
   "tab": "Flower",
   "name": "GRAPE CHERRY GELATO",
@@ -149,7 +156,7 @@
  "Flower::PINK PINA": {
   "tab": "Flower",
   "name": "PINK PINA",
-  "price": "",
+  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
   "stock": "1",
   "cann": ""
  },

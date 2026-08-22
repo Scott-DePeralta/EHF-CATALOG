@@ -1,8 +1,8 @@
 {
- "version": "3.71",
- "built": "2026-08-22T00:42:08.181303+00:00",
+ "version": "3.72",
+ "built": "2026-08-22T12:20:01.870130+00:00",
  "counts": {
-  "Flower": 54,
+  "Flower": 55,
   "PreRoll": 31,
   "Vape": 47,
   "Edibles": 68,
@@ -12,7 +12,15 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [],
+  "added": [
+   {
+    "tab": "Flower",
+    "name": "NOSE CANDY",
+    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+    "stock": "3.5",
+    "cann": ""
+   }
+  ],
   "removed": [],
   "price_changes": [],
   "went_oos": [],
