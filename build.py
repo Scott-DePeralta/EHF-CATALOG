@@ -1165,6 +1165,190 @@ def build_generic_js(items, const_name):
 # automatically if index.html is ever restored from an older copy.
 FRONTEND_PATCHES = [
     (
+        "self-serve checkout — pay now",
+        # The catalog already had a full cart, contact form and shipping picker;
+        # it just ended at "request a quote". This adds a second path: a big
+        # total, and a Pay Now button that mints a real invoice and sends the
+        # customer to Clover with one exact figure on screen.
+        #
+        # The quote path is untouched. Some buyers want to negotiate; they still
+        # can. This is for the ones who want to pay and get on with it.
+        """      <button id="coSubmit" class="co-btn" onclick="submitQuote()">Submit Quote Request</button>""",
+        """      <div id="coPayNote" class="co-stock-note" style="display:none">✅ <b>Paying reserves your order.</b> We confirm stock before your card is charged for anything — if something is unavailable we will call you, and refund in full if you would rather not substitute.</div>
+      <div id="coTotalBox" class="co-totalbox" style="display:none">
+        <div class="co-total-lbl">Total due</div>
+        <div class="co-total-num" id="coTotalNum">$0.00</div>
+        <div class="co-total-sub" id="coTotalSub"></div>
+      </div>
+      <button id="coPayBtn" class="co-btn co-btn-pay" style="display:none" onclick="payNow()">Pay Now &amp; Reserve This Order</button>
+      <button id="coSubmit" class="co-btn co-btn-quote" onclick="submitQuote()">Or request a quote instead</button>"""
+    ),
+    (
+        "show the total when a shipping speed is picked",
+        # pickShip() set SELECTED_SHIP and stopped, so nothing ever revealed the
+        # total or the Pay button. One line, and it is the line the whole flow
+        # hangs on.
+        """function pickShip(radio){
+  SELECTED_SHIP = {
+    method: radio.value,
+    shipEstimate: Number(radio.dataset.est)||0,
+    grandTotal: Number(radio.dataset.total)||0
+  };
+}""",
+        """function pickShip(radio){
+  SELECTED_SHIP = {
+    method: radio.value,
+    shipEstimate: Number(radio.dataset.est)||0,
+    grandTotal: Number(radio.dataset.total)||0
+  };
+  if (typeof showCheckoutTotal === 'function') showCheckoutTotal();
+}"""
+    ),
+    (
+        "checkout styles + payNow",
+        """</body>""",
+        """<style>
+.co-totalbox{background:#12261B;border-radius:14px;padding:18px 20px;margin:14px 0 12px;text-align:center}
+.co-total-lbl{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#C9A227;font-weight:700}
+.co-total-num{font-family:Georgia,serif;font-size:38px;font-weight:700;color:#fff;line-height:1.1;margin-top:6px}
+.co-total-sub{font-size:12px;color:#8FA896;margin-top:8px;line-height:1.6}
+.co-btn-pay{background:linear-gradient(96deg,#C9A227,#A5872B)!important;color:#1A1400!important;
+  font-size:16px!important;font-weight:800!important;padding:17px!important}
+.co-btn-quote{background:transparent!important;color:#8FA896!important;border:1px solid rgba(255,255,255,.18)!important;
+  font-size:13px!important;font-weight:600!important;margin-top:9px!important}
+.co-paywait{background:#12261B;border-radius:14px;padding:24px;text-align:center;color:#fff}
+.co-payamt{font-family:Georgia,serif;font-size:34px;font-weight:700;color:#C9A227;margin:10px 0}
+.co-paystep{text-align:left;font-size:13.5px;color:#C6D6C9;line-height:1.9;margin:14px 0}
+.co-paybtn{display:inline-block;background:#C9A227;color:#1A1400;text-decoration:none;border-radius:10px;
+  padding:15px 28px;font-weight:800;font-size:15px;margin-top:8px}
+</style>
+<script>
+/* ── SELF-SERVE PAYMENT ────────────────────────────────────────────────────
+   Shows the total the moment a shipping speed is picked, then mints a real
+   invoice and hands the customer to Clover with one exact figure.
+
+   The amount matters: Clover's widget is open-amount and carries no reference
+   field, so the invoice number is encoded in the CENTS. A payment of exactly
+   $3,240.25 can only be INV-100025. That is why the figure is repeated three
+   times on the way out — it has to be typed correctly. */
+/* ONE id per cart, not per click. A new id on every attempt meant a lost
+   response — network drop, phone sleeping — would mint a SECOND invoice when
+   the customer tried again. The id resets only when the cart does. */
+var CHECKOUT_SUBMIT_ID = 'co-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);
+function newCheckoutId(){
+  CHECKOUT_SUBMIT_ID = 'co-'+Date.now()+'-'+Math.random().toString(36).slice(2,9);
+}
+
+/* The free-shipping threshold lives on the server. Hardcoding it here as well
+   meant the two could drift, and the customer would be shown one total and
+   charged another. */
+var CO_FREE_OVER = 5000, CO_DEPOSIT_PCT = 50;
+(async function loadCheckoutConfig(){
+  try{
+    var r=await fetch(APPS_SCRIPT_URL,{method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'catalogConfig',secret:CATALOG_SECRET})});
+    var d=await r.json();
+    if(d&&d.ok){
+      CO_FREE_OVER=Number(d.freeShipOver)||CO_FREE_OVER;
+      CO_DEPOSIT_PCT=Number(d.depositPct)||CO_DEPOSIT_PCT;
+      if(d.payEnabled===false){ var b=document.getElementById('coPayBtn'); if(b) b.dataset.off='1'; }
+    }
+  }catch(e){}
+})();
+
+function showCheckoutTotal(){
+  var box=document.getElementById('coTotalBox');
+  var pay=document.getElementById('coPayBtn');
+  if(!box||!pay) return;
+  if(!SELECTED_SHIP){ box.style.display='none'; pay.style.display='none'; return; }
+  var sub=cartSubtotal();
+  var ship=Number(SELECTED_SHIP.shipEstimate)||0;
+  var free=(CO_FREE_OVER>0 && sub>=CO_FREE_OVER);
+  if(free) ship=0;
+  var total=sub+ship;
+  document.getElementById('coTotalNum').textContent=money(total);
+  document.getElementById('coTotalSub').innerHTML=
+    money(sub)+' product'+(free?' &middot; <b style="color:#4ADE80">free shipping</b>'
+                               :(' &middot; '+money(ship)+' shipping'))+
+    '<br>Final amount is confirmed on the next screen.';
+  box.style.display='block';
+  pay.style.display = pay.dataset.off ? 'none' : 'block';
+  // Swap the stock wording — "confirmed after submission" is not true once
+  // somebody has handed over money.
+  var sn=document.querySelector('.co-stock-note:not(#coPayNote)');
+  var pn=document.getElementById('coPayNote');
+  if(sn) sn.style.display='none';
+  if(pn) pn.style.display='block';
+}
+
+async function payNow(){
+  var name=document.getElementById('coName').value.trim();
+  var shop=document.getElementById('coShop').value.trim();
+  var phone=document.getElementById('coPhone').value.trim();
+  var email=document.getElementById('coEmail').value.trim();
+  var shipTo=document.getElementById('coShipTo').value.trim();
+  var shipMethod=document.querySelector('input[name="shipMethod"]:checked');
+
+  if(!name||!phone||!email){ alert('Please enter your name, phone, and email.'); return; }
+  if(!shop){ alert('Please enter your business name.'); return; }
+  if(!shipMethod){ alert('Please choose a shipping speed.'); return; }
+  var items=cartItemsForPayload();
+  if(!items.length){ alert('Your cart is empty.'); return; }
+
+  var btn=document.getElementById('coPayBtn');
+  btn.disabled=true; btn.textContent='Reserving your order…';
+
+  var payload={
+    action:'catalogCheckout',
+    secret:CATALOG_SECRET,
+    rep:getRep(),
+    submitId:CHECKOUT_SUBMIT_ID,
+    customer:{name:name, shop:shop, phone:phone, email:email,
+              addr1:shipTo, city:'', state:'',
+              zip:document.getElementById('coZip').value.replace(/[^0-9]/g,'')},
+    items:items,
+    shippingMethod:shipMethod.value,
+    shipping: SELECTED_SHIP ? SELECTED_SHIP.shipEstimate : 0,
+    notes:document.getElementById('coNotes').value.trim()
+  };
+
+  try{
+    var res=await fetch(APPS_SCRIPT_URL,{method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)});
+    var d=await res.json();
+    if(!d.ok) throw new Error(d.msg||'could not reserve the order');
+
+    document.getElementById('checkoutBody').innerHTML=
+      '<div class="co-paywait">'+
+        '<div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8FA896">'+
+          'Order '+d.invoiceNo+' reserved</div>'+
+        '<div class="co-payamt">'+money(d.total)+'</div>'+
+        '<div style="font-size:13px;color:#C6D6C9">Pay this exact amount, including the cents.</div>'+
+        '<div class="co-paystep">'+
+          '<b>1.</b> Tap the button below to open our secure payment page.<br>'+
+          '<b>2.</b> Enter <b style="color:#C9A227">'+money(d.total)+'</b> as the amount — the cents '+
+            'identify your order, so please do not round it.<br>'+
+          '<b>3.</b> Complete the payment. We will confirm by email.'+
+        '</div>'+
+        '<a class="co-paybtn" href="'+d.payUrl+'" target="_blank" rel="noopener">'+
+          'Pay '+money(d.total)+'</a>'+
+        '<div style="font-size:12px;color:#8FA896;margin-top:16px;line-height:1.7">'+
+          'Prefer to pay a deposit? Send <b>'+money(d.deposit)+'</b> and we will invoice the balance '+
+          'before shipping.<br>Questions: (408) 444-HEMP</div>'+
+        (d.pdfUrl?('<div style="margin-top:14px"><a href="'+d.pdfUrl+'" target="_blank" '+
+          'style="color:#C9A227;font-size:13px">View your invoice</a></div>'):'')+
+      '</div>';
+  }catch(err){
+    btn.disabled=false; btn.textContent='Pay Now & Reserve This Order';
+    alert('Sorry, we could not reserve that order. Please call or text (408) 444-HEMP and we will take care of you.');
+  }
+}
+</script>
+</body>"""
+    ),
+    (
         "unit-mode add-to-cart",
         # Mini soda cans / tuna cans / quarter-ounce jars have NO weight tiers —
         # lb/half/qtr/oz are all 0 — so the pricing block rendered empty and the
