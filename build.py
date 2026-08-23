@@ -1176,7 +1176,7 @@ FRONTEND_PATCHES = [
         """      <button id="coSubmit" class="co-btn" onclick="submitQuote()">Submit Quote Request</button>""",
         """      <div id="coPayNote" class="co-stock-note" style="display:none">✅ <b>Paying reserves your order.</b> We confirm stock before your card is charged for anything — if something is unavailable we will call you, and refund in full if you would rather not substitute.</div>
       <div id="coTotalBox" class="co-totalbox" style="display:none">
-        <div class="co-total-lbl">Total due</div>
+        <div class="co-total-lbl">Estimated total</div>
         <div class="co-total-num" id="coTotalNum">$0.00</div>
         <div class="co-total-sub" id="coTotalSub"></div>
       </div>
@@ -1271,7 +1271,10 @@ function showCheckoutTotal(){
   document.getElementById('coTotalSub').innerHTML=
     money(sub)+' product'+(free?' &middot; <b style="color:#4ADE80">free shipping</b>'
                                :(' &middot; '+money(ship)+' shipping'))+
-    '<br>Final amount is confirmed on the next screen.';
+    // The exact figure is set when the invoice number is issued — it carries a
+    // few cents that tie the payment to the order. Saying "estimated" here
+    // stops the number appearing to change on the next screen.
+    '<br>Your exact total is confirmed on the next screen.';
   box.style.display='block';
   pay.style.display = pay.dataset.off ? 'none' : 'block';
   // Swap the stock wording — "confirmed after submission" is not true once
