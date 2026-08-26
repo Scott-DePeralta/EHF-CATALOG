@@ -77,5 +77,23 @@
   "price_changes": [],
   "went_oos": [],
   "back_in": []
+ },
+ {
+  "ts": "2026-08-26T00:43:56.838119+00:00",
+  "version": "3.80",
+  "added": [
+   "Flower: KANDY KUSH",
+   "Flower: KINGLATO",
+   "Flower: GUMBO",
+   "Flower: POWDERED DONUTS",
+   "Flower: PINK GUAVA",
+   "Flower: CARTIER RUNTZ"
+  ],
+  "removed": [
+   "Flower: CANDY FUMES"
+  ],
+  "price_changes": [],
+  "went_oos": [],
+  "back_in": []
  }
 ]
