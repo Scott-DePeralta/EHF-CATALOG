@@ -1242,17 +1242,20 @@ function newCheckoutId(){
 /* The free-shipping threshold lives on the server. Hardcoding it here as well
    meant the two could drift, and the customer would be shown one total and
    charged another. */
-var CO_FREE_OVER = 5000, CO_DEPOSIT_PCT = 50;
+var CO_FREE_OVER = 5000, CO_DEPOSIT_PCT = 50, CO_REP_DISC = 0;
 (async function loadCheckoutConfig(){
   try{
     var r=await fetch(APPS_SCRIPT_URL,{method:'POST',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify({action:'catalogConfig',secret:CATALOG_SECRET})});
+      body:JSON.stringify({action:'catalogConfig',secret:CATALOG_SECRET,rep:getRep()})});
     var d=await r.json();
     if(d&&d.ok){
       CO_FREE_OVER=Number(d.freeShipOver)||CO_FREE_OVER;
       CO_DEPOSIT_PCT=Number(d.depositPct)||CO_DEPOSIT_PCT;
+      // The rep's link pricing, so the cart shows what will actually be charged.
+      CO_REP_DISC=Number(d.repDiscountPct)||0;
       if(d.payEnabled===false){ var b=document.getElementById('coPayBtn'); if(b) b.dataset.off='1'; }
+      if(typeof showCheckoutTotal==='function') showCheckoutTotal();
     }
   }catch(e){}
 })();
@@ -1263,14 +1266,20 @@ function showCheckoutTotal(){
   if(!box||!pay) return;
   if(!SELECTED_SHIP){ box.style.display='none'; pay.style.display='none'; return; }
   var sub=cartSubtotal();
+  var disc=Math.round(sub*(CO_REP_DISC/100)*100)/100;
+  var after=Math.round((sub-disc)*100)/100;
   var ship=Number(SELECTED_SHIP.shipEstimate)||0;
-  var free=(CO_FREE_OVER>0 && sub>=CO_FREE_OVER);
+  // The threshold applies to what is actually being paid for product, after the
+  // rep's pricing — the same test the server makes.
+  var free=(CO_FREE_OVER>0 && after>=CO_FREE_OVER);
   if(free) ship=0;
-  var total=sub+ship;
+  var total=Math.round((after+ship)*100)/100;
   document.getElementById('coTotalNum').textContent=money(total);
   document.getElementById('coTotalSub').innerHTML=
-    money(sub)+' product'+(free?' &middot; <b style="color:#4ADE80">free shipping</b>'
-                               :(' &middot; '+money(ship)+' shipping'))+
+    money(sub)+' product'+
+    (disc>0?(' &middot; <b style="color:#4ADE80">&minus;'+money(disc)+' your pricing</b>'):'')+
+    (free?' &middot; <b style="color:#4ADE80">free shipping</b>'
+        :(' &middot; '+money(ship)+' shipping'))+
     // The exact figure is set when the invoice number is issued — it carries a
     // few cents that tie the payment to the order. Saying "estimated" here
     // stops the number appearing to change on the next screen.
