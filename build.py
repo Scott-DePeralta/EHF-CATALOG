@@ -1180,8 +1180,12 @@ FRONTEND_PATCHES = [
         <div class="co-total-num" id="coTotalNum">$0.00</div>
         <div class="co-total-sub" id="coTotalSub"></div>
       </div>
-      <button id="coPayBtn" class="co-btn co-btn-pay" style="display:none" onclick="payNow()">Pay Now &amp; Reserve This Order</button>
-      <button id="coSubmit" class="co-btn co-btn-quote" onclick="submitQuote()">Or request a quote instead</button>"""
+      <button id="coPayBtn" class="co-btn co-btn-pay" style="display:none" onclick="payNow()">Place Order &amp; Pay</button>
+      <div id="coAltWrap" class="co-alt">
+        Need to pay by wire, or want a different quantity or price?
+        <a href="#" onclick="submitQuote();return false;">Have a rep call you</a>
+      </div>
+      <button id="coSubmit" class="co-btn co-btn-quote" onclick="submitQuote()">Request a quote</button>"""
     ),
     (
         "show the total when a shipping speed is picked",
@@ -1216,6 +1220,8 @@ FRONTEND_PATCHES = [
   font-size:16px!important;font-weight:800!important;padding:17px!important}
 .co-btn-quote{background:transparent!important;color:#8FA896!important;border:1px solid rgba(255,255,255,.18)!important;
   font-size:13px!important;font-weight:600!important;margin-top:9px!important}
+.co-alt{display:none;text-align:center;font-size:12.5px;color:#8FA896;margin-top:12px;line-height:1.7}
+.co-alt a{color:#C9A227;text-decoration:underline}
 .co-paywait{background:#12261B;border-radius:14px;padding:24px;text-align:center;color:#fff}
 .co-payamt{font-family:Georgia,serif;font-size:34px;font-weight:700;color:#C9A227;margin:10px 0}
 .co-paystep{text-align:left;font-size:13.5px;color:#C6D6C9;line-height:1.9;margin:14px 0}
@@ -1286,6 +1292,11 @@ function showCheckoutTotal(){
     '<br>Your exact total is confirmed on the next screen.';
   box.style.display='block';
   pay.style.display = pay.dataset.off ? 'none' : 'block';
+  // The price is now on screen. A second button offering a quote competes with
+  // the one that takes money, so it becomes a line of text for the people who
+  // genuinely need other terms.
+  var sb=document.getElementById('coSubmit'); if(sb) sb.style.display='none';
+  var alt=document.getElementById('coAltWrap'); if(alt) alt.style.display='block';
   // Swap the stock wording — "confirmed after submission" is not true once
   // somebody has handed over money.
   var sn=document.querySelector('.co-stock-note:not(#coPayNote)');
