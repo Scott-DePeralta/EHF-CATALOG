@@ -1490,15 +1490,25 @@ APPS_SCRIPT_EXEC = ('https://script.google.com/macros/s/'
 
 REDIRECTS = f"""# Branded short links for the team. 302 so the address is never cached by a
 # browser — if the deployment URL changes, updating this file is enough.
-/sales      {APPS_SCRIPT_EXEC}                 302
-/order      {APPS_SCRIPT_EXEC}                 302
-/invoice    {APPS_SCRIPT_EXEC}                 302
-/quote      {APPS_SCRIPT_EXEC}                 302
 
-# The console. Deliberately NOT /admin — a guessable path to an owner console
-# gated by one shared code is an invitation. Change this string whenever you
-# would change the code itself.
-/ops-console  {APPS_SCRIPT_EXEC}?page=admin    302
+# ── The order form. Four names for one thing, because people remember
+#    different words for it and a dead link costs a sale.
+/sales        {APPS_SCRIPT_EXEC}                 302
+/order        {APPS_SCRIPT_EXEC}                 302
+/invoice      {APPS_SCRIPT_EXEC}                 302
+/quote        {APPS_SCRIPT_EXEC}                 302
+
+# ── The console. TWO names, both going to the same place.
+#    Neither is /admin: a guessable path to an owner console gated by one shared
+#    code is an invitation. Change these strings whenever you would change the
+#    code itself.
+/operations   {APPS_SCRIPT_EXEC}?page=admin      302
+/ops-console  {APPS_SCRIPT_EXEC}?page=admin      302
+
+# ── Old paths that used to be separate pages. Kept so a bookmark from before
+#    still lands somewhere useful rather than on a 404.
+/report       {APPS_SCRIPT_EXEC}?page=admin      302
+/payout       {APPS_SCRIPT_EXEC}?page=admin      302
 """
 
 HEADERS = """/*
@@ -1507,8 +1517,6 @@ HEADERS = """/*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
-/dashboard.html
-  X-Robots-Tag: noindex, nofollow
 """
 
 def ensure_site_config():
@@ -1526,7 +1534,7 @@ def ensure_site_config():
 
 def deploy_to_netlify(html_content):
     """Deploy the catalog plus the dashboard and its data files in one Netlify deploy.
-    The dashboard becomes available at /dashboard.html and reads the JSON alongside it."""
+    dashboard_data.json is published for the invoice system's version check."""
     if not NETLIFY_TOKEN or not NETLIFY_SITE_ID:
         print('  No Netlify credentials — skipping deploy')
         return False
@@ -1539,7 +1547,11 @@ def deploy_to_netlify(html_content):
     # included now, and generated below if the repo does not have them.
     files = {'/index.html': html_content.encode('utf-8')}
     ensure_site_config()
-    for extra in ('dashboard.html', 'dashboard_data.json', 'inventory_history.json',
+    # dashboard.html is NOT published any more — the ops console replaced it.
+    # dashboard_data.json stays: the invoice system reads it at
+    # CATALOG_VERSION_URL to check the catalog and the invoice are in sync, so
+    # removing it would break that check silently.
+    for extra in ('dashboard_data.json', 'inventory_history.json',
                   '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
@@ -1848,25 +1860,31 @@ def audit_build(parsed):
         if len(prods) == 0:
             problems.append(f'*{tab}* — 0 products! This tab is EMPTY on the site. '
                             f'Check the sheet tab has data and correct headers.')
-        # One line per KIND of gap, each naming the products, so the fix is
-        # obvious from the message. A paragraph explaining the likely causes
-        # made every warning look the same and told you nothing you could act on.
-        def _names(lst, n=6):
-            return ', '.join(lst[:n]) + (f' … and {len(lst)-n} more' if len(lst) > n else '')
+        # ONE LINE PER PRODUCT, listing what that product is missing.
+        #
+        # Grouping by problem type meant a product missing three things appeared
+        # in three separate lists, and you had to cross-reference them to work
+        # out what to actually go and fix. This is the fix list: read down it,
+        # each line is one row in the sheet and what to put in it.
+        missing = {}
+        for nm in no_price: missing.setdefault(nm, []).append('price')
+        for nm in no_img:   missing.setdefault(nm, []).append('picture')
+        for nm in no_coa:   missing.setdefault(nm, []).append('COA')
 
-        if no_img and len(prods) > 0:
-            pct = len(no_img) / len(prods) * 100
-            lvl = problems if pct >= 50 else warnings
-            lvl.append(f'*{tab} — missing pictures ({len(no_img)}):* ' + _names(no_img) +
-                       '\n   _Buyers see a grey box. Paste a Drive link shared "Anyone with the link" '
-                       'into the picture column — Slack links expire._')
-        if no_price:
-            warnings.append(f'*{tab} — missing prices ({len(no_price)}):* ' + _names(no_price) +
-                            '\n   _These read "Call for Pricing" on the catalog and cannot be sold '
-                            'on an invoice at all._')
-        if no_coa and len(prods) > 0:
-            warnings.append(f'*{tab} — missing COAs ({len(no_coa)}):* ' + _names(no_coa) +
-                            '\n   _No lab report to show. Buyers ask for these before they order._')
+        if missing:
+            # Worst first — no price means it cannot be sold at all.
+            order = {'price': 0, 'picture': 1, 'COA': 2}
+            rows = sorted(missing.items(),
+                          key=lambda kv: (order.get(kv[1][0], 9), -len(kv[1]), kv[0]))
+            width = min(34, max(len(n) for n, _ in rows))
+            lines = [f'{n[:width].ljust(width)}  {", ".join(w)}' for n, w in rows[:25]]
+            if len(rows) > 25:
+                lines.append(f'… and {len(rows)-25} more')
+
+            pct = len(no_price) / len(prods) * 100 if prods else 0
+            lvl = problems if pct >= 25 else warnings
+            lvl.append(f'*{tab}* — {len(rows)} product(s) need something:\n```' +
+                       '\n'.join(lines) + '```')
 
         # per-tab report line
         flags = []
