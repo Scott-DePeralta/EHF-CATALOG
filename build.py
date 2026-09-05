@@ -1799,6 +1799,9 @@ def audit_build(parsed):
         # --- Quality checks on the products that DID make it ---
         _clean = lambda s: ' '.join(str(s).split())
         no_img   = [_clean(p['n']) for p in prods if not str(p.get('pic','')).strip()]
+        # A buyer asks for the COA before they buy. A product without one is a
+        # question the rep has to answer by hand, every time.
+        no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
         # A product has a price if EITHER (a) any of the legacy per-unit keys are
         # populated (Flower still uses lb/half/qtr/oz), OR (b) it has a non-empty
         # `tiers` list with at least one priced tier (PreRoll/Vape/Edibles/Extracts/
@@ -1828,7 +1831,7 @@ def audit_build(parsed):
 
         details[tab] = {
             'products': len(prods), 'dropped': len(dropped),
-            'no_img': len(no_img), 'no_price': len(no_price),
+            'no_img': len(no_img), 'no_price': len(no_price), 'no_coa': len(no_coa),
             'no_coa': len(no_coa), 'dupes': len(dupes),
         }
 
@@ -1845,22 +1848,32 @@ def audit_build(parsed):
         if len(prods) == 0:
             problems.append(f'*{tab}* — 0 products! This tab is EMPTY on the site. '
                             f'Check the sheet tab has data and correct headers.')
+        # One line per KIND of gap, each naming the products, so the fix is
+        # obvious from the message. A paragraph explaining the likely causes
+        # made every warning look the same and told you nothing you could act on.
+        def _names(lst, n=6):
+            return ', '.join(lst[:n]) + (f' … and {len(lst)-n} more' if len(lst) > n else '')
+
         if no_img and len(prods) > 0:
             pct = len(no_img) / len(prods) * 100
             lvl = problems if pct >= 50 else warnings
-            lvl.append(f'*{tab}* — {len(no_img)}/{len(prods)} products have NO image ({pct:.0f}%). '
-                       f'These show a grey placeholder. Likely cause: the image link in the sheet '
-                       f'is blank, a Slack link (expires), or a Drive file not shared "Anyone with the link". '
-                       f'Examples: ' + ', '.join(no_img[:4]) + (' …' if len(no_img) > 4 else ''))
+            lvl.append(f'*{tab} — missing pictures ({len(no_img)}):* ' + _names(no_img) +
+                       '\n   _Buyers see a grey box. Paste a Drive link shared "Anyone with the link" '
+                       'into the picture column — Slack links expire._')
         if no_price:
-            warnings.append(f'*{tab}* — {len(no_price)} product(s) show "Call for Pricing" (no price in sheet): ' +
-                            ', '.join(no_price[:4]) + (' …' if len(no_price) > 4 else ''))
+            warnings.append(f'*{tab} — missing prices ({len(no_price)}):* ' + _names(no_price) +
+                            '\n   _These read "Call for Pricing" on the catalog and cannot be sold '
+                            'on an invoice at all._')
+        if no_coa and len(prods) > 0:
+            warnings.append(f'*{tab} — missing COAs ({len(no_coa)}):* ' + _names(no_coa) +
+                            '\n   _No lab report to show. Buyers ask for these before they order._')
 
         # per-tab report line
         flags = []
         if dropped:  flags.append(f'{len(dropped)} dropped')
         if no_img:   flags.append(f'{len(no_img)} no-img')
         if no_price: flags.append(f'{len(no_price)} no-price')
+        if no_coa:   flags.append(f'{len(no_coa)} no-COA')
         if dupes:    flags.append(f'{len(dupes)} dupe')
         report.append(f'{tab}: {len(prods)} products' + (f'  ⚠️ ' + ', '.join(flags) if flags else '  ✓'))
 
@@ -2103,7 +2116,11 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
         # (No changes needs no line.)
 
     parts.append('')
-    parts.append('_Copy this message into your Claude chat if you want it fixed._')
+    # This used to say "copy this into your Claude chat", which reads as though
+    # the system needs outside help to function. It does not — the message
+    # already says what is wrong and what to do about it.
+    parts.append('_Everything above is fixable in the inventory sheet. '
+                 'Nothing here stops the catalog or the invoice system working._')
 
     text = '\n'.join(parts)
     # Slack has a ~40k char limit per message; trim defensively.
