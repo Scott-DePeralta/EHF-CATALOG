@@ -1509,6 +1509,12 @@ REDIRECTS = f"""# Branded short links for the team. 302 so the address is never 
 #    still lands somewhere useful rather than on a 404.
 /report       {APPS_SCRIPT_EXEC}?page=admin      302
 /payout       {APPS_SCRIPT_EXEC}?page=admin      302
+
+# ── The Cannabis Shop ordering demo. A static page with invented data — it
+#    talks to nothing and saves nothing. Shown to the owners to make the case
+#    for wiring the two businesses together.
+/cannabis-shop-invoice  /cannabis-shop-invoice.html   200
+/cannabis-shop          /cannabis-shop-invoice.html   200
 """
 
 HEADERS = """/*
@@ -1552,6 +1558,7 @@ def deploy_to_netlify(html_content):
     # CATALOG_VERSION_URL to check the catalog and the invoice are in sync, so
     # removing it would break that check silently.
     for extra in ('dashboard_data.json', 'inventory_history.json',
+                  'cannabis-shop-invoice.html',
                   '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
