@@ -1348,13 +1348,18 @@ async function payNow(){
         '<div style="font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#8FA896">'+
           'Order '+d.invoiceNo+' reserved</div>'+
         '<div class="co-payamt">'+money(d.total)+'</div>'+
-        '<div style="font-size:13px;color:#C6D6C9">Pay this exact amount, including the cents.</div>'+
-        '<div class="co-paystep">'+
-          '<b>1.</b> Tap the button below to open our secure payment page.<br>'+
-          '<b>2.</b> Enter <b style="color:#C9A227">'+money(d.total)+'</b> as the amount — the cents '+
-            'identify your order, so please do not round it.<br>'+
-          '<b>3.</b> Complete the payment. We will confirm by email.'+
-        '</div>'+
+        // With a fixed-amount link there is nothing to type, so the three-step
+        // instruction about cents would just be noise.
+        (d.payFixed
+          ? ('<div style="font-size:13px;color:#C6D6C9">The amount is already set. '+
+             'Nothing to type.</div>')
+          : ('<div style="font-size:13px;color:#C6D6C9">Pay this exact amount, including the cents.</div>'+
+             '<div class="co-paystep">'+
+               '<b>1.</b> Tap the button below to open our secure payment page.<br>'+
+               '<b>2.</b> Enter <b style="color:#C9A227">'+money(d.total)+'</b> as the amount — the cents '+
+                 'identify your order, so please do not round it.<br>'+
+               '<b>3.</b> Complete the payment. We will confirm by email.'+
+             '</div>'))+
         '<a class="co-paybtn" href="'+d.payUrl+'" target="_blank" rel="noopener">'+
           'Pay '+money(d.total)+'</a>'+
         '<div style="font-size:12px;color:#8FA896;margin-top:16px;line-height:1.7">'+
