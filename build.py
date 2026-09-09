@@ -1513,8 +1513,10 @@ REDIRECTS = f"""# Branded short links for the team. 302 so the address is never 
 # ── The Cannabis Shop ordering demo. A static page with invented data — it
 #    talks to nothing and saves nothing. Shown to the owners to make the case
 #    for wiring the two businesses together.
-/cannabis-shop-invoice  /cannabis-shop-invoice.html   200
-/cannabis-shop          /cannabis-shop-invoice.html   200
+# ── The Cannabis Shop store-ordering portal. Its catalog file is written by
+#    this same build, from the same sheet, with prices stripped.
+/cannabis-shop-orders   /cannabis-shop-orders.html    200
+/cannabis-shop          /cannabis-shop-orders.html    200
 """
 
 HEADERS = """/*
@@ -1557,14 +1559,31 @@ def deploy_to_netlify(html_content):
     # dashboard_data.json stays: the invoice system reads it at
     # CATALOG_VERSION_URL to check the catalog and the invoice are in sync, so
     # removing it would break that check silently.
+    # Files that MUST be there. A redirect points at each of these, so if one is
+    # missing the visitor gets a 404 — and the old code skipped silently, so the
+    # build reported success while the page did not exist.
+    REQUIRED_EXTRAS = ('cannabis-shop-orders.html', 'cs-catalog.js')
+    missing = []
     for extra in ('dashboard_data.json', 'inventory_history.json',
-                  'cannabis-shop-invoice.html',
+                  'cannabis-shop-orders.html', 'cs-catalog.js',
                   '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
                 files['/' + extra] = open(extra, 'rb').read()
             except Exception as e:
                 print(f'  (skipping {extra}: {e})')
+                if extra in REQUIRED_EXTRAS:
+                    missing.append(f'{extra} — could not be read: {e}')
+        elif extra in REQUIRED_EXTRAS:
+            missing.append(f'{extra} — not in the repo')
+
+    if missing:
+        print()
+        print('  !! FILES MISSING FROM THE REPO — the pages that point at them will 404:')
+        for mfile in missing:
+            print(f'     · {mfile}')
+        print('     Add the file to the repository root and run the build again.')
+        print()
 
     # Declare all files with their sha1 hashes.
     digests = {path: hashlib.sha1(data).hexdigest() for path, data in files.items()}
@@ -2165,6 +2184,88 @@ def send_slack_audit(report, problems, warnings=None, changes=None, invoice=None
         print(f'Slack audit failed (non-fatal): {e}')
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  THE CANNABIS SHOP CATALOG
+#
+#  The SAME parsed items as the public catalog, written to a second file with
+#  every price stripped out and stock levels removed. Generated in the same
+#  pass, from the same fetch, so the two can never drift — add a product or fix
+#  a photo and both update together.
+#
+#  Prices are removed by REBUILDING each record from scratch rather than by
+#  deleting fields. A field nobody remembered to delete is how a price ends up
+#  on a page that is supposed to have none.
+# ═══════════════════════════════════════════════════════════════════════════
+def build_cs_catalog(flower_items, preroll_items, vape_items, edibles_items,
+                     extracts_items, syrup_items, topicals_items, gelcaps_items):
+
+    def sizes_from(it):
+        """Every size a buyer can pick, without any of the prices attached."""
+        out = []
+        for t in (it.get('tiers') or []):
+            lbl = str(t.get('size') or t.get('desc') or '').strip()
+            if lbl and lbl not in out:
+                out.append(lbl)
+        if not out:
+            for key, lbl in (('lb','1 Pound'),('half','1/2 Pound'),
+                             ('qtr','1/4 Pound'),('oz','Ounce')):
+                if it.get(key):
+                    out.append(lbl)
+        if not out and it.get('size'):
+            out.append(str(it['size']).strip())
+        return out or ['Each']
+
+    def canns_from(it):
+        c = it.get('cannList') or []
+        if c: return [str(x).strip() for x in c if str(x).strip()]
+        raw = str(it.get('cann') or it.get('thca') or '').strip()
+        if not raw or '%' in raw: return ['THCa']
+        return [x.strip() for x in re.split(r'[/,]', raw) if x.strip()] or ['THCa']
+
+    def pack(items, cat):
+        out = []
+        for it in items:
+            if it.get('sec'):            # section header row, not a product
+                continue
+            name = str(it.get('n') or '').strip()
+            if not name:
+                continue
+            out.append({
+                'n':     name,
+                'sizes': sizes_from(it),
+                'canns': canns_from(it),
+                'pic':   str(it.get('pic') or ''),
+                'coa':   str(it.get('coa') or ''),
+                # NO price. NO stock. Deliberately absent, not blanked.
+            })
+        return {'cat': cat, 'items': out}
+
+    groups = [
+        pack(flower_items,   'Flower'),
+        pack(preroll_items,  'Pre-Rolls'),
+        pack(vape_items,     'Vapes & Carts'),
+        pack(edibles_items,  'Edibles'),
+        pack(extracts_items, 'Extracts'),
+        pack(syrup_items,    'Syrup'),
+        pack(topicals_items, 'Topicals'),
+        pack(gelcaps_items,  'Gel Caps & Tinctures'),
+    ]
+    groups = [g for g in groups if g['items']]
+
+    blob = json.dumps(groups, separators=(',', ':'))
+
+    # A price on this page would be a real problem, so check the OUTPUT rather
+    # than trusting that the code above did what it says.
+    leak = re.search(r'"(?:lb|half|qtr|oz|price|unitprice|tiers|qty|st|sl)"\s*:', blob)
+    if leak:
+        raise RuntimeError(f'CS catalog contains a price or stock field: {leak.group(0)}')
+    if re.search(r'\$\s?\d', blob):
+        raise RuntimeError('CS catalog contains a dollar figure')
+
+    total = sum(len(g['items']) for g in groups)
+    print(f'  Cannabis Shop catalog: {total} products across {len(groups)} groups, no prices')
+    return 'const CS_CATALOG = ' + blob + ';\n'
+
 def main():
     global BUILD_VERSION
     print(f'\n=== EHF Catalog Builder v8 (per-section price ladders) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
@@ -2213,6 +2314,15 @@ def main():
     syrup_items    = parse_generic(syrup_rows, 'SYRUP')
     topicals_items = parse_generic(topicals_rows, 'TOPICALS')
     gelcaps_items  = parse_generic(gelcaps_rows, 'GELCAPS')
+
+    # The Cannabis Shop catalog — same products, prices stripped.
+    try:
+        cs_js = build_cs_catalog(flower_items, preroll_items, vape_items, edibles_items,
+                                 extracts_items, syrup_items, topicals_items, gelcaps_items)
+        open('cs-catalog.js', 'w').write(cs_js)
+    except Exception as _e:
+        print(f'  !! Cannabis Shop catalog NOT written: {_e}')
+        cs_js = None
 
     print(f'  Flower: {len(flower_items)} | PreRoll: {len([x for x in preroll_items if not x.get("sec")])} | Vape: {len([x for x in vape_items if not x.get("sec")])} | Edibles: {len([x for x in edibles_items if not x.get("sec")])}')
 
