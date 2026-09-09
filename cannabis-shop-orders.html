@@ -12,10 +12,15 @@
    ownership should not look like two unrelated systems.
    ───────────────────────────────────────────────────────────── */
 :root{
-  --ink:#12261B; --ink2:#1C3D2A; --ink3:#2E7D4F;
-  --brass:#A5872B; --brass-lt:#C9A227; --brass-pale:#F7F1DC;
-  --paper:#F6F7F4; --card:#FFFFFF; --tint:#FAFBF8;
-  --line:#E4E8E1; --line2:#CFD7CB; --txt:#16201A; --mute:#5A6A5E; --faint:#8A9A8E;
+  /* The Cannabis Shop's own colours, taken off the logo: cyan wordmark, green
+     leaf, heavy black outline. Kept distinct from the Exclusive Hemp Farms
+     forest-and-brass so nobody confuses the two systems. */
+  --ink:#0B0D0E; --ink2:#171B1D; --ink3:#2BC4DE;
+  --cyan:#4FD9F0; --cyan-lt:#8BE9FA; --cyan-dk:#1FA9C4;
+  --leaf:#6EE86E; --leaf-dk:#3FBF52;
+  --brass:#4FD9F0; --brass-lt:#8BE9FA; --brass-pale:#E8FAFE;
+  --paper:#F4F8FA; --card:#FFFFFF; --tint:#F8FCFD;
+  --line:#DDE7EB; --line2:#C4D4DA; --txt:#0B0D0E; --mute:#4A5A61; --faint:#8098A2;
   --good:#1B7A3D; --good-bg:#EDF7F0; --bad:#B3261E; --bad-bg:#FDF2F1;
   --warn:#8A6100; --warn-bg:#FDF6E7; --info:#0B5CAD; --info-bg:#EEF5FC;
   --serif:Georgia,'Times New Roman',serif;
@@ -34,13 +39,20 @@ button{font-family:inherit}
 .top{background:var(--ink);padding:0 22px;position:sticky;top:0;z-index:50;
   box-shadow:0 6px 22px rgba(18,38,27,.16)}
 .top-in{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:15px 0;flex-wrap:wrap}
-.wm{font-size:13.5px;font-weight:800;letter-spacing:.2em;color:#fff;line-height:1.3}
-.wm span{color:var(--brass-lt)}
-.eyebrow{font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;color:#7E9686;margin-top:5px}
+/* The wordmark: cyan on black with a black outline, the way the logo reads.
+   A leaf sits after it in the brand green. */
+.wm{font-family:var(--serif);font-size:23px;font-weight:700;color:var(--cyan);line-height:1;
+  letter-spacing:-.01em;display:flex;align-items:center;gap:9px;
+  text-shadow:0 2px 0 rgba(0,0,0,.55)}
+.wm .the{font-size:15px;opacity:.92}
+.wm .leaf{width:23px;height:23px;flex:0 0 auto}
+.wm .leaf path{fill:var(--leaf)}
+.eyebrow{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--cyan-lt);
+  margin-top:5px;font-weight:800;opacity:.72}
 .sp{flex:1}
 .who{font-size:11.5px;color:#8FA896;text-align:right;line-height:1.6}
 .who b{color:#fff;display:block;font-size:13px}
-.storepick{background:rgba(255,255,255,.10);border:1px solid rgba(201,162,39,.4);color:#fff;
+.storepick{background:rgba(255,255,255,.10);border:1px solid rgba(79,217,240,.45);color:#fff;
   border-radius:99px;padding:8px 14px;font-size:12px;font-weight:600;max-width:230px}
 .storepick option{color:#16201A}
 
@@ -50,19 +62,22 @@ button{font-family:inherit}
 .tabs button{background:transparent;border:0;color:#8FA896;border-radius:9px 9px 0 0;padding:12px 18px;
   font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 .tabs button.on{color:var(--ink);background:var(--paper)}
-.tabs .cnt{background:var(--brass-lt);color:#1A1400;border-radius:99px;padding:1px 7px;font-size:10px;margin-left:7px}
+.tabs .cnt{background:var(--cyan);color:#04252B;border-radius:99px;padding:1px 7px;font-size:10px;margin-left:7px}
 
 .wrap{max-width:1320px;margin:0 auto;padding:24px 22px 96px}
 .pane{display:none} .pane.on{display:block}
 h2.sec{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);margin:0 0 4px}
-.rule{height:2px;width:52px;background:var(--brass);border-radius:2px;margin:10px 0 18px}
+.rule{height:3px;width:56px;border-radius:2px;margin:10px 0 18px;
+  background:linear-gradient(90deg,var(--cyan),var(--leaf))}
 .sub{font-size:13.5px;color:var(--mute);margin-bottom:18px;max-width:780px;line-height:1.7}
 .bar{display:flex;gap:9px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
 .btn{border:1px solid var(--line2);background:var(--card);border-radius:99px;padding:10px 17px;font-size:11px;
   font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;color:var(--mute);
   box-shadow:var(--sh);white-space:nowrap}
 .btn:hover{color:var(--ink);border-color:var(--ink3)}
-.btn.on,.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.on,.btn.dark{background:var(--ink);color:var(--cyan);border-color:var(--ink)}
+.btn.danger{color:var(--bad);border-color:#EFC4C1}
+.btn.danger:hover{background:var(--bad-bg);border-color:var(--bad)}
 .search{flex:1;min-width:200px}
 .search input{width:100%;padding:11px 16px;border:1px solid var(--line2);border-radius:99px;font-size:14px;
   background:var(--card);box-shadow:var(--sh)}
@@ -87,14 +102,14 @@ h2.sec{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);
   cursor:pointer;color:var(--mute);font-weight:600}
 .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .coa{font-size:10.5px;color:var(--info);align-self:flex-start}
-.add{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:11px;font-weight:800;font-size:10.5px;
-  letter-spacing:.11em;text-transform:uppercase;cursor:pointer;margin-top:auto}
-.add:hover{background:var(--ink2)}
-.cart{position:fixed;right:20px;bottom:20px;background:var(--ink);color:#fff;border:0;border-radius:99px;
+.add{background:var(--ink);color:var(--cyan);border:0;border-radius:10px;padding:11px;font-weight:800;
+  font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;cursor:pointer;margin-top:auto}
+.add:hover{background:var(--ink2);color:var(--cyan-lt)}
+.cart{position:fixed;right:20px;bottom:20px;background:var(--ink);color:var(--cyan);border:0;border-radius:99px;
   padding:15px 24px;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
   box-shadow:0 14px 40px rgba(18,38,27,.34);z-index:60;display:none;align-items:center;gap:10px}
 .cart.on{display:inline-flex}
-.cart .n{background:var(--brass-lt);color:#1A1400;border-radius:99px;padding:2px 9px}
+.cart .n{background:var(--cyan);color:#04252B;border-radius:99px;padding:2px 9px}
 
 table{width:100%;border-collapse:collapse}
 .tw{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;overflow-x:auto;background:var(--card);
@@ -109,11 +124,15 @@ tr:last-child td{border-bottom:0}
   letter-spacing:.11em;text-transform:uppercase;border:1px solid}
 .p-sent{background:var(--info-bg);color:var(--info);border-color:#BFD8F0}
 .p-ship{background:var(--good-bg);color:var(--good);border-color:#B9DEC6}
+/* A test order is labelled wherever it appears, and counted in nothing. */
+.p-test{background:#F3EEFB;color:#5B3FA8;border-color:#D9CCF2}
+tr.testrow{background:#FBF9FE}
 .p-none{background:var(--tint);color:var(--faint);border-color:var(--line)}
 .tiles{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 .tile{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
   padding:15px 17px;box-shadow:var(--sh);position:relative;overflow:hidden}
-.tile::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--brass)}
+.tile::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--cyan),var(--leaf))}
 .tile.red::after{background:var(--bad)} .tile.good::after{background:var(--good)}
 .tile .k{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
 .tile .v{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--ink);margin-top:6px;line-height:1.1}
@@ -131,7 +150,8 @@ tr:last-child td{border-bottom:0}
 .ma{padding:18px 24px;border-top:1px solid var(--line);background:var(--tint);display:flex;gap:11px}
 .ma button{flex:1;border:0;border-radius:11px;padding:14px;font-weight:800;font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;cursor:pointer}
-.mgo{background:var(--ink);color:#fff}
+.mgo{background:var(--ink);color:var(--cyan)}
+.mgo.danger{background:var(--bad);color:#fff}
 .mback{background:var(--card);color:var(--mute);border:1px solid var(--line2)!important}
 .note{background:var(--tint);border:1px solid var(--line);border-left:3px solid var(--line2);border-radius:10px;
   padding:13px 15px;font-size:13px;line-height:1.7;color:var(--mute)}
@@ -140,12 +160,12 @@ tr:last-child td{border-bottom:0}
 
 #gate{min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:22px;
   background:var(--ink)}
-#gate .box{background:var(--card);border-radius:20px;padding:44px 36px;max-width:420px;width:100%;
-  text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.34);border-top:4px solid var(--brass)}
+#gate .box{background:var(--card);border-radius:20px;padding:44px 36px;max-width:430px;width:100%;
+  text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.4);border-top:5px solid var(--cyan)}
 #gate input,#gate select{width:100%;padding:14px;border:1px solid var(--line2);border-radius:11px;font-size:15px;
   margin-top:14px;font-family:inherit}
 #gate input{text-align:center;letter-spacing:.2em;font-family:var(--mono)}
-#gate .go{width:100%;background:var(--ink);color:#fff;border:0;border-radius:11px;padding:15px;font-weight:800;
+#gate .go{width:100%;background:var(--ink);color:var(--cyan);border:0;border-radius:11px;padding:15px;font-weight:800;
   letter-spacing:.12em;text-transform:uppercase;font-size:11.5px;cursor:pointer;margin-top:14px}
 #gate .err{color:var(--bad);font-size:13px;margin-top:12px}
 .none{color:var(--faint);font-style:italic;padding:24px;text-align:center}
@@ -165,8 +185,9 @@ tr:last-child td{border-bottom:0}
 </style></head><body>
 
 <div id="gate"><div class="box">
-  <div class="wm" style="color:var(--ink)">THE <span style="color:var(--brass)">CANNABIS</span> SHOP</div>
-  <div class="eyebrow" style="color:var(--faint)">Store ordering · Exclusive Hemp Farms</div>
+  <div class="wm" style="justify-content:center;color:var(--cyan-dk);text-shadow:none">
+    <span class="the">The</span> Cannabis Shop <svg class="leaf" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c0-4 .6-6.6 1.7-8.6 1.4-2.5 3.6-4 6.3-4.6-.5 3-2 5.2-4.3 6.6 2.6-.5 4.6-2 6-4.4-.2 3.4-2.3 6-5.6 7 1.6.2 3-.1 4.3-.9-1.4 2.3-3.7 3.5-6.7 3.5h-.2V22h-1.5v-.4h-.2c-3 0-5.3-1.2-6.7-3.5 1.3.8 2.7 1.1 4.3.9-3.3-1-5.4-3.6-5.6-7 1.4 2.4 3.4 3.9 6 4.4C7.5 15 6 12.8 5.5 9.8 8.2 10.4 10.4 11.9 11.8 14.4c.1.2.1.3.2.5V22z"/></svg></div>
+  <div class="eyebrow" style="color:var(--faint);opacity:1">Dispensary · Store ordering</div>
   <input id="code" placeholder="Your access code" autocomplete="off"
     onkeydown="if(event.key==='Enter')signIn()">
   <select id="pickStore" style="display:none"></select>
@@ -177,8 +198,8 @@ tr:last-child td{border-bottom:0}
 <div id="app" style="display:none">
   <div class="top"><div class="top-in">
     <div>
-      <div class="wm">THE <span>CANNABIS</span> SHOP</div>
-      <div class="eyebrow">Ordering from Exclusive Hemp Farms</div>
+      <div class="wm"><span class="the">The</span> Cannabis Shop <svg class="leaf" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c0-4 .6-6.6 1.7-8.6 1.4-2.5 3.6-4 6.3-4.6-.5 3-2 5.2-4.3 6.6 2.6-.5 4.6-2 6-4.4-.2 3.4-2.3 6-5.6 7 1.6.2 3-.1 4.3-.9-1.4 2.3-3.7 3.5-6.7 3.5h-.2V22h-1.5v-.4h-.2c-3 0-5.3-1.2-6.7-3.5 1.3.8 2.7 1.1 4.3.9-3.3-1-5.4-3.6-5.6-7 1.4 2.4 3.4 3.9 6 4.4C7.5 15 6 12.8 5.5 9.8 8.2 10.4 10.4 11.9 11.8 14.4c.1.2.1.3.2.5V22z"/></svg></div>
+      <div class="eyebrow">Dispensary · Ordering from Exclusive Hemp Farms</div>
     </div>
     <span class="sp"></span>
     <select id="storeSel" class="storepick" onchange="storeChanged()" style="display:none"></select>
@@ -223,7 +244,21 @@ tr:last-child td{border-bottom:0}
    only to the cs* endpoints — everything is scoped server-side.
    ══════════════════════════════════════════════════════════════ */
 var EXEC='https://script.google.com/macros/s/AKfycbw_3jfvJY1Y2UVXs_XODHDbUMTNzB36kwraR_UZle-l8Rq94pHB_qEgo4DPxsvR-D22fg/exec';
-var CODE='', ME=null, STORE='', CART=[], TAB='order', CAT='all', ORDERS=null, SUBMIT_ID=newId();
+var CODE='', ME=null, STORE='', STORE_NAME='', CART=[], TAB='order', CAT='all',
+    ORDERS=null, SUBMIT_ID=newId();
+
+/* STORE holds an ID. This is how it reads on screen. */
+function storeName(id){
+  if(!id || id==='ALL') return ME&&ME.seesAllStores ? 'All stores' : 'All my stores';
+  var f=((ME&&ME.stores)||[]).concat((ME&&ME.allStores)||[])
+        .filter(function(x){ return x.id===id; })[0];
+  return f ? f.name : id;
+}
+function storeAddr(id){
+  var f=((ME&&ME.stores)||[]).concat((ME&&ME.allStores)||[])
+        .filter(function(x){ return x.id===id; })[0];
+  return f ? f.addr : '';
+}
 
 function newId(){ return 'cs-'+Date.now()+'-'+Math.random().toString(36).slice(2,9); }
 function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
@@ -253,8 +288,11 @@ function signIn(){
     // Store Location blank on their row, so they choose one — every time,
     // because somebody covering two stores should not be locked to yesterday's.
     if(w.mustPickStore && picked.style.display==='none'){
+      // Three cities have two shops in them, so the address is shown too —
+      // "Hurst" on its own is not an answer.
       picked.innerHTML='<option value="">Which store is this for?</option>'+
-        (w.allStores||[]).map(function(s){ return '<option>'+esc(s)+'</option>'; }).join('');
+        (w.allStores||[]).map(function(x){
+          return '<option value="'+esc(x.id)+'">'+esc(x.name)+' — '+esc(x.addr)+'</option>'; }).join('');
       picked.style.display='block';
       document.getElementById('gateErr').textContent='Choose your store to continue.';
       return;
@@ -265,11 +303,11 @@ function signIn(){
     } else if (w.seesAllStores) {
       // Scott and Amparo open on everything, not on whichever store happens to
       // be first in the list.
-      STORE='All stores';
+      STORE='ALL';
     } else if ((w.stores||[]).length > 1) {
-      STORE='All my stores';
+      STORE='ALL';
     } else {
-      STORE=(w.stores&&w.stores[0])||'';
+      STORE=(w.stores&&w.stores[0]&&w.stores[0].id)||'';
     }
     start();
   }, function(){ document.getElementById('gateErr').textContent='Could not reach the server.'; });
@@ -284,16 +322,22 @@ function start(){
 
   // More than one store, so let them switch without signing out.
   var sel=document.getElementById('storeSel');
-  // An owner with more than one store wants to see them together as well as
-  // separately — without it they can only ever look at one at a time.
-  var mine = (ME.stores&&ME.stores.length) ? ME.stores : (STORE?[STORE]:[]);
-  var list = ME.seesAllStores ? ['All stores'].concat(mine)
-           : (mine.length>1 ? ['All my stores'].concat(mine) : mine);
-  if(list.length>1){
-    sel.innerHTML=list.map(function(s){ return '<option'+(s===STORE?' selected':'')+'>'+esc(s)+'</option>'; }).join('');
+  // An owner with more than one store wants them together as well as separately.
+  // Stores are chosen by ID, never by name — two of them are in Hurst.
+  var mine = ME.stores||[];
+  var opts = [];
+  if(ME.seesAllStores)      opts.push({ id:'ALL', name:'All stores' });
+  else if(mine.length>1)    opts.push({ id:'ALL', name:'All my stores' });
+  mine.forEach(function(x){ opts.push({ id:x.id, name:x.name }); });
+  if(opts.length>1){
+    sel.innerHTML=opts.map(function(o){
+      return '<option value="'+esc(o.id)+'"'+(o.id===STORE?' selected':'')+'>'+esc(o.name)+'</option>'; }).join('');
     sel.style.display='block';
-    if(!STORE || list.indexOf(STORE)<0) STORE=list[0];
+    if(!STORE || !opts.some(function(o){ return o.id===STORE; })) STORE=opts[0].id;
+  } else if(!STORE && mine.length===1){
+    STORE=mine[0].id;
   }
+  STORE_NAME = storeName(STORE);
 
   var t=[];
   if(ME.canOrder) t.push(['order','Place an order']);
@@ -305,6 +349,7 @@ function start(){
 
 function storeChanged(){
   STORE=document.getElementById('storeSel').value;
+  STORE_NAME=storeName(STORE);
   // Clear the cache. csOrders was fetched FOR A STORE, so a manager who covers
   // two and switches would otherwise be shown the first store's orders under
   // the second store's name — or nothing at all.
@@ -415,7 +460,9 @@ function openCart(){
       '<td>'+esc(x.c)+'</td><td class="num">'+x.q+'</td>'+
       '<td class="num"><a href="#" style="color:var(--bad)" onclick="dropItem('+i+');return false;">remove</a></td></tr>';
     }).join('')+'</tbody></table></div>'+
-    '<div class="note" style="margin-top:13px"><b>Shipping to</b><br>'+esc(STORE)+'</div>'+
+    // The address, not just the store name — two of these are in Hurst.
+    '<div class="note" style="margin-top:13px"><b>Shipping to</b><br>'+esc(STORE_NAME)+
+      '<br><span class="muted">'+esc(storeAddr(STORE))+'</span></div>'+
     '<div style="margin-top:13px"><label style="font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;'+
       'color:var(--faint);font-weight:800">Anything the warehouse should know</label>'+
       '<input id="ordNote" placeholder="e.g. split into two boxes, needed before Friday" '+
@@ -432,7 +479,7 @@ function sendOrder(){
   var items=CART.slice();
   var go=document.querySelector('#mActions .mgo');
   if(go){ go.disabled=true; go.textContent='Sending…'; }
-  call('csSubmitOrder', { payload:{ items:items, store:STORE, note:note, submitId:SUBMIT_ID } },
+  call('csSubmitOrder', { payload:{ items:items, storeId:STORE, note:note, submitId:SUBMIT_ID } },
     function(r){
       if(!r||!r.ok){ if(go){ go.disabled=false; go.textContent='Send this order'; }
         return toast(r&&r.msg?r.msg:'Could not send that.'); }
@@ -445,7 +492,8 @@ function sendOrder(){
         'It arrived in Slack the moment you pressed send.</div>'+
         '<div class="slack" style="margin-top:14px">'+
           '<div class="ch"># cannabis-shop-orders-to-send</div>'+
-          '<b>'+esc(r.orderNo)+' — '+esc(STORE)+'</b><br>'+
+          '<b>'+esc(r.orderNo)+' — '+esc(r.store||STORE_NAME)+'</b><br>'+
+          '<span class="g">'+esc(r.shipTo||storeAddr(STORE))+'</span><br>'+
           '<span class="g">Ordered by '+esc(ME.name||'')+'</span><br><br>'+
           items.map(function(x){ return '&nbsp;&nbsp;'+x.q+' × <b>'+esc(x.n)+'</b> — '+esc(x.s)+
             (x.c?(' <span class="g">['+esc(x.c)+']</span>'):''); }).join('<br>')+
@@ -468,7 +516,7 @@ function loadOrders(){
     ? 'Every order from every store, and where each one is.'
     : (allStoresPicked()
         ? 'Everything your stores have ordered, and where each one is.'
-        : 'Everything ' + STORE + ' has ordered, and where each one is.');
+        : 'Everything ' + STORE_NAME + ' has ordered, and where each one is.');
   if(ORDERS){ drawOrders(); return; }
   document.getElementById('ordBody').innerHTML='<div class="none">Loading</div>';
   // Ask for everything this person is allowed to see, then narrow in the page.
@@ -483,17 +531,18 @@ function loadOrders(){
 
 /* "All stores" and "All my stores" mean no narrowing — the server has already
    limited the rows to what this person may see. */
-function allStoresPicked(){ return !STORE || /^All (stores|my stores)$/i.test(STORE); }
+function allStoresPicked(){ return !STORE || STORE==='ALL'; }
 
 function drawOrders(){
   var r=ORDERS, rows=r.rows||[];
-  if(!allStoresPicked()) rows=rows.filter(function(o){ return o.store===STORE; });
+  if(!allStoresPicked()) rows=rows.filter(function(o){ return o.storeId===STORE; });
 
   // Money tiles are for Scott and the bookkeeper. A store sees counts only.
   var t=r.totals;
   document.getElementById('ordTiles').innerHTML = t
-    ? tile('Orders',t.orders,'')+tile('Not yet priced',t.unpriced,t.unpriced?'red':'good')+
-      tile('Value priced',money(t.value),'')+tile('Still owed to EHF',money(t.owed),t.owed?'red':'good')
+    ? tile('Real orders',t.orders,'')+tile('Not yet priced',t.unpriced,t.unpriced?'red':'good')+
+      tile('Value priced',money(t.value),'')+tile('Still owed to EHF',money(t.owed),t.owed?'red':'good')+
+      (t.tests?tile('Test orders',t.tests+' — not counted',''):'')
     : tile('Waiting to be packed',rows.filter(function(o){return o.status==='SENT';}).length,'')+
       tile('Shipped',rows.filter(function(o){return o.status==='SHIPPED';}).length,'good')+
       tile('Orders in total',rows.length,'');
@@ -512,16 +561,17 @@ function drawOrders(){
 
   document.getElementById('ordBody').innerHTML='<div class="tw"><table><thead><tr>'+
     '<th>Order</th>'+(showStoreCol?'<th>Store</th>':'')+'<th>Ordered</th><th>What</th>'+
-    '<th>Status</th><th>Tracking</th>'+(t?'<th class="num">Value</th><th class="num">Paid</th>':'')+
+    '<th>Status</th><th>Tracking</th>'+(t?'<th class="num">Value</th><th class="num">Paid</th><th></th>':'')+
     '</tr></thead><tbody>'+list.map(function(o){
-      return '<tr>'+
+      return '<tr'+(o.status==='TEST'?' class="testrow"':'')+'>'+
         '<td class="mono"><b>'+esc(o.orderNo)+'</b><div class="faint">'+esc(o.orderedBy)+'</div></td>'+
         (showStoreCol?'<td>'+esc(o.store)+'</td>':'')+
         '<td>'+esc(o.date)+'</td>'+
         '<td>'+(o.items||[]).map(function(x){
           return x.qty+' × '+esc(x.product)+' <span class="faint">'+esc(x.size||'')+'</span>'; }).join('<br>')+
           (o.note?('<div class="faint" style="margin-top:4px">'+esc(o.note)+'</div>'):'')+'</td>'+
-        '<td>'+(o.status==='SHIPPED'?'<span class="pill p-ship">shipped</span>'
+        '<td>'+(o.status==='TEST'?'<span class="pill p-test">test — not counted</span>'
+               :o.status==='SHIPPED'?'<span class="pill p-ship">shipped</span>'
                :o.status==='SENT'?'<span class="pill p-sent">with the warehouse</span>'
                :'<span class="pill p-none">'+esc(o.status)+'</span>')+'</td>'+
         '<td>'+(o.tracking
@@ -533,7 +583,15 @@ function drawOrders(){
              ? (o.paid>=o.total ? '<span style="color:var(--good);font-weight:700">settled</span>'
                 : (o.paid>0 ? '<span style="color:var(--warn);font-weight:700">'+money(o.paid)+'</span>'
                    : '<span style="color:var(--bad);font-weight:700">unpaid</span>'))
-             : '<span class="faint">—</span>')+'</td>':'')+
+             : '<span class="faint">—</span>')+'</td>'+
+           // Only Scott and the bookkeeper can mark a test or remove an order.
+           '<td class="num" style="white-space:nowrap">'+
+             (o.status==='TEST'
+               ? '<a href="#" onclick="markTest(\''+esc(o.orderNo)+'\',false);return false;">it is real</a>'
+               : '<a href="#" onclick="markTest(\''+esc(o.orderNo)+'\',true);return false;">test</a>')+
+             ' &nbsp;<a href="#" style="color:var(--bad)" onclick="delOrder(\''+esc(o.orderNo)+
+               '\',\''+esc(o.tracking||'')+'\');return false;">delete</a>'+
+           '</td>':'')+
       '</tr>';
     }).join('')+'</tbody></table></div>';
 }
@@ -541,18 +599,59 @@ function setOrdFilter(x){ ORDFILTER=x;
   document.querySelectorAll('#ordFilters .btn').forEach(function(b){ b.classList.toggle('on', b.dataset.f===x); });
   drawOrders(); }
 
+/* Test and demo orders are unavoidable. Keeping them OUT of the totals is what
+   matters — and being able to remove them entirely when they are just noise. */
+function markTest(no, isTest){
+  call('csMarkTest', { orderNo:no, isTest:isTest }, function(r){
+    toast(r&&r.msg?r.msg:'Done.');
+    ORDERS=null; loadOrders();
+  });
+}
+
+function delOrder(no, tracking){
+  modal('Remove '+no,
+    (tracking
+      ? '<div class="note" style="border-left-color:var(--bad)"><b>'+esc(no)+' has already shipped.</b><br>'+
+        'Tracking '+esc(tracking)+' is on it. Deleting it leaves a box nobody can account for — '+
+        '<b>marking it as a test</b> is usually the right answer instead.</div>'
+      : '<div class="note">It is archived to the <b>CS Deleted</b> tab, not destroyed, so it can be '+
+        'brought back if this was a mistake.</div>')+
+    '<label style="display:block;margin-top:13px;font-size:8.5px;letter-spacing:.16em;'+
+      'text-transform:uppercase;color:var(--faint);font-weight:800">Why</label>'+
+    '<input id="delWhy" value="test order" style="width:100%;padding:11px;border:1px solid var(--line2);'+
+      'border-radius:9px;margin-top:5px">'+
+    (tracking
+      ? '<label style="display:flex;gap:9px;align-items:center;margin-top:13px;font-size:13px">'+
+        '<input type="checkbox" id="delForce" style="width:17px;height:17px">'+
+        'I understand it shipped and want it gone anyway</label>'
+      : ''),
+    'Remove it', function(){
+      var why=(document.getElementById('delWhy')||{}).value||'';
+      if(tracking){
+        var f=document.getElementById('delForce');
+        if(!f||!f.checked) return toast('Tick the box to confirm.');
+        why='FORCE '+why;
+      }
+      closeModal();
+      call('csDeleteOrder', { orderNo:no, reason:why }, function(r){
+        toast(r&&r.msg?r.msg:'Removed.');
+        ORDERS=null; loadOrders();
+      });
+    }, true);
+}
+
 function tile(k,v,cls){
   return '<div class="tile '+cls+'"><div class="k">'+esc(k)+'</div><div class="v">'+esc(v)+'</div></div>'; }
 
 /* ── MODAL ───────────────────────────────────────────────────── */
 var ONGO=null;
-function modal(title,body,go,fn){
+function modal(title,body,go,fn,danger){
   document.getElementById('mTitle').textContent=title;
   document.getElementById('mBody').innerHTML=body;
   ONGO=fn||null;
   document.getElementById('mActions').innerHTML = go
     ? '<button class="mback" onclick="closeModal()">Cancel</button>'+
-      '<button class="mgo" onclick="ONGO&&ONGO()">'+esc(go)+'</button>'
+      '<button class="mgo'+(danger?' danger':'')+'" onclick="ONGO&&ONGO()">'+esc(go)+'</button>'
     : '<button class="mgo" onclick="ONGO?ONGO():closeModal()">Close</button>';
   document.getElementById('ov').classList.add('on');
 }
