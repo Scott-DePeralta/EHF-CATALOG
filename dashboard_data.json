@@ -1,8 +1,8 @@
 {
- "version": "3.127",
- "built": "2026-09-14T17:16:28.515446+00:00",
+ "version": "3.128",
+ "built": "2026-09-15T02:33:53.100980+00:00",
  "counts": {
-  "Flower": 53,
+  "Flower": 56,
   "PreRoll": 31,
   "Vape": 47,
   "Edibles": 68,
@@ -12,8 +12,45 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [],
-  "removed": [],
+  "added": [
+   {
+    "tab": "Flower",
+    "name": "G47",
+    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+    "stock": "3",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "DIRTY SPRITE",
+    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+    "stock": "5.25",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "PURPLE URKLE",
+    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+    "stock": "5",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "GARLIC BREATH",
+    "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+    "stock": "3",
+    "cann": ""
+   }
+  ],
+  "removed": [
+   {
+    "tab": "Flower",
+    "name": "RAINBOW RUNTZ",
+    "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+    "stock": "0.5",
+    "cann": ""
+   }
+  ],
   "price_changes": [],
   "went_oos": [],
   "back_in": [],
