@@ -2271,6 +2271,130 @@ def build_cs_catalog(flower_items, preroll_items, vape_items, edibles_items,
     print(f'  Cannabis Shop catalog: {total} products across {len(groups)} groups, no prices')
     return 'const CS_CATALOG = ' + blob + ';\n'
 
+# The replacement wholesale sign-up form. Native to the page, posts to the
+# invoice system, and tells the person what happens next.
+LEAD_FORM_HTML = """<div style="background:rgba(255,255,255,.03);border:1px solid rgba(168,85,247,.25);
+    border-radius:20px;padding:26px 24px;">
+    <div class="co-fields" id="leadFields">
+      <input id="ldName"  class="co-input" placeholder="Your name *">
+      <input id="ldShop"  class="co-input" placeholder="Business name">
+      <input id="ldPhone" class="co-input" placeholder="Phone *">
+      <input id="ldEmail" class="co-input" placeholder="Email *">
+      <input id="ldState" class="co-input" placeholder="What state are you in?">
+      <input id="ldSell"  class="co-input" placeholder="What do you currently sell?">
+      <textarea id="ldNotes" class="co-input" rows="3"
+        placeholder="Anything you are looking for in particular?"></textarea>
+    </div>
+    <button id="ldBtn" class="co-btn" style="margin-top:14px" onclick="sendLead()">
+      Request Wholesale Pricing</button>
+    <div class="co-compliance">Licensed wholesale buyers only. We reply within one business day.</div>
+  </div>
+  <script>
+  async function sendLead(){
+    var g=function(id){ var e=document.getElementById(id); return e?e.value.trim():''; };
+    if(!g('ldName')||!g('ldPhone')||!g('ldEmail')){
+      alert('Please enter your name, phone and email.'); return; }
+    var b=document.getElementById('ldBtn');
+    b.disabled=true; b.textContent='Sending…';
+    try{
+      var r=await fetch(APPS_SCRIPT_URL,{method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'catalogLead',secret:CATALOG_SECRET,rep:getRep(),
+          customer:{name:g('ldName'),shop:g('ldShop'),phone:g('ldPhone'),
+                    email:g('ldEmail'),state:g('ldState'),selling:g('ldSell')},
+          notes:g('ldNotes')})});
+      var d=await r.json();
+      if(!d.ok) throw new Error(d.msg||'failed');
+      document.getElementById('orderForm').innerHTML=
+        '<div class="co-success" style="padding:40px 20px">'+
+          '<div class="co-success-icon">&#10003;</div>'+
+          '<h3>Thanks &mdash; we have got it.</h3>'+
+          '<p>Somebody will be in touch within one business day with pricing and COAs.</p>'+
+          '<p class="co-success-sub">In a hurry? Call or text (408) 444-HEMP.</p>'+
+        '</div>';
+    }catch(e){
+      b.disabled=false; b.textContent='Request Wholesale Pricing';
+      alert('Sorry, that did not send. Please call or text (408) 444-HEMP.');
+    }
+  }
+  </script>"""
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  INDEX.HTML CLEANUP
+#
+#  Runs before the front-end patches, every build. Each of these fixes
+#  something that is wrong on the live page right now.
+# ═══════════════════════════════════════════════════════════════════════════
+def clean_index(html):
+    notes = []
+
+    # ── 1. The Texas marquee. It announces rules starting "JULY 31", which is
+    #       in the past, and scrolls it across the top of every page view.
+    pat = re.compile(r'\n?<!--\s*═*\s*TEXAS COMPLIANCE MARQUEE\s*═*\s*-->\s*'
+                     r'<div class="tx-marquee".*?</div>\s*</div>\s*', re.S)
+    html, n = pat.subn('\n', html, count=1)
+    if n: notes.append('removed the Texas compliance marquee')
+
+    # ── 2. Duplicate checkout blocks.
+    #
+    #  apply_patches skips a patch when its NEW text is already present, and
+    #  otherwise inserts it after OLD. When the patch text is edited, the new
+    #  version is not found but OLD still is — so it appends a SECOND copy, and
+    #  a third, and so on. The live page carries five.
+    #
+    #  Only the last copy wins at runtime, so the page works; it is just tens of
+    #  kilobytes of dead script that grows with every edit. This keeps the
+    #  newest and drops the rest, every build.
+    blk = re.compile(r'<style>\s*\.co-totalbox\{.*?</script>', re.S)
+    found = blk.findall(html)
+    if len(found) > 1:
+        newest = found[-1]
+        html = blk.sub('', html)
+        html = html.replace('</body>', newest + '\n</body>', 1)
+        notes.append(f'removed {len(found)-1} duplicate checkout block(s)')
+
+    # ── 3. Cloudflare email obfuscation.
+    #
+    #  This page was saved from a Cloudflare-served site. The decoder lives at
+    #  /cdn-cgi/, which does not exist on Netlify — so the script 404s, the
+    #  address never decodes, and every visitor sees the literal text
+    #  "[email protected]" with a link to a missing page.
+    def cf_decode(h):
+        k = int(h[:2], 16)
+        return ''.join(chr(int(h[i:i+2], 16) ^ k) for i in range(2, len(h), 2))
+
+    addrs = set()
+    for m in re.finditer(r'/cdn-cgi/l/email-protection#([0-9a-fA-F]+)', html):
+        try: addrs.add(cf_decode(m.group(1)))
+        except Exception: pass
+    real = sorted(addrs)[0] if addrs else 'Scott@ExclusiveHempFarms.com'
+
+    before = html
+    html = re.sub(r'/cdn-cgi/l/email-protection#[0-9a-fA-F]+', 'mailto:' + real, html)
+    html = re.sub(r'<span class="__cf_email__"[^>]*>.*?</span>', real, html, flags=re.S)
+    html = re.sub(r'<script[^>]*cloudflare-static/email-decode\.min\.js[^>]*>\s*</script>', '', html)
+    if html != before: notes.append(f'fixed the broken email link ({real})')
+
+    # ── 4. DataScalePro. The subscription is not paid; the script 404s.
+    before = html
+    html = re.sub(r'\s*<script src="https://link\.datascalepro\.com/js/form_embed\.js"></script>', '', html)
+    html = re.sub(r'<div class="footer-dsp">.*?</div>\s*', '', html, flags=re.S)
+    html = re.sub(r'<div class="ctab-dsp">.*?</div>\s*</div>\s*', '', html, flags=re.S)
+    html = re.sub(r'<div class="hdr-dsp">.*?</div>\s*</div>\s*</div>\s*', '', html, flags=re.S)
+    if html != before: notes.append('removed the DataScalePro script and credits')
+
+    # ── 5. The wholesale sign-up form.
+    #
+    #  The embedded DataScalePro form is dead. Anybody filling it in reaches
+    #  nothing — no record, no notification, no reply. Replaced with a form that
+    #  posts to the invoice system, files the lead and messages Scott.
+    pat = re.compile(r'<div style="background:rgba\(255,255,255,\.03\);border:1px solid rgba\(168,85,247,\.25\);\s*'
+                     r'border-radius:20px;overflow:hidden;min-height:740px;">\s*<iframe.*?</iframe>\s*</div>', re.S)
+    html, n = pat.subn(LEAD_FORM_HTML, html, count=1)
+    if n: notes.append('replaced the dead sign-up form with a working one')
+
+    return html, notes
+
 def main():
     global BUILD_VERSION
     print(f'\n=== EHF Catalog Builder v8 (per-section price ladders) — {datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")} ===')
@@ -2423,6 +2547,12 @@ def main():
         print(f'ACTION REQUIRED: Make sure {HTML_FILE} exists in the GitHub repo root.')
         sys.exit(0)  # exit 0 so workflow shows yellow, not red
     html = open(HTML_FILE, encoding='utf-8').read()
+
+    # Every build: strip the dead and duplicated markup before patching, so the
+    # cleanup cannot be undone by a patch re-inserting what it just removed.
+    html, _clean_notes = clean_index(html)
+    for _cn in _clean_notes:
+        print(f'    cleaned: {_cn}')
 
     html, _fe_problems = apply_frontend_patches(html)
     for _fp in _fe_problems:
