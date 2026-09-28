@@ -2286,7 +2286,7 @@ LEAD_FORM_HTML = """<div style="background:rgba(255,255,255,.03);border:1px soli
         placeholder="Anything you are looking for in particular?"></textarea>
     </div>
     <button id="ldBtn" class="co-btn" style="margin-top:14px" onclick="sendLead()">
-      Request Wholesale Pricing</button>
+      Open My Wholesale Account</button>
     <div class="co-compliance">Licensed wholesale buyers only. We reply within one business day.</div>
   </div>
   <script>
@@ -2313,7 +2313,7 @@ LEAD_FORM_HTML = """<div style="background:rgba(255,255,255,.03);border:1px soli
           '<p class="co-success-sub">In a hurry? Call or text (408) 444-HEMP.</p>'+
         '</div>';
     }catch(e){
-      b.disabled=false; b.textContent='Request Wholesale Pricing';
+      b.disabled=false; b.textContent='Open My Wholesale Account';
       alert('Sorry, that did not send. Please call or text (408) 444-HEMP.');
     }
   }
@@ -2383,7 +2383,35 @@ def clean_index(html):
     html = re.sub(r'<div class="hdr-dsp">.*?</div>\s*</div>\s*</div>\s*', '', html, flags=re.S)
     if html != before: notes.append('removed the DataScalePro script and credits')
 
-    # ── 5. The wholesale sign-up form.
+    # ── 5a. The heading above the form.
+    #
+    #  It said "REQUEST WHOLESALE PRICING" on a page where every price is
+    #  already visible. That makes the catalog look like it is holding
+    #  something back, and it gives a buyer who has seen the prices no reason
+    #  to fill anything in.
+    pat = re.compile(
+        r'(<div style="text-align:center;margin-bottom:20px;">\s*'
+        r'<div style="font-family:\'Orbitron\',sans-serif;font-size:18px;font-weight:700;[^"]*">\s*)'
+        r'REQUEST WHOLESALE PRICING'
+        r'(\s*</div>\s*<div style="font-family:\'DM Sans\',sans-serif;font-size:13px;color:var\(--muted\);line-height:1\.6;">\s*)'
+        r'.*?'
+        r'(\s*</div>)', re.S)
+    html, n = pat.subn(
+        r'\1OPEN A WHOLESALE ACCOUNT\2'
+        'The prices you see are our wholesale prices — nothing is hidden.<br>'
+        'Tell us who you are and we will set you up with a rep, send samples, '
+        'and answer anything you need before your first order.'
+        r'\3', html, count=1)
+    if n: notes.append('reworded the sign-up heading (prices are already shown)')
+
+    # ── 5c. The tab label. "Sign Up for a Wholesale Account" is long enough to
+    #        wrap awkwardly on the mobile tab grid, and now says the same thing
+    #        as the heading it opens.
+    html, n = re.subn(r'>Sign Up for a Wholesale Account</button>',
+                      '>Open an Account</button>', html, count=1)
+    if n: notes.append('shortened the sign-up tab label')
+
+    # ── 5b. The wholesale sign-up form.
     #
     #  The embedded DataScalePro form is dead. Anybody filling it in reaches
     #  nothing — no record, no notification, no reply. Replaced with a form that
