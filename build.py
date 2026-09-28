@@ -2399,8 +2399,8 @@ def clean_index(html):
     html, n = pat.subn(
         r'\1OPEN A WHOLESALE ACCOUNT\2'
         'The prices you see are our wholesale prices — nothing is hidden.<br>'
-        'Tell us who you are and we will set you up with a rep, send samples, '
-        'and answer anything you need before your first order.'
+        'Tell us who you are and we will set you up with a rep who knows your '
+        'market and can answer anything before your first order.'
         r'\3', html, count=1)
     if n: notes.append('reworded the sign-up heading (prices are already shown)')
 
