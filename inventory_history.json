@@ -142,5 +142,24 @@
   "price_changes": [],
   "went_oos": [],
   "back_in": []
+ },
+ {
+  "ts": "2026-10-03T02:59:51.612430+00:00",
+  "version": "3.166",
+  "added": [
+   "Flower: WHITE CHOCOLATE CHIP",
+   "Flower: APPLES AND BANANNAS",
+   "Flower: SLAPZ #2",
+   "Flower: POWDERED DONUTS #2",
+   "Flower: GUAVA",
+   "Flower: PINK PINA"
+  ],
+  "removed": [],
+  "price_changes": [
+   "Flower: POWDERED DONUTS (LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0 -> LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0)",
+   "Flower: SUPER SILVER HAZE (LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0 -> LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0)"
+  ],
+  "went_oos": [],
+  "back_in": []
  }
 ]

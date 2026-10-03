@@ -20,6 +20,13 @@
   "stock": "0.75",
   "cann": ""
  },
+ "Flower::WHITE CHOCOLATE CHIP": {
+  "tab": "Flower",
+  "name": "WHITE CHOCOLATE CHIP",
+  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
+  "stock": "2",
+  "cann": ""
+ },
  "Flower::KANDY KUSH": {
   "tab": "Flower",
   "name": "KANDY KUSH",
@@ -45,7 +52,14 @@
   "tab": "Flower",
   "name": "GALACTIC WARHEADS",
   "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-  "stock": "0.75",
+  "stock": "0.25",
+  "cann": ""
+ },
+ "Flower::POWDERED DONUTS": {
+  "tab": "Flower",
+  "name": "POWDERED DONUTS",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "2",
   "cann": ""
  },
  "Flower::PURPLE PUSH POP": {
@@ -104,6 +118,20 @@
   "stock": "2",
   "cann": ""
  },
+ "Flower::APPLES AND BANANNAS": {
+  "tab": "Flower",
+  "name": "APPLES AND BANANNAS",
+  "price": "LB:1050.0|\u00bdLB:580.0|\u00bcLB:305.0|OZ:85.0",
+  "stock": "2",
+  "cann": ""
+ },
+ "Flower::SLAPZ #2": {
+  "tab": "Flower",
+  "name": "SLAPZ #2",
+  "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
+  "stock": "2",
+  "cann": ""
+ },
  "Flower::KINGLATO": {
   "tab": "Flower",
   "name": "KINGLATO",
@@ -118,9 +146,9 @@
   "stock": "3",
   "cann": ""
  },
- "Flower::POWDERED DONUTS": {
+ "Flower::POWDERED DONUTS #2": {
   "tab": "Flower",
-  "name": "POWDERED DONUTS",
+  "name": "POWDERED DONUTS #2",
   "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
   "stock": "3",
   "cann": ""
@@ -153,6 +181,20 @@
   "stock": "0.25",
   "cann": ""
  },
+ "Flower::GUAVA": {
+  "tab": "Flower",
+  "name": "GUAVA",
+  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
+  "stock": "2",
+  "cann": ""
+ },
+ "Flower::PINK PINA": {
+  "tab": "Flower",
+  "name": "PINK PINA",
+  "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+  "stock": "2",
+  "cann": ""
+ },
  "Flower::PINK GUAVA": {
   "tab": "Flower",
   "name": "PINK GUAVA",
@@ -170,7 +212,7 @@
  "Flower::SUPER SILVER HAZE": {
   "tab": "Flower",
   "name": "SUPER SILVER HAZE",
-  "price": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
+  "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
   "stock": "3.5",
   "cann": ""
  },
