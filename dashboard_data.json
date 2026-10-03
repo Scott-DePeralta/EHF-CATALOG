@@ -1,6 +1,6 @@
 {
- "version": "3.166",
- "built": "2026-10-03T02:59:51.612733+00:00",
+ "version": "3.167",
+ "built": "2026-10-03T15:26:17.861411+00:00",
  "counts": {
   "Flower": 62,
   "PreRoll": 31,
@@ -12,65 +12,9 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [
-   {
-    "tab": "Flower",
-    "name": "WHITE CHOCOLATE CHIP",
-    "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
-    "stock": "2",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "APPLES AND BANANNAS",
-    "price": "LB:1050.0|\u00bdLB:580.0|\u00bcLB:305.0|OZ:85.0",
-    "stock": "2",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "SLAPZ #2",
-    "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "stock": "2",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "POWDERED DONUTS #2",
-    "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "stock": "3",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "GUAVA",
-    "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
-    "stock": "2",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "PINK PINA",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "2",
-    "cann": ""
-   }
-  ],
+  "added": [],
   "removed": [],
-  "price_changes": [
-   {
-    "tab": "Flower",
-    "name": "POWDERED DONUTS",
-    "old": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "new": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0"
-   },
-   {
-    "tab": "Flower",
-    "name": "SUPER SILVER HAZE",
-    "old": "LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0",
-    "new": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0"
-   }
-  ],
+  "price_changes": [],
   "went_oos": [],
   "back_in": [],
   "first_run": false
