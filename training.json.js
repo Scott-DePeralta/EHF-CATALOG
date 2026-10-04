@@ -153,8 +153,239 @@ const TRAINING = {
    ]
   },
   {
+   "id": "LTOOLS",
+   "title": "Your Tools",
+   "mins": 8,
+   "blurb": "The three links, what each one does, and every button you will actually press.",
+   "lessons": [
+    {
+     "id": "LT1",
+     "title": "Three links, one code",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Everything you need is behind <b>one access code</b>. The same code opens all three. There is no second password and nothing else to remember."
+      },
+      {
+       "t": "links3",
+       "v": 1
+      },
+      {
+       "t": "remember",
+       "v": "<b>You are not in Slack and you do not need to be.</b> Slack is for Scott, the bookkeeper and the warehouse. Everything that concerns you reaches you by <b>email</b> and shows up on your dashboard."
+      },
+      {
+       "t": "text",
+       "v": "Your code signs you out when you close the tab. That is deliberate \u2014 these screens show customer details and your earnings, and people work from shop counters and shared laptops."
+      }
+     ]
+    },
+    {
+     "id": "LT2",
+     "title": "My Profile \u2014 do this first",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Before you can submit a single invoice, five documents and your contact details have to be on file. This is not bureaucracy for its own sake: without a W-9 nobody can legally pay you."
+      },
+      {
+       "t": "docs",
+       "v": 1
+      },
+      {
+       "t": "text",
+       "v": "Each one has a <b>download</b> link for the blank form and an <b>upload</b> button for your signed copy. Photograph it with your phone if that is easier \u2014 a clear photo is fine."
+      },
+      {
+       "t": "remember",
+       "v": "When everything is in, your profile shows a green <b>ACTIVE</b> check and the rest of the dashboard unlocks the same moment. No waiting for anyone to approve it."
+      },
+      {
+       "t": "never",
+       "v": "If something is missing, your <b>selling</b> screens are closed \u2014 but <b>My Profile and this training always stay open</b>. You can never be locked out of the page that unlocks you."
+      },
+      {
+       "t": "text",
+       "v": "Your documents go into a private folder. They are never shared by link, and no Social Security number, licence number or bank account is ever written into a spreadsheet."
+      }
+     ]
+    },
+    {
+     "id": "LT3",
+     "title": "The dashboard, screen by screen",
+     "blocks": [
+      {
+       "t": "tool",
+       "v": [
+        "Deals",
+        "Every order you have written. Status, what is owed, tracking, and your commission on each one.",
+        "Tap the arrow beside an invoice number to open it: line items, payments, tracking links, customer details, notes."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Deal summary",
+        "A printable copy of any order.",
+        "Prints with a large <b>PAID IN FULL</b> stamp, or the amount still due in red. Useful to send a customer who is querying a balance."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Send payment confirmation",
+        "On any deal of yours with money still owed.",
+        "Invoice number, amount, how they paid, and a photo. Goes straight to Scott. <b>It is not recorded as paid until he confirms the funds cleared</b> \u2014 you will see the balance change when it does."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Quotes",
+        "Every quote you have raised.",
+        "A quote can be paid directly by the customer. When it is, Scott converts it to an invoice at the same figure."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Fix contact details",
+        "On any customer card.",
+        "Phone, email, street, suite, city, state, ZIP and the contact person. <b>Not the business name</b> \u2014 that is what every invoice and payment hangs off, so ask Scott if it is wrong. He is told what you changed."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Your catalog link",
+        "Top of your dashboard. Copy it and send it.",
+        "Anything ordered through it is credited to you automatically. It is the easiest commission you will ever earn &mdash; put it in your email signature."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "LT4",
+     "title": "What arrives without you asking",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "You will get an email when any of these happen. You do not have to watch for them."
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "A deal of yours is <b>paid</b> \u2014 your commission is now earned.",
+        "A deal of yours has <b>shipped</b>, with the tracking number. Worth a call.",
+        "A deal is <b>still unpaid</b> after two days, and again at five.",
+        "A quote has gone quiet for three days.",
+        "A customer of yours is probably about to <b>run out</b>.",
+        "Your paperwork is approved and you are active."
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "These are nudges, not noise. Each one is a reason to pick up the phone, and the rep who acts on them makes more money than the one who deletes them."
+      },
+      {
+       "t": "try",
+       "v": "You get an email saying INV-100044 shipped. What do you do?",
+       "answers": [
+        "Nothing \u2014 the customer gets the tracking too",
+        "Call them, tell them it is on the way, and give them the tracking",
+        "Wait until it is delivered",
+        "Forward the email to them"
+       ],
+       "right": 1,
+       "why": "It is a reason to call that costs nothing and makes you the supplier who stays in touch. The customer may well also get the tracking automatically; that is not the point \u2014 the call is."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "How many access codes do you need?",
+     "a": [
+      "One for each system",
+      "One \u2014 the same code opens all three",
+      "Two: one to sell, one to train",
+      "A different one each week"
+     ],
+     "right": 1,
+     "why": "One code, three doors: the dashboard, the invoice form and this academy."
+    },
+    {
+     "q": "Are you in Slack?",
+     "a": [
+      "Yes, for order updates",
+      "Yes, but only one channel",
+      "No \u2014 Slack is Scott, the bookkeeper and the warehouse; you get email",
+      "Only when there is a problem"
+     ],
+     "right": 2,
+     "why": "Everything that concerns you reaches you by email and shows on your dashboard."
+    },
+    {
+     "q": "Your paperwork is incomplete. What can you still reach?",
+     "a": [
+      "Nothing",
+      "My Profile and this training",
+      "Everything except invoicing",
+      "Only the catalog"
+     ],
+     "right": 1,
+     "why": "Only the selling screens close. You can never be locked out of the page that unlocks you, and you can train while the paperwork is in flight."
+    },
+    {
+     "q": "A customer pays you by card and sends a screenshot. What do you do?",
+     "a": [
+      "Mark the invoice paid",
+      "Use Send payment confirmation on that deal \u2014 invoice number, amount, method and the photo",
+      "Email it to Scott",
+      "Wait for the customer to confirm"
+     ],
+     "right": 1,
+     "why": "It goes straight to Scott with everything he needs. It is not recorded until he confirms the funds cleared."
+    },
+    {
+     "q": "Which customer detail can you NOT change yourself?",
+     "a": [
+      "Phone number",
+      "Shipping address",
+      "The business name",
+      "Contact person"
+     ],
+     "right": 2,
+     "why": "Every invoice and payment hangs off the business name. Renaming it from a phone call turns one shop into two records. Ask Scott."
+    },
+    {
+     "q": "What is your catalog link for?",
+     "a": [
+      "Checking prices",
+      "Sending to buyers so anything they order is credited to you",
+      "Logging in",
+      "Nothing \u2014 it is internal"
+     ],
+     "right": 1,
+     "why": "Attribution is automatic. It is the easiest commission in the job and most reps forget they have it."
+    },
+    {
+     "q": "You get an email that one of your deals is still unpaid after two days. What is it for?",
+     "a": [
+      "Information only",
+      "It is your prompt to call the customer",
+      "It means the order is cancelled",
+      "It means Scott is chasing it"
+     ],
+     "right": 1,
+     "why": "Day two and day five are yours. Scott is copied at day eight, and escalates at fourteen."
+    }
+   ],
+   "n": 1
+  },
+  {
    "id": "L1",
-   "n": 1,
+   "n": 2,
    "title": "Understand EHF",
    "blurb": "What the company is, who buys from us, and exactly what your job is.",
    "mins": 6,
@@ -385,7 +616,7 @@ const TRAINING = {
   },
   {
    "id": "L2",
-   "n": 2,
+   "n": 3,
    "title": "Hemp, Cannabis & THCa",
    "mins": 8,
    "blurb": "What you are actually selling, in plain English, without the science lecture.",
@@ -573,7 +804,7 @@ const TRAINING = {
   },
   {
    "id": "L3",
-   "n": 3,
+   "n": 4,
    "title": "Read a COA",
    "mins": 12,
    "blurb": "The two different THC tests, how to read any cannabinoid, and when to stop.",
@@ -1116,11 +1347,11 @@ const TRAINING = {
      "why": "The federal definition is moving toward total THC. Genuinely low-THC products are the ones least affected, and some buyers are already planning for that."
     }
    ],
-   "n": 4
+   "n": 5
   },
   {
    "id": "L4",
-   "n": 5,
+   "n": 6,
    "title": "Know the Products",
    "mins": 9,
    "blurb": "Sell the category, then the SKU. Inventory changes; the way you present it does not.",
@@ -1365,7 +1596,7 @@ const TRAINING = {
   },
   {
    "id": "L5",
-   "n": 6,
+   "n": 7,
    "title": "Compliance",
    "mins": 7,
    "blurb": "Research the states you prospect, and never promise legality to anybody.",
@@ -1510,7 +1741,7 @@ const TRAINING = {
   },
   {
    "id": "L6",
-   "n": 7,
+   "n": 8,
    "title": "Find Buyers",
    "mins": 7,
    "blurb": "Where the leads come from, how to tell a real one from a waste of an afternoon.",
@@ -1669,7 +1900,7 @@ const TRAINING = {
   },
   {
    "id": "L7",
-   "n": 8,
+   "n": 9,
    "title": "Contact the Shop",
    "mins": 8,
    "blurb": "The vendor-first opener, and the discovery questions that do the selling for you.",
@@ -1843,7 +2074,7 @@ const TRAINING = {
   },
   {
    "id": "L8",
-   "n": 9,
+   "n": 10,
    "title": "Present & Sell",
    "mins": 7,
    "blurb": "Three choices, retailer economics, and why you never quote a resale price.",
@@ -1979,7 +2210,7 @@ const TRAINING = {
   },
   {
    "id": "L9",
-   "n": 10,
+   "n": 11,
    "title": "Objections",
    "mins": 10,
    "blurb": "Fifteen things you will hear, what to say, and why it works.",
@@ -2178,7 +2409,7 @@ const TRAINING = {
   },
   {
    "id": "L10",
-   "n": 11,
+   "n": 12,
    "title": "Pricing & Commission",
    "mins": 8,
    "blurb": "What you may discount, what you get paid, and the line you need approval to cross.",
@@ -2383,7 +2614,7 @@ const TRAINING = {
   },
   {
    "id": "L11",
-   "n": 12,
+   "n": 13,
    "title": "Samples",
    "mins": 5,
    "blurb": "Small, targeted, and always with a question attached.",
@@ -2489,7 +2720,7 @@ const TRAINING = {
   },
   {
    "id": "L12",
-   "n": 13,
+   "n": 14,
    "title": "Close the Sale",
    "mins": 5,
    "blurb": "Four sentences, and the nerve to use them.",
@@ -2621,7 +2852,7 @@ const TRAINING = {
   },
   {
    "id": "L13",
-   "n": 14,
+   "n": 15,
    "title": "Build the Invoice",
    "mins": 9,
    "blurb": "The exact steps, the one thing you must do before submitting, and the mistakes that cost money.",
@@ -2843,7 +3074,7 @@ const TRAINING = {
   },
   {
    "id": "L14",
-   "n": 15,
+   "n": 16,
    "title": "Payment",
    "mins": 6,
    "blurb": "What counts as paid, what absolutely does not, and why that protects you.",
@@ -2985,7 +3216,7 @@ const TRAINING = {
   },
   {
    "id": "L15",
-   "n": 16,
+   "n": 17,
    "title": "Shipping & Problems",
    "mins": 5,
    "blurb": "What you can offer, what you cannot authorise, and the sentence to use when something goes wrong.",
@@ -3256,11 +3487,11 @@ const TRAINING = {
      "why": "Most wholesale calls sound identical. This one does not, and buyers remember it."
     }
    ],
-   "n": 17
+   "n": 18
   },
   {
    "id": "L16",
-   "n": 18,
+   "n": 19,
    "title": "Follow-Up & Reorders",
    "mins": 6,
    "blurb": "The first order is the beginning. This level is where the money actually is.",
