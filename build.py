@@ -1550,6 +1550,9 @@ HEADERS = """/*
 # The academy is internal. The page sets noindex in its own head, but a bot
 # that never parses the HTML will still read the header — and the content file
 # is plain JavaScript that no crawler would treat as a page at all.
+/forms/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 /training
   X-Robots-Tag: noindex, nofollow, noarchive
 /training.html
@@ -1596,8 +1599,11 @@ def deploy_to_netlify(html_content):
     # build reported success while the page did not exist.
     REQUIRED_EXTRAS = ('training.html', 'training.json.js')
     missing = []
+    # The signable forms. Reps download, sign, and upload through My Profile.
     for extra in ('dashboard_data.json', 'inventory_history.json',
                   'training.html', 'training.json.js',
+                  'forms/contractor-agreement.pdf', 'forms/nda.pdf',
+                  'forms/direct-deposit.pdf',
                   '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
