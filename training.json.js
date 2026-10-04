@@ -1,3 +1,4 @@
+const OBJECTIONS = {"groups": [["Getting past the first ten seconds", [["We're not interested.", "No problem at all. Can I ask \u2014 is that because you're happy with who you've got, or because you don't carry this category?", "A reflex, not a decision. One question tells you whether there is a real reason, and about a third of the time it reopens the conversation."], ["Just send me the menu.", "Absolutely. Before I do \u2014 what are you mainly looking for: flower, vapes, edibles, or a mix? I'll point you at the right part instead of making you dig.", "Never refuse. Buy one question, which gives you something specific to follow up on instead of an unread email."], ["The owner's not here.", "No problem \u2014 when's the best time to catch them? And is there a name I should ask for?", "A name and a time is a real next action. A pitch to somebody who cannot buy is nothing."], ["We don't take cold calls.", "Understood, I won't keep you. What's the right way to get in front of you \u2014 email, or should I come by?", "Accept it instantly and ask for the channel they do accept. Arguing confirms you are what they thought you were."], ["How did you get this number?", "You're listed publicly \u2014 I'm with Exclusive Hemp Farms, we wholesale THCa flower and hemp products. Is this a bad time?", "Straight answer, no defensiveness, then hand them an easy exit. Sounding evasive here ends the call."]]], ["Price", [["Your price is too high.", "Compared with what you're buying now \u2014 is the issue the total ticket, the price per pound, or the margin you need at retail?", "Three different problems with three different fixes. Discounting blind solves the wrong one and gives away margin you did not need to."], ["I can get pounds cheaper.", "You probably can. Let me understand what you're getting at that number \u2014 quality tier, consistency, potency \u2014 so I'm comparing the right product rather than just quoting lower.", "Agreeing disarms them. Then you move from price to comparison, which is the only ground where you win."], ["What's your best price?", "The live catalog is our normal wholesale. I have some room depending on the order. Tell me what you're looking to buy and I'll put together the strongest deal I can within my authority.", "Never discount into a vacuum. Price moves for order size, not for being asked."], ["Can you beat $X?", "Maybe. What's included at that number \u2014 same tier, same quantity, same shipping? I'd rather win it on the right comparison than guess.", "Half the time $X is a different product or does not include carriage. Find out before you move."], ["Your competitor gives free shipping.", "Shipping's quoted separately with us so you can see what it actually costs rather than having it buried in the unit price. Let's compare the landed total and see where we really are.", "Reframe to landed cost, which is the only honest comparison. Do not offer free shipping \u2014 it is not yours to give."], ["Prices went up.", "They did in places. What are you comparing against \u2014 and when did you last buy at that number? I'd rather show you where we are today than argue about history.", "Do not get defensive. Move to the current comparison."]]], ["Product and quality", [["Is it sprayed?", "Our regular THCa flower is natural THCa flower. We do have certain infused options when specifically needed, and I'll always tell you which one I'm quoting rather than mixing the two.", "Direct and honest, and it draws the distinction before they have to ask twice. Dodging this with an experienced buyer is fatal."], ["Is this real weed?", "It's real cannabis flower. THCa occurs naturally and converts substantially to delta-9 when heated. The regulatory classification is a separate question we verify by product and state.", "Answers the product question confidently and separates it from the legal one \u2014 the distinction most reps blur and get caught on."], ["Your THCa percentage is too low.", "Potency's one piece. How does the flower you're buying at a higher number look and smell in the jar? I'd rather send you something that sells through than something that tests well.", "Reframe from number to sell-through, which is what the shop gets paid on."], ["Is it indoor or outdoor?", "Depends on the tier \u2014 I'll tell you exactly which for anything I quote. What's worked for your shelf before?", "Never guess. Check the catalog, and find out what their customers actually buy."], ["Send me a COA first.", "Happy to. Which product do you want it for? They're product-specific rather than one document for everything.", "Agree immediately and make them name a product, which moves the conversation from browsing to a specific item."], ["How fresh is it?", "I'll check the batch and tell you. If freshness is the thing that matters most to you, say so and I'll steer you to the most recent drops.", "You do not know off the top of your head and should not pretend to. Turning it into a preference you can act on is better than a vague reassurance."], ["Last batch I got elsewhere was dry.", "That's the complaint I hear most. Moisture shows on the COA \u2014 I'll show you the number rather than just telling you it's fine.", "Evidence beats reassurance. It also demonstrates you read the documents, which most reps calling them do not."]]], ["Legality and compliance", [["Is this legal here?", "Rules vary by state and product and change quickly. Let me verify your location against EHF's current policy before I promise availability.", "The only safe answer, and it sounds like a company with a process rather than a person with a phone."], ["Everyone else here sells it.", "I understand \u2014 and I'm not saying anyone's doing anything wrong. Regulations change quickly and I'd rather verify than promise something I have to walk back.", "You do not argue and you do not budge. What other vendors risk is not your liability."], ["What happens after the federal change?", "That's being worked through and I'd rather get you a straight answer from EHF than guess at it. What I can tell you is we can also source CBD and CBG flower, which is worth a conversation either way.", "Honest about the uncertainty, and it pivots to something you can actually offer. Never speculate about dates or outcomes."], ["Will this pass a roadside test?", "I can't advise on that and I'd be wrong to try. What I can give you is the COA showing exactly what the lab measured.", "A legal and enforcement question. Refuse it plainly and hand over the document you do have."], ["Can you ship discreetly?", "Everything ships in plain commercial packaging, properly labelled. I can't do anything that misrepresents what's in a box.", "Answer the reasonable version of the question and decline the unreasonable one in the same breath."]]], ["Timing and stalling", [["I'm stocked.", "Perfect \u2014 when do you think you'll be buying again? I'll follow up before you get low rather than bothering you today.", "Accept it instantly and convert a no into a dated next action."], ["Call me next week.", "Absolutely. What day's usually best, and is there anything specific you're after so I can have the right options ready?", "Turns a brush-off into an appointment with an agenda. \u201cNext week\u201d with no day is a polite no."], ["I need to think about it.", "Of course. What part are you deciding on \u2014 product, price, quantity, or timing?", "Surfaces the real hesitation, which is usually one thing you can answer in a sentence."], ["I need to ask my partner.", "Makes sense. What do you think they'll want to know? I can give you the numbers so you're not fielding questions on your own.", "Arms your advocate. The deal is now being argued for by somebody inside the business."], ["Business is slow right now.", "Fair enough. Would a smaller order make more sense so you're not tying up cash \u2014 or would you rather I come back when things pick up?", "Two real options, both respectful. Pushing volume at somebody with no cash is how you lose them permanently."]]], ["Trust and the first order", [["I don't know you.", "Fair enough. We're vertically integrated \u2014 we grow it, process it and ship it ourselves \u2014 and everything has a potency COA you can read before you buy. What would you need to see to be comfortable with a first order?", "Answers the real question, which is risk, then lets them name their own condition. It is usually smaller than you feared."], ["I already have a vendor.", "That makes sense \u2014 most good shops do. I'm not asking you to replace anyone. What would we have to do to earn a spot as a backup or secondary vendor?", "Nobody has to fire anyone. Backup is where you sit until the incumbent is out of stock, and they will be."], ["What if it shows up wrong?", "Tell me straight away with the invoice number and photos, and I'll get it in front of the owner and operations the same day. I'd rather you call me than quietly stop ordering.", "Honest about the process, promises no outcome, and invites the complaint \u2014 which is how you keep accounts."], ["Do you have references?", "I can ask the owner what he's comfortable sharing. Most shops would rather judge the product than take someone's word, so I'd also offer you a small sample.", "Do not invent references or name other customers without permission. Redirect to evidence they can hold."], ["Send samples.", "We can do a small targeted sample \u2014 a strain or two, or a few relevant items. Normally $10 shipping and handling. What are you actually considering buying if it checks out?", "The question at the end separates buyers from collectors without accusing anyone."]]], ["Category and fit", [["Nobody asks for THCa.", "That's worth knowing. What are they asking for? If it's vapes or edibles I'd rather show you those than push flower that won't move.", "Believe them and pivot. Pushing a category a shop cannot sell burns the relationship for everything else."], ["We only do CBD.", "That works \u2014 we can source CBD and CBG flower too. What formats are moving for you?", "Most reps hear this as a no. It is not; it is a different order."], ["My customers are older.", "Then flower might not be the lead. Topicals, tinctures and gel caps tend to suit that shelf better \u2014 want me to show you those?", "Match the category to their actual customer instead of pushing your favourite."], ["We're a vape shop, not a smoke shop.", "Perfect \u2014 that's most of what moves anyway. Which cannabinoid and which format sells best for you?", "Do not apologise or pivot awkwardly. Go straight at the category they named."], ["Can we get it with our own label?", "Yes \u2014 that's a white label conversation and pricing is case by case. Tell me volume, categories, packaging and timeline and I'll bring the owner in.", "A buying signal, not an objection. Escalate rather than quote; this is not a rep-priced conversation."]]]], "count": 38};
 const COA_DEMO = {"title": "Night Walker \u2014 PharmLabs San Diego", "sampleId": "SD260420-019", "lab": "PharmLabs San Diego", "accred": "ISO/IEC 17025:2017 \u00b7 Acc. 85368", "analyzed": "17 April 2026", "reported": "20 April 2026", "matrix": "Flower", "rows": [["THCA", "Tetrahydrocannabinolic acid", "37.57%", "375.69 mg/g", "k", "The big one. This is what converts when it is heated."], ["Delta-9 THC", "&Delta;9-THC", "0.30%", "3.00 mg/g", "k", "Right on the 0.3% line of the current federal standard. Nothing to round down."], ["Total THC", "(THCA &times; 0.877) + &Delta;9", "33.25%", "332.48 mg/g", "k", "The lab did the sum for you. Check it: 37.57 &times; 0.877 = 32.95, + 0.30 = 33.25."], ["Delta-8 THC", "&Delta;8-THC", "ND", "&mdash;", "", "Not detected above the lab's threshold. Not the same as zero."], ["CBGA", "Cannabigerolic acid", "0.45%", "4.50 mg/g", "", ""], ["CBG", "Cannabigerol", "0.20%", "2.00 mg/g", "", ""], ["Total cannabinoids", "", "37.72%", "377.15 mg/g", "", "Everything the lab found, added up."], ["Moisture", "", "9.4%", "limit 13%", "", "Under the limit. Wet flower moulds in transit."], ["Water activity", "", "0.63", "limit 0.85", "", ""]], "missing": ["Pesticides", "Heavy metals", "Residual solvents", "Microbials", "Mycotoxins"]};
 const FED_NOTE = {"asOf": "3 October 2026", "lines": [["12 November 2026", "Converted cannabinoids &mdash; Delta-8, HHC, THC-O, THC-P &mdash; are widely reported to lose federal hemp status on this date."], ["Reported as 11 December 2026", "Some sources report a delay to this date for THCa flower, vapes, concentrates and hemp Delta-9 edibles, moving them to a total-THC standard plus a 0.4&nbsp;mg per-container cap."], ["The sources disagree", "Public reporting does not agree on the dates or exactly what each one covers. That disagreement is itself the point."]]};
 const FINAL_TEST = {"pass": 85, "q": [{"q": "What does vertically integrated mean for EHF?", "a": ["We control cultivation through fulfilment ourselves", "We only sell to licensed dispensaries", "We own our own delivery fleet", "We have the lowest price in the market"], "right": 0, "why": "EHF owns the chain from growing to shipping, so there is no middleman's margin stacked on top."}, {"q": "Who does EHF sell to?", "a": ["Licensed dispensaries only", "Smoke shops, vape shops, hemp retailers and distributors", "Anyone who can pay", "Consumers over 21"], "right": 1, "why": "B2B wholesale. Business contacts, 21+, never a retail consumer."}, {"q": "What happens to THCa when it is heated?", "a": ["It becomes CBD", "It evaporates", "It converts substantially to delta-9 THC", "Nothing"], "right": 2, "why": "Decarboxylation. It is why high-THCa flower is intoxicating when smoked."}, {"q": "Are hemp and marijuana different plants?", "a": ["Hemp is male, marijuana female", "Hemp is outdoor-grown", "Yes, different species", "No \u2014 same plant, different legal categories"], "right": 3, "why": "Same plant. The line is drawn by measured THC content, not biology."}, {"q": "A customer asks whether THCa is legal in their state. You should\u2026", "a": ["Verify against EHF's current compliance policy first", "Tell them to check with their lawyer", "Say yes if delta-9 is under 0.3%", "Send them the COA"], "right": 0, "why": "Legality is a policy question. Never answered from a COA or from memory."}, {"q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026", "a": ["30.25%", "26.56%", "26.31%", "27.00%"], "right": 1, "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."}, {"q": "A potency COA proves the product is free of pesticides.", "a": ["False", "True"], "right": 0, "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually be on the report."}, {"q": "What does ND mean on a COA?", "a": ["Not dated", "No data", "None detected \u2014 an absolute zero", "Not detected above the lab's reporting threshold"], "right": 3, "why": "Below the method's threshold, which is not the same as zero."}, {"q": "Catalog says 31% THCa; the COA says 24%. What do you do?", "a": ["Stop and ask EHF", "Quote the catalog", "Quote the COA", "Quote the average"], "right": 0, "why": "A material disagreement means something is wrong. Either number is a figure you cannot stand behind."}, {"q": "Higher THCa always means better flower.", "a": ["True", "False"], "right": 1, "why": "Nose, bag appeal, structure, trim, freshness and consistency all matter. Leading with the number invites a price fight."}, {"q": "What is the three-choice presentation?", "a": ["Three payment terms", "Three strains at one price", "Value, balance, premium", "Three quantity tiers"], "right": 2, "why": "Three directions turn an open browse into a decision, and which one they ask about tells you their real priority."}, {"q": "You have researched a state and it looks fine. A buyer wants to order. What do you do?", "a": ["Refuse the order", "Send the customer your research", "Take the order \u2014 your research says it is fine", "Confirm with EHF before promising availability"], "right": 3, "why": "Research tells you where to prospect. It does not make you the authority on legality."}, {"q": "Which sentence may you say to a customer?", "a": ["Rules vary by state and product \u2014 let me verify your location", "The COA proves it's compliant where you are", "It's legal in all 50 states", "Under .3 means we can ship anywhere"], "right": 0, "why": "The only one that is true and the only one that does not make a promise you cannot keep."}, {"q": "What is the non-negotiable rule for your lead log?", "a": ["Fifty leads a week", "Every live lead has a next action and a date", "Record every owner's email", "Colour-code by state"], "right": 1, "why": "Without a next action a lead quietly disappears."}, {"q": "What is the EHF vendor opener?", "a": ["Asking to email the catalog", "A pitch on quality", "Asking their process for becoming an approved vendor", "Offering a first-order discount"], "right": 2, "why": "A process question, not a pitch. Shops answer process questions because suppliers ask them all the time."}, {"q": "Which discovery question do most reps skip?", "a": ["How much volume?", "Who decides?", "What's your budget?", "What does your current supplier do well?"], "right": 3, "why": "It tells you what you must match and does not make the buyer defensive."}, {"q": "A buyer asks what they can sell your flower for. You should\u2026", "a": ["Ask what they sell comparable flower for locally", "Send a margin calculator", "Quote a typical retail price", "Promise they'll double their money"], "right": 0, "why": "Never promise a resale price or profit. Asking gets a real number and makes them do the maths."}, {"q": "What is EHF's minimum order?", "a": ["$500", "There is no rigid minimum", "One pound", "$1,000"], "right": 1, "why": "No rigid minimum. Inventing one to pressure a buyer loses sales."}, {"q": "\u201cI already have a vendor.\u201d Best response?", "a": ["Move on", "Explain why EHF is better", "Ask what it would take to earn a spot as backup or secondary", "Ask who it is and beat the price"], "right": 2, "why": "Nobody has to fire anyone, and the incumbent will eventually be out of stock."}, {"q": "Should you tell a buyer their current supplier is poor quality?", "a": ["Only with evidence", "Yes if true", "Only if they raise it", "No \u2014 never attack a competitor"], "right": 3, "why": "You do not know the relationship, and it makes you sound small."}, {"q": "How much may you discount without approval?", "a": ["Up to 5%", "Up to 10%", "Whatever closes it", "Nothing"], "right": 0, "why": "Up to 5% is yours. Beyond that, ask Scott before promising it."}, {"q": "$2,500 of product plus $75 shipping. What is commissionable?", "a": ["$2,575", "$2,500", "$2,425", "Depends on the carrier"], "right": 1, "why": "Product only. Shipping, tax and fees never count."}, {"q": "When is commission earned?", "a": ["On submission", "On EHF approval", "When paid in full and EHF confirms cleared funds", "On delivery"], "right": 2, "why": "Paid in full, confirmed by EHF. It ties your pay to money that actually arrived."}, {"q": "A customer sends a screenshot of payment. Is the order paid?", "a": ["Yes if it's from their bank", "Yes", "Yes if the amount matches", "No \u2014 only EHF confirming cleared funds counts"], "right": 3, "why": "Screenshots, \u201cI sent it\u201d and pending are all meaningless. Cleared funds only."}, {"q": "What is the normal sample shipping charge?", "a": ["$10", "$25", "Varies", "Free"], "right": 0, "why": "$10, and it does most of the filtering for you."}, {"q": "What question must accompany every sample?", "a": ["Who else are you sampling?", "What are you considering buying if it checks out?", "Can you cover shipping?", "When will you decide?"], "right": 1, "why": "It qualifies the opportunity and gives you the subject of your follow-up."}, {"q": "Which shipping option may a rep NOT offer?", "a": ["UPS Overnight", "Customer provides own label", "Local pickup", "USPS Ground"], "right": 2, "why": "Owner approval only, and refused server-side from a rep login."}, {"q": "When does an order ship free?", "a": ["Over $5,000", "Over $10,000", "On UPS Ground", "Only when Scott approves it, which is uncommon"], "right": 3, "why": "There is no automatic free shipping. Every order is quoted and charged for carriage."}, {"q": "Can you authorise a refund for a damaged order?", "a": ["No \u2014 only Scott can make an exception", "Yes if it's clearly EHF's fault", "Yes, up to $500", "Yes with photos"], "right": 0, "why": "All sales are final unless Scott makes an exception. Promising one turns a product problem into a trust problem."}, {"q": "A shop bought two pounds and moves about a pound a fortnight. When do you call?", "a": ["When they call you", "At about three weeks, before they run out", "In three months", "Weekly until they buy"], "right": 1, "why": "Before they run out. A shop that has already run out has called someone else."}]};
@@ -574,8 +575,8 @@ const TRAINING = {
    "id": "L3",
    "n": 3,
    "title": "Read a COA",
-   "mins": 10,
-   "blurb": "The document every serious buyer asks for. Six checks, one formula, and when to stop.",
+   "mins": 12,
+   "blurb": "The two different THC tests, how to read any cannabinoid, and when to stop.",
    "lessons": [
     {
      "id": "L3a",
@@ -583,7 +584,7 @@ const TRAINING = {
      "blocks": [
       {
        "t": "text",
-       "v": "A <b>COA</b> is a Certificate of Analysis: a lab's report of what it measured in a sample. EHF links a potency COA to products in the catalog."
+       "v": "A <b>COA</b> is a Certificate of Analysis: a lab's report of what it measured in one sample. EHF links a potency COA to products in the catalog."
       },
       {
        "t": "two",
@@ -591,20 +592,46 @@ const TRAINING = {
         "good": [
          "What cannabinoids the lab found",
          "How much of each, in the units shown",
-         "Which sample and when it was tested",
+         "Which sample, and when",
          "Evidence you are a serious vendor"
         ],
         "bad": [
          "Proof the product is legal in a state",
-         "Evidence it was tested for pesticides",
-         "Evidence it was tested for heavy metals",
+         "Evidence of pesticide testing",
+         "Evidence of heavy-metal testing",
          "A guarantee of quality or safety"
         ]
        }
       },
       {
        "t": "never",
-       "v": "Never say a COA shows a product is clean of pesticides, metals, solvents or microbes <b>unless those panels are actually on the report</b>. EHF currently uses potency COAs. Claiming more than the document says is the fastest way to lose a customer's trust permanently."
+       "v": "Never say a COA shows a product is clean of pesticides, metals, solvents or microbes <b>unless those panels are on the report</b>. EHF currently uses potency COAs. Claiming more than the document says is how you lose a buyer permanently."
+      }
+     ]
+    },
+    {
+     "id": "L3t",
+     "title": "Two different tests \u2014 this is the one to get right",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "There are two ways to measure THC on a hemp COA, and they answer completely different questions. Reps mix these up constantly and it is the single most expensive mistake in this module."
+      },
+      {
+       "t": "tests",
+       "v": 1
+      },
+      {
+       "t": "text",
+       "v": "So a COA showing <b>0.30% delta-9</b> and <b>37% THCa</b> meets the current federal definition \u2014 on the delta-9 figure alone. The same report under a total-THC test is nowhere near it."
+      },
+      {
+       "t": "remember",
+       "v": "<b>Delta-9 is the number the current federal definition turns on.</b> Total THC tells you how strong it actually is, is already the test in several states, and is where the federal standard is heading. Know which one you are being asked about."
+      },
+      {
+       "t": "never",
+       "v": "Knowing which test applies still does not let you tell a customer a product is legal where they are. That is an EHF policy question, every time."
       }
      ]
     },
@@ -617,91 +644,115 @@ const TRAINING = {
        "v": [
         [
          "Match the product",
-         "Does the COA name the product or strain you are discussing? Check batch or lot if shown."
+         "Does the COA name the product or strain you are quoting? Check batch or lot if shown."
         ],
         [
          "Check the lab and the date",
-         "Which lab, and when was it sampled and reported? Old or mismatched paperwork is a reason to stop."
-        ],
-        [
-         "Find THCa",
-         "The acidic precursor. This is usually the biggest number on a flower COA."
+         "Which lab, when sampled, when reported. Old or mismatched paperwork is a reason to stop."
         ],
         [
          "Find delta-9 THC",
-         "Read the figure and the unit. Do not turn this one number into a legal conclusion."
+         "The figure the current federal definition turns on."
+        ],
+        [
+         "Find THCa",
+         "Usually the biggest number on a flower COA. This is what converts when heated."
         ],
         [
          "Read the totals",
-         "Total cannabinoids and total THC, if the lab reports them."
+         "Total THC and total cannabinoids, if the lab reports them."
         ],
         [
          "Compare with the catalog",
-         "If the catalog potency and the COA materially disagree \u2014 stop."
+         "Material disagreement means stop, not pick one."
         ]
        ]
       },
       {
-       "t": "remember",
-       "v": "If catalog and COA disagree: <b>do not pick whichever number sounds better.</b> Stop and ask EHF. Quoting a number you cannot stand behind is worse than taking an extra hour to check."
-      },
-      {
        "t": "text",
-       "v": "Here is a real EHF report, with the three lines that matter marked:"
+       "v": "Here is a real EHF report, with the lines that matter marked:"
       },
       {
        "t": "coa",
        "v": 1
+      },
+      {
+       "t": "remember",
+       "v": "If catalog and COA disagree: <b>do not pick whichever number sounds better.</b> Stop and ask EHF."
       }
      ]
     },
     {
-     "id": "L3c",
-     "title": "Potential total THC",
+     "id": "L3f",
+     "title": "Finding any cannabinoid on the report",
      "blocks": [
       {
        "t": "text",
-       "v": "Buyers sometimes ask what the flower will actually test at once it is smoked. There is a standard calculation:"
+       "v": "A buyer may ask about any of these. The method is the same every time: find the row, read the result, check the unit."
       },
       {
-       "t": "calc",
-       "v": "thc"
+       "t": "steps",
+       "v": [
+        [
+         "Find the analyte column",
+         "Usually the left-hand column, listing every cannabinoid the lab tested for."
+        ],
+        [
+         "Read across to the result",
+         "There are often two result columns \u2014 one in <b>%</b> and one in <b>mg/g</b>. They say the same thing."
+        ],
+        [
+         "Check the unit before you quote it",
+         "This is where reps get caught. 250&nbsp;mg/g is 25%, not 0.25%."
+        ],
+        [
+         "ND is not zero",
+         "Not detected above the lab's threshold. Say it that way."
+        ],
+        [
+         "Nothing listed means nothing tested",
+         "If a cannabinoid is not on the report, the lab did not look for it. That is not the same as none present."
+        ]
+       ]
       },
       {
-       "t": "text",
-       "v": "The 0.877 is the ratio of the molecular weights \u2014 THCa loses a carboxyl group when it decarboxylates, so it gets lighter. You do not need to explain that; you need to be able to do the sum."
+       "t": "units",
+       "v": 1
       },
       {
-       "t": "remember",
-       "v": "This is a <b>potency</b> calculation. It tells you how strong the flower is. It is <b>not</b> a permission slip to declare the product lawful anywhere."
+       "t": "try",
+       "v": "A COA reports CBG at <b>18.5&nbsp;mg/g</b>. A buyer asks what percentage that is.",
+       "answers": [
+        "18.5%",
+        "1.85%",
+        "0.185%",
+        "185%"
+       ],
+       "right": 1,
+       "why": "1,000 mg/g is 100%, so divide by ten: 18.5 mg/g is 1.85%. Getting this wrong by a factor of ten in front of a buyer who knows the maths costs you the account."
       }
      ]
     },
     {
      "id": "L3d",
-     "title": "Reading the abbreviations",
+     "title": "The abbreviations",
      "blocks": [
       {
        "t": "bullets",
        "v": [
-        "<b>ND</b> \u2014 not detected. The lab did not find it above its reporting threshold.",
+        "<b>ND</b> \u2014 not detected above the lab's reporting threshold.",
         "<b>LOD</b> \u2014 limit of detection. The smallest amount the method can detect at all.",
-        "<b>LOQ</b> \u2014 limit of quantitation. The smallest amount the lab can reliably put a number on.",
-        "<b>%</b> \u2014 percent by weight, when the report uses percentages.",
-        "<b>mg/g</b> \u2014 milligrams per gram. 10 mg/g is 1%. Read the units carefully, because labs differ."
+        "<b>LOQ</b> \u2014 limit of quantitation. The smallest amount it can reliably put a number on.",
+        "<b>&lt;LOQ</b> \u2014 present, but too little to measure reliably.",
+        "<b>%</b> \u2014 percent by weight.",
+        "<b>mg/g</b> \u2014 milligrams per gram. Divide by 10 for percent.",
+        "<b>Total THC</b> \u2014 (THCa &times; 0.877) + delta-9. Some labs print it; some do not.",
+        "<b>Total cannabinoids</b> \u2014 everything found, added together."
        ]
       },
       {
-       "t": "try",
-       "v": "A COA reports delta-9 THC as <b>ND</b>. What does that mean?",
-       "answers": [
-        "There is definitely zero delta-9 THC in the product",
-        "The lab did not detect it above its reporting threshold \u2014 which is not the same as zero",
-        "The lab did not test for it",
-        "The result was invalid"
-       ],
-       "right": 1,
-       "why": "ND means below the method's threshold, not an absolute zero. The distinction matters because a customer who hears \u201czero\u201d and later sees a different number on another lab's report will think you lied to them."
+       "t": "text",
+       "v": "<b>Dry weight basis</b> appears on most reports. It means the figures are calculated as if the moisture were removed, which is how the legal thresholds are written."
       }
      ]
     },
@@ -712,102 +763,364 @@ const TRAINING = {
       {
        "t": "bullets",
        "v": [
-        "The COA is for a different strain or product than the one you are quoting.",
+        "The COA is for a different strain or product than you are quoting.",
         "Batch or lot does not match, where batch data exists.",
         "The report is unexpectedly old.",
-        "The catalog figure and the COA figure materially differ.",
+        "Catalog and COA figures materially differ.",
         "The report is unreadable, cropped, or a photo of a screen.",
-        "The customer asks you to certify legality using the COA alone."
+        "There is no lab name, no accreditation, or no date.",
+        "The customer asks you to certify legality from the COA alone."
        ]
       },
       {
        "t": "never",
-       "v": "Any of those, and the answer is the same: <b>stop and ask EHF.</b> Not \u201cprobably fine\u201d. Not \u201cclose enough\u201d. Stop."
+       "v": "Any of those and the answer is the same: <b>stop and ask EHF.</b> Not \u201cprobably fine\u201d. Not \u201cclose enough\u201d."
       }
      ]
     }
    ],
    "quiz": [
     {
-     "q": "THCa is 27.50% and delta-9 THC is 0.20%. What is the potential total THC?",
+     "q": "Which figure does the <b>current</b> federal hemp definition turn on?",
      "a": [
-      "27.50%",
-      "27.70%",
-      "24.32%",
-      "23.95%"
+      "Total THC",
+      "Delta-9 THC",
+      "THCa",
+      "Total cannabinoids"
      ],
-     "right": 2,
-     "why": "(27.50 \u00d7 0.877) + 0.20 = 24.1175 + 0.20 = approximately 24.32%."
+     "right": 1,
+     "why": "Delta-9 THC at no more than 0.3% dry weight. THCa is not counted in that federal test today, which is the whole reason high-THCa flower reached the hemp market."
     },
     {
-     "q": "A potency COA proves the product has not been treated with pesticides.",
+     "q": "What does total THC tell you?",
+     "a": [
+      "Whether the product is federally legal today",
+      "How strong it actually is once heated \u2014 and it is already the test in several states",
+      "Nothing useful",
+      "Whether it was tested for pesticides"
+     ],
+     "right": 1,
+     "why": "It is the potency reality, it is the standard in several states already, and it is where the federal definition is heading. It is not the current federal test."
+    },
+    {
+     "q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026",
+     "a": [
+      "30.25%",
+      "26.56%",
+      "26.31%",
+      "27.00%"
+     ],
+     "right": 1,
+     "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."
+    },
+    {
+     "q": "A COA reports CBD at 120 mg/g. As a percentage that is\u2026",
+     "a": [
+      "120%",
+      "12%",
+      "1.2%",
+      "0.12%"
+     ],
+     "right": 1,
+     "why": "1,000 mg/g is 100%, so divide by ten. 120 mg/g is 12%."
+    },
+    {
+     "q": "A potency COA proves the product has no pesticides on it.",
      "a": [
       "True",
-      "False \u2014 a potency COA only reports cannabinoids, unless pesticide panels are actually on it"
+      "False"
      ],
      "right": 1,
-     "why": "A potency COA reports cannabinoids. Claiming it covers contaminants is claiming something the document does not say."
+     "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually appear on the report."
     },
     {
-     "q": "The catalog says 31% THCa. The attached COA says 24% THCa. What do you do?",
+     "q": "A cannabinoid is not listed anywhere on the COA. What does that mean?",
      "a": [
-      "Stop and ask EHF",
-      "Quote 31% \u2014 the catalog is the source of truth",
-      "Quote 24% \u2014 the lab is the source of truth",
-      "Quote the average"
-     ],
-     "right": 0,
-     "why": "Materially disagreeing numbers mean something is wrong \u2014 the wrong COA, an old batch, a typo. Picking either number means quoting a figure you cannot stand behind."
-    },
-    {
-     "q": "What does LOQ mean?",
-     "a": [
-      "Level of quality",
-      "Limit of quantitation \u2014 the smallest amount the lab can reliably put a number on",
-      "Lab operating quotient",
-      "Legal observation quota"
+      "There is none present",
+      "The lab did not test for it",
+      "It was below the legal limit",
+      "The report is invalid"
      ],
      "right": 1,
-     "why": "LOQ is the reliable-measurement floor. Below it the lab can sometimes detect something but cannot confidently say how much."
+     "why": "Absent from the report means not tested, which is different from not present. ND means tested and not found above threshold."
     },
     {
-     "q": "A customer says: \u201cYour COA shows under 0.3% delta-9, so you can ship to me.\u201d What is the right reply?",
+     "q": "What does ND mean?",
      "a": [
-      "\u201cLet me send you the COA again.\u201d",
-      "\u201cCorrect, that's the federal standard.\u201d",
-      "\u201cThe COA is a potency document, not a legal clearance \u2014 let me verify your location against EHF's current policy.\u201d",
-      "\u201cYes, as long as your state allows hemp.\u201d"
+      "An absolute zero",
+      "Not detected above the lab's reporting threshold",
+      "No data",
+      "Not dated"
      ],
-     "right": 2,
-     "why": "This is the most common trap in the job. The COA says what is in the product. It does not say where the product may be sold."
+     "right": 1,
+     "why": "Below the method's threshold. A customer who hears \u201czero\u201d and later sees a number on another lab's report will think you lied."
     },
     {
-     "q": "A COA reports in mg/g rather than %. 250 mg/g is roughly\u2026",
+     "q": "Catalog says 31% THCa; the COA says 24%. What do you do?",
      "a": [
-      "0.25%",
-      "250%",
-      "2.5%",
-      "25%"
+      "Quote the catalog",
+      "Quote the COA",
+      "Quote the average",
+      "Stop and ask EHF"
      ],
      "right": 3,
-     "why": "1,000 mg/g is 100%, so 250 mg/g is 25%. Misreading units is an easy way to quote a number that is off by a factor of ten."
+     "why": "A material disagreement means something is wrong \u2014 wrong COA, old batch, a typo. Either number is a figure you cannot stand behind."
     },
     {
-     "q": "When should you use a COA to tell a customer a product is legal in their state?",
+     "q": "A customer says the COA shows under 0.3% delta-9, so you can ship to them. What is the right reply?",
      "a": [
-      "Never \u2014 that is an EHF policy question, not a lab question",
-      "When the report is recent",
-      "When delta-9 is under 0.3%",
-      "When the lab is accredited"
+      "\u201cCorrect, that's the federal standard.\u201d",
+      "\u201cThe COA is a potency document \u2014 let me verify your location against EHF's current policy.\u201d",
+      "\u201cYes, if your state allows hemp.\u201d",
+      "\u201cLet me resend the COA.\u201d"
      ],
-     "right": 0,
-     "why": "Never. The COA is evidence about the product. Legality is a policy and jurisdiction question, and EHF answers it."
+     "right": 1,
+     "why": "They are right about the federal figure and still wrong about the conclusion. States set their own rules, several use total THC, and EHF policy is what you quote."
     }
    ]
   },
   {
+   "id": "LCANN",
+   "title": "The Cannabinoid Map",
+   "mins": 9,
+   "blurb": "Every letter a buyer will throw at you, what it is, and what to say.",
+   "lessons": [
+    {
+     "id": "LC1",
+     "title": "Why this matters on a call",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "A buyer will say \u201cdo you have THCp?\u201d or \u201cmy customers want CBN\u201d. If you hesitate, you sound like somebody selling a product they do not understand. You do not need chemistry \u2014 you need to know what each one <b>is</b> and who asks for it."
+      },
+      {
+       "t": "text",
+       "v": "Two families. <b>Acidic forms</b> (THCa, CBDa, CBGa) are what the living plant makes; heat converts them. <b>Neutral forms</b> (THC, CBD, CBG) are what you get after heat, or what the lab finds already converted."
+      }
+     ]
+    },
+    {
+     "id": "LC2",
+     "title": "The intoxicating ones",
+     "blocks": [
+      {
+       "t": "cann",
+       "v": [
+        [
+         "THCa",
+         "Tetrahydrocannabinolic acid",
+         "The acid form in raw cannabis. Not intoxicating until heated, then it largely becomes delta-9.",
+         "The core of EHF flower and pre-rolls."
+        ],
+        [
+         "Delta-9 THC",
+         "&Delta;9-THC",
+         "The classic one. The figure the current federal hemp definition turns on.",
+         "Present in small amounts on flower COAs; the active ingredient in hemp edibles."
+        ],
+        [
+         "Delta-8 THC",
+         "&Delta;8-THC",
+         "An isomer of delta-9. Usually described as milder. Typically made by converting CBD.",
+         "Common in vapes, edibles and syrups. Banned or restricted in a number of states."
+        ],
+        [
+         "Delta-10 THC",
+         "&Delta;10-THC",
+         "Another isomer, usually described as lighter and more energetic.",
+         "Blended into vapes and edibles."
+        ],
+        [
+         "HHC",
+         "Hexahydrocannabinol",
+         "Hydrogenated THC. Longer shelf life, effects often compared to delta-9.",
+         "Blends in pre-rolls, vapes and gummies."
+        ],
+        [
+         "THC-O",
+         "THC-O acetate",
+         "An acetate ester. Reported as notably stronger. Scrutinised more than most.",
+         "Appears in blends. Confirm eligibility before presenting."
+        ],
+        [
+         "THC-P",
+         "Tetrahydrocannabiphorol",
+         "A longer side chain, reported as far more potent by weight.",
+         "Usually a small percentage inside a blend, not sold alone."
+        ],
+        [
+         "THC-B / THC-jd",
+         "&mdash;",
+         "Rarer analogues appearing in premium vape blends.",
+         "On the Esco Bars blends in the catalog."
+        ],
+        [
+         "THCV",
+         "Tetrahydrocannabivarin",
+         "Different effect profile, often described as clear-headed.",
+         "Occasionally requested by name."
+        ]
+       ]
+      },
+      {
+       "t": "never",
+       "v": "Never promise an <b>effect</b> or a medical outcome from any of these. Describe what they are and what customers ask for. \u201cReported as\u201d and \u201coften described as\u201d are the safe phrases, and they are also the honest ones."
+      }
+     ]
+    },
+    {
+     "id": "LC3",
+     "title": "The non-intoxicating ones \u2014 and why they matter more every month",
+     "blocks": [
+      {
+       "t": "cann",
+       "v": [
+        [
+         "CBD",
+         "Cannabidiol",
+         "Non-intoxicating. The most recognised cannabinoid outside THC.",
+         "Topicals, tinctures, gel caps, gummies \u2014 and CBD flower."
+        ],
+        [
+         "CBG",
+         "Cannabigerol",
+         "Non-intoxicating. Called the precursor cannabinoid; the plant makes it first.",
+         "Growing demand. CBG flower is a real category."
+        ],
+        [
+         "CBN",
+         "Cannabinol",
+         "Mildly intoxicating at most. Forms as THC ages.",
+         "Usually blended, often marketed around rest."
+        ],
+        [
+         "CBC",
+         "Cannabichromene",
+         "Non-intoxicating minor cannabinoid.",
+         "Shows on full-spectrum COAs."
+        ],
+        [
+         "CBDV / CBDa / CBGa",
+         "&mdash;",
+         "Minor and acidic forms.",
+         "Appear on COAs; rarely requested by name."
+        ]
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "<b>EHF can source CBD, CBG and CBN flower.</b> Not every variety sits in the catalog at any given moment, so the honest line is \u201cwe can source it \u2014 tell me volume and timing and I'll find out what's available.\u201d"
+      },
+      {
+       "t": "text",
+       "v": "This category matters more each month. A compliant low-THC CBD or CBG flower is the part of the market least exposed to the changing federal definition \u2014 and some buyers are already asking for exactly that."
+      },
+      {
+       "t": "script",
+       "v": "If you're thinking about where this market's heading, we can also source CBD and CBG flower. Worth a conversation now rather than when you need it."
+      }
+     ]
+    },
+    {
+     "id": "LC4",
+     "title": "What to say when asked",
+     "blocks": [
+      {
+       "t": "script",
+       "v": "We work across the range \u2014 THCa flower, and blends with HHC, delta-8, delta-10, THC-O and THC-P depending on the product. Which are your customers actually asking for?"
+      },
+      {
+       "t": "text",
+       "v": "That answers the question, shows range, and hands it back. You then quote from the live catalog rather than from memory."
+      },
+      {
+       "t": "try",
+       "v": "A buyer asks: \u201cIs your delta-8 natural or converted?\u201d",
+       "answers": [
+        "\u201cIt's all natural, straight from the plant.\u201d",
+        "\u201cDelta-8 is generally produced by converting CBD \u2014 that's true across the industry. I'll tell you exactly what's in anything I quote you.\u201d",
+        "\u201cI'm not sure, I'll find out.\u201d",
+        "\u201cDoes it matter? It works the same.\u201d"
+       ],
+       "right": 1,
+       "why": "The honest answer, and it is true of essentially all commercial delta-8. Claiming it is naturally occurring in meaningful quantity is false and an experienced buyer knows it. Saying you do not know is acceptable but weaker \u2014 this one you should simply know. Dismissing the question insults somebody doing their diligence."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What is the difference between an acidic and a neutral cannabinoid?",
+     "a": [
+      "Acidic ones are stronger",
+      "Acidic forms are what the living plant makes; heat converts them to neutral forms",
+      "Neutral ones are synthetic",
+      "There is no difference"
+     ],
+     "right": 1,
+     "why": "THCa, CBDa and CBGa are what the plant produces. Heat decarboxylates them into THC, CBD and CBG."
+    },
+    {
+     "q": "A buyer asks whether your delta-8 is natural or converted. What do you say?",
+     "a": [
+      "It is naturally occurring",
+      "It is generally produced by converting CBD \u2014 true across the industry",
+      "You don't know",
+      "Avoid the question"
+     ],
+     "right": 1,
+     "why": "Essentially all commercial delta-8 is converted from CBD. Claiming otherwise is false and experienced buyers know it."
+    },
+    {
+     "q": "Can EHF supply CBD or CBG flower?",
+     "a": [
+      "No, only THCa",
+      "Yes \u2014 it can be sourced; confirm availability, volume and timing",
+      "Only CBD, not CBG",
+      "Only as topicals"
+     ],
+     "right": 1,
+     "why": "Both can be sourced. Do not promise specific stock without checking, but absolutely raise it \u2014 it is the part of the market least exposed to the changing federal definition."
+    },
+    {
+     "q": "What is CBN?",
+     "a": [
+      "A synthetic cannabinoid",
+      "A cannabinoid that forms as THC ages, mildly intoxicating at most",
+      "The strongest cannabinoid",
+      "Another name for CBD"
+     ],
+     "right": 1,
+     "why": "It forms as THC degrades. Usually blended rather than sold alone."
+    },
+    {
+     "q": "A buyer asks which cannabinoid will help their customers sleep. What do you do?",
+     "a": [
+      "Recommend CBN",
+      "Recommend an indica",
+      "Avoid the effect claim and ask what their customers are actually requesting",
+      "Send the COA"
+     ],
+     "right": 2,
+     "why": "No effect or medical claims on any cannabinoid. What their customers ask for is the more useful commercial question anyway."
+    },
+    {
+     "q": "Why does CBD and CBG flower matter more each month?",
+     "a": [
+      "It is cheaper",
+      "Low-THC flower is the part of the market least exposed to the changing federal definition",
+      "It tests higher",
+      "Customers prefer it"
+     ],
+     "right": 1,
+     "why": "The federal definition is moving toward total THC. Genuinely low-THC products are the ones least affected, and some buyers are already planning for that."
+    }
+   ],
+   "n": 4
+  },
+  {
    "id": "L4",
-   "n": 4,
+   "n": 5,
    "title": "Know the Products",
    "mins": 9,
    "blurb": "Sell the category, then the SKU. Inventory changes; the way you present it does not.",
@@ -1052,7 +1365,7 @@ const TRAINING = {
   },
   {
    "id": "L5",
-   "n": 5,
+   "n": 6,
    "title": "Compliance",
    "mins": 7,
    "blurb": "Research the states you prospect, and never promise legality to anybody.",
@@ -1197,7 +1510,7 @@ const TRAINING = {
   },
   {
    "id": "L6",
-   "n": 6,
+   "n": 7,
    "title": "Find Buyers",
    "mins": 7,
    "blurb": "Where the leads come from, how to tell a real one from a waste of an afternoon.",
@@ -1356,7 +1669,7 @@ const TRAINING = {
   },
   {
    "id": "L7",
-   "n": 7,
+   "n": 8,
    "title": "Contact the Shop",
    "mins": 8,
    "blurb": "The vendor-first opener, and the discovery questions that do the selling for you.",
@@ -1530,7 +1843,7 @@ const TRAINING = {
   },
   {
    "id": "L8",
-   "n": 8,
+   "n": 9,
    "title": "Present & Sell",
    "mins": 7,
    "blurb": "Three choices, retailer economics, and why you never quote a resale price.",
@@ -1666,7 +1979,7 @@ const TRAINING = {
   },
   {
    "id": "L9",
-   "n": 9,
+   "n": 10,
    "title": "Objections",
    "mins": 10,
    "blurb": "Fifteen things you will hear, what to say, and why it works.",
@@ -1691,7 +2004,14 @@ const TRAINING = {
      "blocks": [
       {
        "t": "text",
-       "v": "Tap any one to see the response and why it works. These are the fifteen you will actually hear."
+       "v": "Fifteen of the ones you will hear most are below. There are <b>38 in the toolkit</b>, grouped by what they are really about \u2014 opening, price, product, legality, timing, trust, and fit."
+      },
+      {
+       "t": "link",
+       "v": {
+        "label": "Open the full objection bank",
+        "href": "#obj"
+       }
       },
       {
        "t": "cards",
@@ -1858,7 +2178,7 @@ const TRAINING = {
   },
   {
    "id": "L10",
-   "n": 10,
+   "n": 11,
    "title": "Pricing & Commission",
    "mins": 8,
    "blurb": "What you may discount, what you get paid, and the line you need approval to cross.",
@@ -2063,7 +2383,7 @@ const TRAINING = {
   },
   {
    "id": "L11",
-   "n": 11,
+   "n": 12,
    "title": "Samples",
    "mins": 5,
    "blurb": "Small, targeted, and always with a question attached.",
@@ -2169,7 +2489,7 @@ const TRAINING = {
   },
   {
    "id": "L12",
-   "n": 12,
+   "n": 13,
    "title": "Close the Sale",
    "mins": 5,
    "blurb": "Four sentences, and the nerve to use them.",
@@ -2301,7 +2621,7 @@ const TRAINING = {
   },
   {
    "id": "L13",
-   "n": 13,
+   "n": 14,
    "title": "Build the Invoice",
    "mins": 9,
    "blurb": "The exact steps, the one thing you must do before submitting, and the mistakes that cost money.",
@@ -2523,7 +2843,7 @@ const TRAINING = {
   },
   {
    "id": "L14",
-   "n": 14,
+   "n": 15,
    "title": "Payment",
    "mins": 6,
    "blurb": "What counts as paid, what absolutely does not, and why that protects you.",
@@ -2665,7 +2985,7 @@ const TRAINING = {
   },
   {
    "id": "L15",
-   "n": 15,
+   "n": 16,
    "title": "Shipping & Problems",
    "mins": 5,
    "blurb": "What you can offer, what you cannot authorise, and the sentence to use when something goes wrong.",
@@ -2815,8 +3135,132 @@ const TRAINING = {
    ]
   },
   {
+   "id": "LINTL",
+   "title": "International",
+   "mins": 5,
+   "blurb": "EHF can ship and source across borders where permitted. What that means for you.",
+   "lessons": [
+    {
+     "id": "LI1",
+     "title": "What is possible",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "EHF can <b>ship internationally where it is permitted</b>, and can <b>source internationally</b> as well. That is a genuine differentiator \u2014 most of the shops you call have never been offered it."
+      },
+      {
+       "t": "text",
+       "v": "It is also the single easiest area to say something wrong in. Import rules, export rules, and the law at both ends all apply at once, and none of them are yours to interpret."
+      },
+      {
+       "t": "remember",
+       "v": "Your job here is <b>one sentence and a handover</b>. Raise that it is possible, gather the details, bring Scott in. You are not quoting, promising a timeline, or advising on customs."
+      }
+     ]
+    },
+    {
+     "id": "LI2",
+     "title": "What to say",
+     "blocks": [
+      {
+       "t": "script",
+       "v": "We do handle international where it's permitted \u2014 both shipping out and sourcing. I can't quote that off the top of my head because it depends on the product and both countries. Tell me what you're after, the volume and the timing, and I'll get you a straight answer."
+      },
+      {
+       "t": "text",
+       "v": "Then collect these and take them to Scott:"
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "Which country, and which city or port if they know.",
+        "Which product and which cannabinoid.",
+        "Volume, and whether it is one shipment or recurring.",
+        "Their timing.",
+        "Whether they have imported hemp before, and through whom.",
+        "Any licence or registration they already hold."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "Do not quote a price, a lead time, a carrier or a duty. Do not say \u201cyes we can do that\u201d about a specific country until Scott has confirmed it. <b>Permitted where permitted</b> is the whole of your authority here."
+      }
+     ]
+    },
+    {
+     "id": "LI3",
+     "title": "Why it is worth raising",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Most wholesale calls sound identical to the buyer. Mentioning that you can source and ship across borders marks you as a different kind of supplier even when they do not need it today."
+      },
+      {
+       "t": "try",
+       "v": "A distributor asks whether you can ship a pallet to Europe next month.",
+       "answers": [
+        "\u201cYes, we ship worldwide.\u201d",
+        "\u201cNo, we're domestic only.\u201d",
+        "\u201cWe do handle international where it's permitted. I can't quote it off the top of my head \u2014 give me the country, product, volume and timing and I'll get you a straight answer.\u201d",
+        "\u201cLet me check with shipping.\u201d"
+       ],
+       "right": 2,
+       "why": "Honest about the capability, honest about the limits of your authority, and it collects exactly what Scott needs. Promising worldwide shipping is a promise you cannot keep; saying domestic only throws away a capability EHF actually has; and \u201clet me check with shipping\u201d is vague and makes you sound junior."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Can EHF ship internationally?",
+     "a": [
+      "No",
+      "Yes, where it is permitted",
+      "Only to Canada",
+      "Only CBD products"
+     ],
+     "right": 1,
+     "why": "Where permitted \u2014 both shipping out and sourcing. The qualifier is doing real work and it belongs in every sentence you say about it."
+    },
+    {
+     "q": "A buyer asks for a quote to ship to Germany. What do you do?",
+     "a": [
+      "Quote standard rates plus a surcharge",
+      "Say EHF is domestic only",
+      "Collect country, product, volume and timing, then take it to Scott",
+      "Tell them to arrange their own freight"
+     ],
+     "right": 2,
+     "why": "Gather and hand over. You are not quoting international freight or advising on customs."
+    },
+    {
+     "q": "What may you promise about an international order?",
+     "a": [
+      "A price",
+      "A lead time",
+      "A carrier",
+      "Nothing specific until Scott confirms it"
+     ],
+     "right": 3,
+     "why": "Import and export rules and the law at both ends all apply at once. None of them are yours to interpret."
+    },
+    {
+     "q": "Why raise international capability even with buyers who do not need it?",
+     "a": [
+      "It fills time",
+      "It marks you as a different kind of supplier from everyone else calling them",
+      "It increases the order",
+      "It is required"
+     ],
+     "right": 1,
+     "why": "Most wholesale calls sound identical. This one does not, and buyers remember it."
+    }
+   ],
+   "n": 17
+  },
+  {
    "id": "L16",
-   "n": 16,
+   "n": 18,
    "title": "Follow-Up & Reorders",
    "mins": 6,
    "blurb": "The first order is the beginning. This level is where the money actually is.",
