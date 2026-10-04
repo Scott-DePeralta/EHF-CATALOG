@@ -1,5 +1,6 @@
 const TRAINING = {
  "version": 1,
+ "pass": 80,
  "levels": [
   {
    "id": "L1",
@@ -229,6 +230,2599 @@ const TRAINING = {
      ],
      "right": 1,
      "why": "Never guess about legality. A COA is a potency document, not a legal clearance, and what other vendors do is not EHF policy."
+    }
+   ]
+  },
+  {
+   "id": "L2",
+   "n": 2,
+   "title": "Hemp, Cannabis & THCa",
+   "mins": 8,
+   "blurb": "What you are actually selling, in plain English, without the science lecture.",
+   "lessons": [
+    {
+     "id": "L2a",
+     "title": "The five-minute version",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "THCa flower is <b>not fake weed</b>. It is real cannabis flower. THCa occurs naturally in it. Heat it, and most of that THCa turns into delta-9 THC \u2014 so high-THCa flower can get you high."
+      },
+      {
+       "t": "flow",
+       "v": [
+        "Cannabis flower",
+        "Contains THCa",
+        "Heat (lighter, vape, oven)",
+        "Decarboxylation",
+        "Delta-9 THC",
+        "Intoxicating effect"
+       ]
+      },
+      {
+       "t": "text",
+       "v": "That is the whole mechanism. You do not need more than this to sell it, and a customer who asks will be satisfied by exactly this explanation."
+      },
+      {
+       "t": "text",
+       "v": "The words people use loosely: <b>cannabis</b> is the plant. <b>Hemp</b> and <b>marijuana</b> are legal categories applied to that same plant, not different species. The line between them is drawn by measured THC content, not by botany."
+      }
+     ]
+    },
+    {
+     "id": "L2b",
+     "title": "Why THCa ended up in the hemp market",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Under the 2018 federal framework, hemp was defined by <b>delta-9 THC</b> at no more than 0.3% on a dry-weight basis. THCa is a different molecule, and it was not counted in that test."
+      },
+      {
+       "t": "text",
+       "v": "So flower with low measured delta-9 but substantial THCa could be sold through the hemp channel \u2014 subject to whatever each state said about it."
+      },
+      {
+       "t": "never",
+       "v": "<b>Federal law is changing.</b> A 2025 amendment is scheduled to take effect <b>12 November 2026</b> and moves the definition toward <i>total</i> THC including THCa. Never tell a customer the old rule is permanent, and never promise THCa is legal everywhere."
+      },
+      {
+       "t": "text",
+       "v": "You do not need to track the legislation. You need to know that it moves, and that <b>EHF's current policy</b> \u2014 not your memory of a rule \u2014 decides what you can offer."
+      }
+     ]
+    },
+    {
+     "id": "L2c",
+     "title": "Product science vs legal classification",
+     "blocks": [
+      {
+       "t": "two",
+       "v": {
+        "good": [
+         "THCa converts to delta-9 when heated",
+         "This flower can be intoxicating",
+         "A COA shows what the lab measured",
+         "EHF policy says where I can sell it"
+        ],
+        "bad": [
+         "THCa is legal because it is not delta-9",
+         "Under 0.3% means we can ship anywhere",
+         "The COA proves it is legal here",
+         "Everyone else sells it so it must be fine"
+        ]
+       }
+      },
+      {
+       "t": "text",
+       "v": "These are two separate questions and they get mixed up constantly. <b>What the product does</b> is science. <b>Where it can be sold</b> is law and EHF policy. Answer the first confidently. Never answer the second from memory."
+      },
+      {
+       "t": "try",
+       "v": "A buyer says: \u201cSo this is basically just legal weed, right?\u201d What is the best answer?",
+       "answers": [
+        "\u201cExactly \u2014 it's legal weed.\u201d",
+        "\u201cIt's real cannabis flower. THCa converts to delta-9 when it's heated. We sell through the hemp market, but the rules vary by state, so I verify your location before I promise availability.\u201d",
+        "\u201cIt's hemp, so it's different from weed.\u201d"
+       ],
+       "right": 1,
+       "why": "The second is true on both counts and it sounds like someone who knows the business. The first makes a legal promise you cannot keep. The third is misleading \u2014 it is the same plant, and a buyer who later feels misled is a buyer you lose."
+      }
+     ]
+    },
+    {
+     "id": "L2d",
+     "title": "Indica, sativa, hybrid",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Use these as the market categories your buyers already use. Do not use them as medical claims."
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "<b>Indica</b> \u2014 marketed as heavier, more relaxing.",
+        "<b>Sativa</b> \u2014 marketed as brighter, more energetic.",
+        "<b>Hybrid</b> \u2014 a cross, leaning one way or the other."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "Do not guarantee a specific effect, and never make a health or medical claim about any product. Ask what the shop's customers request instead \u2014 that is the information that actually helps you sell."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What happens to THCa when it is heated?",
+     "a": [
+      "Nothing \u2014 it stays THCa",
+      "It converts substantially into delta-9 THC",
+      "It turns into CBD",
+      "It evaporates"
+     ],
+     "right": 1,
+     "why": "Heat drives decarboxylation and most of the THCa becomes delta-9 THC. That is why high-THCa flower is intoxicating when smoked or vaped."
+    },
+    {
+     "q": "Are hemp and marijuana different plants?",
+     "a": [
+      "Yes, botanically different species",
+      "No \u2014 same plant, different legal categories based on measured THC",
+      "Hemp is the male plant",
+      "Marijuana is grown indoors, hemp outdoors"
+     ],
+     "right": 1,
+     "why": "Same plant. The distinction is a legal line drawn by measured THC content, not biology."
+    },
+    {
+     "q": "A customer asks if THCa is legal. What is the right response?",
+     "a": [
+      "\u201cYes, it's federally legal under the Farm Bill.\u201d",
+      "\u201cIt's under 0.3% delta-9, so we can ship anywhere.\u201d",
+      "\u201cRules vary by state and product and change quickly \u2014 let me verify your location against EHF's current policy.\u201d",
+      "\u201cOur COA proves it's compliant.\u201d"
+     ],
+     "right": 2,
+     "why": "Legality is a policy question, not a product question. The other three are promises you cannot keep, and two of them are the exact phrases that get companies in trouble."
+    },
+    {
+     "q": "What is scheduled to change on 12 November 2026?",
+     "a": [
+      "Nothing",
+      "The federal hemp definition moves toward total THC including THCa",
+      "THCa becomes federally illegal in all forms",
+      "Shipping rules change"
+     ],
+     "right": 1,
+     "why": "A 2025 amendment takes effect then and shifts the definition toward total THC including THCa, with added restrictions. It is the reason nothing about legality should be learned by heart."
+    },
+    {
+     "q": "Is it accurate to call THCa flower \u201cfake weed\u201d?",
+     "a": [
+      "Yes, it's a hemp substitute",
+      "No \u2014 it is real cannabis flower",
+      "Only if it tests under 0.3%",
+      "Yes, because it isn't intoxicating"
+     ],
+     "right": 1,
+     "why": "It is real cannabis flower and it can be intoxicating. Calling it fake undersells the product and is simply untrue."
+    },
+    {
+     "q": "A buyer asks which strain will help them sleep. What do you do?",
+     "a": [
+      "Recommend an indica \u2014 they're sedating",
+      "Avoid a medical claim; ask what their customers actually ask for and buy",
+      "Check the COA for sleep cannabinoids",
+      "Tell them all THCa helps with sleep"
+     ],
+     "right": 1,
+     "why": "No health or medical claims, ever. And the more useful question commercially is what their customers request \u2014 that tells you what will sell."
+    }
+   ]
+  },
+  {
+   "id": "L3",
+   "n": 3,
+   "title": "Read a COA",
+   "mins": 10,
+   "blurb": "The document every serious buyer asks for. Six checks, one formula, and when to stop.",
+   "lessons": [
+    {
+     "id": "L3a",
+     "title": "What a COA is \u2014 and is not",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "A <b>COA</b> is a Certificate of Analysis: a lab's report of what it measured in a sample. EHF links a potency COA to products in the catalog."
+      },
+      {
+       "t": "two",
+       "v": {
+        "good": [
+         "What cannabinoids the lab found",
+         "How much of each, in the units shown",
+         "Which sample and when it was tested",
+         "Evidence you are a serious vendor"
+        ],
+        "bad": [
+         "Proof the product is legal in a state",
+         "Evidence it was tested for pesticides",
+         "Evidence it was tested for heavy metals",
+         "A guarantee of quality or safety"
+        ]
+       }
+      },
+      {
+       "t": "never",
+       "v": "Never say a COA shows a product is clean of pesticides, metals, solvents or microbes <b>unless those panels are actually on the report</b>. EHF currently uses potency COAs. Claiming more than the document says is the fastest way to lose a customer's trust permanently."
+      }
+     ]
+    },
+    {
+     "id": "L3b",
+     "title": "The six-step check",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Match the product",
+         "Does the COA name the product or strain you are discussing? Check batch or lot if shown."
+        ],
+        [
+         "Check the lab and the date",
+         "Which lab, and when was it sampled and reported? Old or mismatched paperwork is a reason to stop."
+        ],
+        [
+         "Find THCa",
+         "The acidic precursor. This is usually the biggest number on a flower COA."
+        ],
+        [
+         "Find delta-9 THC",
+         "Read the figure and the unit. Do not turn this one number into a legal conclusion."
+        ],
+        [
+         "Read the totals",
+         "Total cannabinoids and total THC, if the lab reports them."
+        ],
+        [
+         "Compare with the catalog",
+         "If the catalog potency and the COA materially disagree \u2014 stop."
+        ]
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "If catalog and COA disagree: <b>do not pick whichever number sounds better.</b> Stop and ask EHF. Quoting a number you cannot stand behind is worse than taking an extra hour to check."
+      }
+     ]
+    },
+    {
+     "id": "L3c",
+     "title": "Potential total THC",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Buyers sometimes ask what the flower will actually test at once it is smoked. There is a standard calculation:"
+      },
+      {
+       "t": "calc",
+       "v": "thc"
+      },
+      {
+       "t": "text",
+       "v": "The 0.877 is the ratio of the molecular weights \u2014 THCa loses a carboxyl group when it decarboxylates, so it gets lighter. You do not need to explain that; you need to be able to do the sum."
+      },
+      {
+       "t": "remember",
+       "v": "This is a <b>potency</b> calculation. It tells you how strong the flower is. It is <b>not</b> a permission slip to declare the product lawful anywhere."
+      }
+     ]
+    },
+    {
+     "id": "L3d",
+     "title": "Reading the abbreviations",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>ND</b> \u2014 not detected. The lab did not find it above its reporting threshold.",
+        "<b>LOD</b> \u2014 limit of detection. The smallest amount the method can detect at all.",
+        "<b>LOQ</b> \u2014 limit of quantitation. The smallest amount the lab can reliably put a number on.",
+        "<b>%</b> \u2014 percent by weight, when the report uses percentages.",
+        "<b>mg/g</b> \u2014 milligrams per gram. 10 mg/g is 1%. Read the units carefully, because labs differ."
+       ]
+      },
+      {
+       "t": "try",
+       "v": "A COA reports delta-9 THC as <b>ND</b>. What does that mean?",
+       "answers": [
+        "There is definitely zero delta-9 THC in the product",
+        "The lab did not detect it above its reporting threshold \u2014 which is not the same as zero",
+        "The lab did not test for it",
+        "The result was invalid"
+       ],
+       "right": 1,
+       "why": "ND means below the method's threshold, not an absolute zero. The distinction matters because a customer who hears \u201czero\u201d and later sees a different number on another lab's report will think you lied to them."
+      }
+     ]
+    },
+    {
+     "id": "L3e",
+     "title": "Red flags \u2014 stop and ask",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "The COA is for a different strain or product than the one you are quoting.",
+        "Batch or lot does not match, where batch data exists.",
+        "The report is unexpectedly old.",
+        "The catalog figure and the COA figure materially differ.",
+        "The report is unreadable, cropped, or a photo of a screen.",
+        "The customer asks you to certify legality using the COA alone."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "Any of those, and the answer is the same: <b>stop and ask EHF.</b> Not \u201cprobably fine\u201d. Not \u201cclose enough\u201d. Stop."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "THCa is 27.50% and delta-9 THC is 0.20%. What is the potential total THC?",
+     "a": [
+      "27.70%",
+      "24.32%",
+      "23.95%",
+      "27.50%"
+     ],
+     "right": 1,
+     "why": "(27.50 \u00d7 0.877) + 0.20 = 24.1175 + 0.20 = approximately 24.32%."
+    },
+    {
+     "q": "A potency COA proves the product has not been treated with pesticides.",
+     "a": [
+      "True",
+      "False \u2014 a potency COA only reports cannabinoids, unless pesticide panels are actually on it"
+     ],
+     "right": 1,
+     "why": "A potency COA reports cannabinoids. Claiming it covers contaminants is claiming something the document does not say."
+    },
+    {
+     "q": "The catalog says 31% THCa. The attached COA says 24% THCa. What do you do?",
+     "a": [
+      "Quote 31% \u2014 the catalog is the source of truth",
+      "Quote 24% \u2014 the lab is the source of truth",
+      "Quote the average",
+      "Stop and ask EHF"
+     ],
+     "right": 3,
+     "why": "Materially disagreeing numbers mean something is wrong \u2014 the wrong COA, an old batch, a typo. Picking either number means quoting a figure you cannot stand behind."
+    },
+    {
+     "q": "What does LOQ mean?",
+     "a": [
+      "Level of quality",
+      "Limit of quantitation \u2014 the smallest amount the lab can reliably put a number on",
+      "Lab operating quotient",
+      "Legal observation quota"
+     ],
+     "right": 1,
+     "why": "LOQ is the reliable-measurement floor. Below it the lab can sometimes detect something but cannot confidently say how much."
+    },
+    {
+     "q": "A customer says: \u201cYour COA shows under 0.3% delta-9, so you can ship to me.\u201d What is the right reply?",
+     "a": [
+      "\u201cCorrect, that's the federal standard.\u201d",
+      "\u201cThe COA is a potency document, not a legal clearance \u2014 let me verify your location against EHF's current policy.\u201d",
+      "\u201cYes, as long as your state allows hemp.\u201d",
+      "\u201cLet me send you the COA again.\u201d"
+     ],
+     "right": 1,
+     "why": "This is the most common trap in the job. The COA says what is in the product. It does not say where the product may be sold."
+    },
+    {
+     "q": "A COA reports in mg/g rather than %. 250 mg/g is roughly\u2026",
+     "a": [
+      "2.5%",
+      "25%",
+      "0.25%",
+      "250%"
+     ],
+     "right": 1,
+     "why": "1,000 mg/g is 100%, so 250 mg/g is 25%. Misreading units is an easy way to quote a number that is off by a factor of ten."
+    },
+    {
+     "q": "When should you use a COA to tell a customer a product is legal in their state?",
+     "a": [
+      "When delta-9 is under 0.3%",
+      "When the lab is accredited",
+      "Never \u2014 that is an EHF policy question, not a lab question",
+      "When the report is recent"
+     ],
+     "right": 2,
+     "why": "Never. The COA is evidence about the product. Legality is a policy and jurisdiction question, and EHF answers it."
+    }
+   ]
+  },
+  {
+   "id": "L4",
+   "n": 4,
+   "title": "Know the Products",
+   "mins": 9,
+   "blurb": "Sell the category, then the SKU. Inventory changes; the way you present it does not.",
+   "lessons": [
+    {
+     "id": "L4a",
+     "title": "Learn categories, not strains",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Do not memorise the menu. It changes weekly, and a rep quoting last month's strain list sounds like a rep who has not checked."
+      },
+      {
+       "t": "text",
+       "v": "Learn what each <b>category</b> is for and who buys it. Then open the live catalog and pick what is actually in stock today."
+      },
+      {
+       "t": "link",
+       "v": {
+        "label": "Open the live catalog",
+        "href": "/"
+       }
+      },
+      {
+       "t": "remember",
+       "v": "The catalog is the source of truth for products, pricing, availability and COAs. Always. Nothing in this training overrides it."
+      }
+     ]
+    },
+    {
+     "id": "L4b",
+     "title": "The categories",
+     "blocks": [
+      {
+       "t": "cat",
+       "v": {
+        "name": "THCa Flower",
+        "what": "The core EHF category. Sold in quality tiers and in several weights.",
+        "who": "Shops selling loose flower, or packaging their own.",
+        "ask": "What flower price points move? How much do you go through? Value, balance, or premium bag appeal?",
+        "sell": "Offer three: a value option, a best-balance option, and a premium indoor exotic.",
+        "cross": "Pre-rolls \u2014 the natural add-on.",
+        "obj": "\u201cI can get pounds cheaper.\u201d \u2192 find out what they are actually getting at that number."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Pre-Rolls",
+        "what": "Ready-to-sell rolled flower. Doobies, hotties, king size, minis.",
+        "who": "Shops wanting convenience, impulse buys and easy counter add-ons.",
+        "ask": "Singles or packs? Does potency or price point matter more?",
+        "sell": "Cross-sell with flower. Low decision cost for the buyer.",
+        "cross": "Flower, vapes.",
+        "obj": "\u201cNobody asks for these.\u201d \u2192 they are an impulse item; they sell at the counter, not on request."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Vapes",
+        "what": "Disposables and cartridges in various cannabinoid blends.",
+        "who": "Shops with strong vape traffic \u2014 most of them.",
+        "ask": "Which cannabinoid, which form factor, which price point sells for you?",
+        "sell": "Blend and format matter more than potency here.",
+        "cross": "Edibles, pre-rolls.",
+        "obj": "\u201cI'm stocked on vapes.\u201d \u2192 when do you reorder? I will come back before then."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Edibles",
+        "what": "Gummies, cereal, cookies, chips and other packaged edibles.",
+        "who": "Shops wanting packaged, easy-to-merchandise product with a clear retail ticket.",
+        "ask": "Preferred strength, count per pack, and what retail ticket works?",
+        "sell": "Talk unit economics \u2014 never effects.",
+        "cross": "Syrups, vapes.",
+        "obj": "\u201cEdibles move slowly.\u201d \u2192 which ones did you try? Format matters more than category."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Concentrates & Extracts",
+        "what": "Distillate, diamonds, sauce, crumble, sugar, shatter, isolate.",
+        "who": "More experienced cannabinoid retailers.",
+        "ask": "What forms do your customers already request?",
+        "sell": "Confirm state and product eligibility before presenting.",
+        "cross": "Vapes.",
+        "obj": "\u201cToo niche for us.\u201d \u2192 then skip it. Do not push a category a shop cannot sell."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Syrups",
+        "what": "Liquid cannabinoid products.",
+        "who": "Shops looking for an alternative format.",
+        "ask": "Do you already sell cannabinoid beverages or syrups?",
+        "sell": "Present as an add-on, not a headline.",
+        "cross": "Edibles.",
+        "obj": "\u201cNever carried it.\u201d \u2192 small quantity to test, then judge."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "Topicals & Gel Caps",
+        "what": "Non-inhalable formats: creams, bath bombs, capsules, tinctures.",
+        "who": "Retailers broadening their shelf beyond smoke.",
+        "ask": "Do you want non-inhalable categories at all?",
+        "sell": "No medical claims. Ever. Sell shelf breadth.",
+        "cross": "Nothing \u2014 this stands alone.",
+        "obj": "\u201cMy customers don't ask for that.\u201d \u2192 fair. Park it and revisit."
+       }
+      },
+      {
+       "t": "cat",
+       "v": {
+        "name": "White / Private Label",
+        "what": "Custom-branded programs across applicable categories.",
+        "who": "Established shops, brands and distributors who want their own label.",
+        "ask": "Volume, categories, packaging, timeline.",
+        "sell": "Pricing is case by case. Bring Scott in early.",
+        "cross": "Everything.",
+        "obj": "Escalate rather than quote. This is not a rep-priced conversation."
+       }
+      }
+     ]
+    },
+    {
+     "id": "L4c",
+     "title": "Talking flower quality",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>Nose</b> \u2014 the aroma. Often the first thing a buyer checks.",
+        "<b>Bag appeal</b> \u2014 how it looks in the jar. Sells itself or does not.",
+        "<b>Structure and trim</b> \u2014 bud formation, and how cleanly the leaf is cut.",
+        "<b>Freshness</b> \u2014 how recently it was cured.",
+        "<b>Consistency</b> \u2014 whether the next pound looks like this one.",
+        "<b>Potency</b> \u2014 what the COA says. Important, not decisive."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "<b>Higher THCa does not automatically mean better flower.</b> A 32% pound with poor nose and bad structure will sit on a shelf while a well-grown 24% sells out. Reps who lead with the number alone get beaten on price every time."
+      },
+      {
+       "t": "text",
+       "v": "Tiers, roughly: <b>indoor exotic</b> at the top \u2014 bag appeal, nose, genetics. <b>Premium</b> and <b>mid-tier</b> in the middle. <b>Value</b> at the bottom, built to hit a price and give the retailer margin. Cheap is not automatically bad; it is matched to a different customer."
+      }
+     ]
+    },
+    {
+     "id": "L4d",
+     "title": "The three-choice presentation",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "Never read out the catalog. Offer <b>three</b> directions and let the buyer pick."
+      },
+      {
+       "t": "script",
+       "v": "I can show you three directions. If you're looking for margin, here's my value option. If you want the best balance of price and quality, I'd look here. And if you want something that really pops in the jar, this indoor exotic is where I'd go."
+      },
+      {
+       "t": "text",
+       "v": "Three works because it turns an open question into a choice. A buyer facing forty strains says \u201csend me the menu\u201d. A buyer facing three says \u201ctell me more about the middle one\u201d."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Why should you avoid memorising the current strain list?",
+     "a": [
+      "It's too long",
+      "Inventory changes constantly \u2014 the live catalog is the source of truth",
+      "Strains don't matter",
+      "The names change"
+     ],
+     "right": 1,
+     "why": "Products, prices and availability move. A rep quoting from memory eventually quotes something that is sold out or priced differently."
+    },
+    {
+     "q": "Higher THCa always means better flower.",
+     "a": [
+      "True",
+      "False \u2014 nose, bag appeal, structure, trim, freshness and consistency all matter too"
+     ],
+     "right": 1,
+     "why": "Potency is one input. A well-grown 24% with great nose outsells a poorly grown 32% every time, and leading with the number alone invites a price fight."
+    },
+    {
+     "q": "What is the three-choice presentation?",
+     "a": [
+      "Three strains at the same price",
+      "Value, balance, premium \u2014 and let the buyer pick",
+      "Three quantity tiers",
+      "Three payment options"
+     ],
+     "right": 1,
+     "why": "Three directions turns an open-ended browse into a decision. It also tells you what the buyer actually cares about by which one they ask about."
+    },
+    {
+     "q": "A buyer asks about topicals for pain relief. What do you do?",
+     "a": [
+      "Explain which cannabinoids help with pain",
+      "Avoid the medical claim and talk about shelf breadth and what their customers ask for",
+      "Send the COA",
+      "Recommend the strongest option"
+     ],
+     "right": 1,
+     "why": "No medical claims on any product, in any category. Redirect to what sells."
+    },
+    {
+     "q": "A shop wants its own branded gummies. What do you do?",
+     "a": [
+      "Quote them from the catalog with a discount",
+      "Escalate to Scott \u2014 white label is priced case by case",
+      "Tell them EHF doesn't do that",
+      "Offer 5% off for volume"
+     ],
+     "right": 1,
+     "why": "White and private label pricing is not a rep-priced conversation. Gather volume, categories, packaging and timeline, then bring Scott in."
+    },
+    {
+     "q": "Which is the best cross-sell for flower?",
+     "a": [
+      "Topicals",
+      "Pre-rolls",
+      "Gel caps",
+      "Tinctures"
+     ],
+     "right": 1,
+     "why": "Pre-rolls are the natural companion \u2014 same customer, low decision cost, easy counter add-on."
+    }
+   ]
+  },
+  {
+   "id": "L5",
+   "n": 5,
+   "title": "Compliance",
+   "mins": 7,
+   "blurb": "Three colours, one habit, and the sentences that must never leave your mouth.",
+   "lessons": [
+    {
+     "id": "L5a",
+     "title": "Green, yellow, red",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "EHF maintains a living view of which products may be offered where. You do not interpret statutes. You check a status and act on it."
+      },
+      {
+       "t": "status",
+       "v": [
+        [
+         "GREEN",
+         "May present and sell this product under current EHF policy.",
+         "g"
+        ],
+        [
+         "YELLOW",
+         "Stop and ask EHF before offering. Conditions may apply.",
+         "y"
+        ],
+        [
+         "RED",
+         "Do not offer or ship this product under EHF policy.",
+         "r"
+        ]
+       ]
+      },
+      {
+       "t": "states",
+       "v": "live"
+      },
+      {
+       "t": "remember",
+       "v": "The discipline matters more than the list. <b>Check before you promise.</b> A status you remember from three weeks ago is not a status."
+      }
+     ]
+    },
+    {
+     "id": "L5b",
+     "title": "Sentences that end careers",
+     "blocks": [
+      {
+       "t": "never",
+       "v": "\u201cIt's legal in all 50 states.\u201d<br>\u201cIt's under .3 so we can ship anywhere.\u201d<br>\u201cThis COA proves it's legal here.\u201d<br>\u201cEveryone else is selling it, so it's fine.\u201d"
+      },
+      {
+       "t": "text",
+       "v": "Each of those is a promise about law, made by someone with no authority to make it, recorded in writing in a customer's inbox. They are the four sentences most likely to cause real damage."
+      },
+      {
+       "t": "script",
+       "v": "Regulations vary by state and product and they change quickly. Let me verify your location against EHF's current compliance policy before I promise availability."
+      },
+      {
+       "t": "text",
+       "v": "That answer loses nothing. It sounds like a company with a process, which is exactly what a serious buyer wants to hear."
+      }
+     ]
+    },
+    {
+     "id": "L5c",
+     "title": "When the customer pushes",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "The most common push is <b>\u201ceveryone sells it here\u201d</b>. It may even be true. It does not change EHF policy, and what other vendors risk is not your business."
+      },
+      {
+       "t": "script",
+       "v": "I understand \u2014 and I'm not saying anyone's doing anything wrong. Regulations change quickly and I'd rather verify your location than promise you something I have to walk back."
+      },
+      {
+       "t": "try",
+       "v": "A buyer in a yellow state wants to place an order today for a product you are not sure about. What do you do?",
+       "answers": [
+        "Take the order \u2014 you can always cancel it",
+        "Tell them no and move on",
+        "Take the details, tell them you are confirming availability with EHF today, and give them a time you will call back",
+        "Send the COA and let them decide"
+       ],
+       "right": 2,
+       "why": "You keep the deal alive without promising anything. Taking an order you may have to cancel damages trust; refusing outright throws away a sale that might be perfectly fine; sending the COA pushes a legal decision onto the customer, which is exactly what you must not do."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "A state is marked YELLOW. What does that mean?",
+     "a": [
+      "Sell it, but carefully",
+      "Stop and ask EHF before offering",
+      "Never offer it",
+      "It depends on the product's THCa"
+     ],
+     "right": 1,
+     "why": "Yellow means stop and ask. Conditions may apply, and the person who knows them is not you."
+    },
+    {
+     "q": "Which of these may you say to a customer?",
+     "a": [
+      "\u201cIt's legal in all 50 states.\u201d",
+      "\u201cUnder .3 means we can ship anywhere.\u201d",
+      "\u201cRules vary by state and product \u2014 let me verify your location against EHF's current policy.\u201d",
+      "\u201cThe COA proves it's compliant in your state.\u201d"
+     ],
+     "right": 2,
+     "why": "The only one of the four that is true, and the only one that does not make a legal promise you have no authority to make."
+    },
+    {
+     "q": "A customer says every other shop in town sells it. Does that change what you can offer?",
+     "a": [
+      "Yes \u2014 if it's being sold locally it's clearly fine",
+      "No \u2014 EHF policy decides, not local practice",
+      "Only if they can show you a licence",
+      "Yes, if they sign a waiver"
+     ],
+     "right": 1,
+     "why": "What other vendors risk is not EHF policy and is not your liability to take on."
+    },
+    {
+     "q": "Who decides whether a product can be sold into a given state?",
+     "a": [
+      "The salesperson, using the COA",
+      "EHF's current compliance policy",
+      "The customer",
+      "Whichever lab issued the report"
+     ],
+     "right": 1,
+     "why": "EHF policy. Your job is to check it and relay it, not to interpret law."
+    },
+    {
+     "q": "Why does compliance live as updateable data rather than being written into this training?",
+     "a": [
+      "To save space",
+      "Because the rules change \u2014 and a lesson you cannot update becomes wrong without anyone noticing",
+      "For legal reasons",
+      "It doesn't"
+     ],
+     "right": 1,
+     "why": "A hardcoded rule is a rule nobody can fix. The federal framework changes in November 2026 alone. The habit of checking is what is trained here; the list itself is maintained separately."
+    }
+   ]
+  },
+  {
+   "id": "L6",
+   "n": 6,
+   "title": "Find Buyers",
+   "mins": 7,
+   "blurb": "Where the leads come from, how to tell a real one from a waste of an afternoon.",
+   "lessons": [
+    {
+     "id": "L6a",
+     "title": "Where to look",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Your goal is not a long list of names. It is a short list of <b>real shops where you can reach a decision-maker</b>."
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "<b>Google Maps</b> \u2014 \u201csmoke shop\u201d, \u201cvape shop\u201d, \u201chemp shop\u201d, \u201cTHCa\u201d plus a city. Work it neighbourhood by neighbourhood.",
+        "<b>Google Search</b> \u2014 local shop websites, \u201cTHCa near me\u201d in approved markets.",
+        "<b>Yelp</b> and public business directories.",
+        "<b>Instagram and Facebook</b> \u2014 active shops post. Owners tag themselves.",
+        "<b>Store locators</b> on competitor and brand sites, where public.",
+        "<b>Referrals</b> \u2014 the best source, and the one reps forget. Ask every happy customer."
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "Work <b>city by city</b>. Finishing one city properly beats skimming ten, and you stop duplicating leads you already called."
+      }
+     ]
+    },
+    {
+     "id": "L6b",
+     "title": "Qualify before you spend time",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Real business?",
+         "A storefront, hours, reviews, photos. Not a dead listing."
+        ],
+        [
+         "Right state?",
+         "Is it in a market currently approved for what you want to present?"
+        ],
+        [
+         "Right products?",
+         "Do they appear to sell smoke, vape, hemp or cannabinoid products at all?"
+        ],
+        [
+         "Working phone?",
+         "If the number is dead, so is the lead."
+        ],
+        [
+         "A person?",
+         "Can you find an owner or manager name, or at least the best time to call?"
+        ]
+       ]
+      },
+      {
+       "t": "text",
+       "v": "Five minutes of this saves an hour of calling shops that were never going to buy."
+      }
+     ]
+    },
+    {
+     "id": "L6c",
+     "title": "Your lead log",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "You keep your own log. Spreadsheet, notebook, whatever you will actually use. These are the columns that matter:"
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "Business \u00b7 City \u00b7 State \u00b7 Phone",
+        "Owner or manager \u00b7 Email",
+        "Source \u2014 where you found them",
+        "Products of interest",
+        "Last contact \u00b7 Result",
+        "<b>Next action</b> \u00b7 <b>Next action date</b>",
+        "Quote \u00b7 Order \u00b7 Reorder \u00b7 Notes"
+       ]
+      },
+      {
+       "t": "link",
+       "v": {
+        "label": "Copy the lead tracker template",
+        "href": "#tracker"
+       }
+      },
+      {
+       "t": "never",
+       "v": "<b>No live lead without a next action and a date.</b> A lead with no next action is not a lead, it is a name you will never call again."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What is the single non-negotiable rule for your lead log?",
+     "a": [
+      "Log at least 50 leads a week",
+      "Every live lead has a next action and a date",
+      "Record the owner's email",
+      "Colour-code by state"
+     ],
+     "right": 1,
+     "why": "Without a next action, a lead quietly disappears. Everything else in the log is optional by comparison."
+    },
+    {
+     "q": "Which is usually the best lead source?",
+     "a": [
+      "Cold Google Maps",
+      "Referrals from existing customers",
+      "Instagram",
+      "Yelp"
+     ],
+     "right": 1,
+     "why": "A referral arrives pre-trusted. It is also the one most reps forget to ask for."
+    },
+    {
+     "q": "Before calling, you should check\u2026",
+     "a": [
+      "Their social media following",
+      "Whether it's a real business in an approved state with a working phone and a reachable decision-maker",
+      "Their current supplier",
+      "How long they've been open"
+     ],
+     "right": 1,
+     "why": "Those five checks take five minutes and save an hour of calling shops that could never have bought."
+    },
+    {
+     "q": "Why work city by city?",
+     "a": [
+      "It's faster",
+      "You finish markets properly and stop duplicating leads",
+      "It's required",
+      "Shipping is cheaper"
+     ],
+     "right": 1,
+     "why": "Skimming ten cities leaves ten half-worked markets and a list full of duplicates. Finishing one leaves you a territory."
+    },
+    {
+     "q": "A shop looks real but is in a state you are not sure about. What do you do?",
+     "a": [
+      "Call anyway and find out later",
+      "Check EHF's current compliance status before you spend time on it",
+      "Skip it",
+      "Call and avoid the legality question"
+     ],
+     "right": 1,
+     "why": "Prospecting into a market you cannot sell to is time spent for nothing \u2014 and the conversation ends badly if they want to buy."
+    }
+   ]
+  },
+  {
+   "id": "L7",
+   "n": 7,
+   "title": "Contact the Shop",
+   "mins": 8,
+   "blurb": "The vendor-first opener, and the discovery questions that do the selling for you.",
+   "lessons": [
+    {
+     "id": "L7a",
+     "title": "The opener",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Almost every cold call to a smoke shop is a pitch. Yours is going to be a <b>vendor conversation</b>, and that single difference is why it works."
+      },
+      {
+       "t": "script",
+       "v": "Hi, how are you? Could I speak with the owner or manager?"
+      },
+      {
+       "t": "text",
+       "v": "Then, when you have them:"
+      },
+      {
+       "t": "script",
+       "v": "Perfect. I'm with Exclusive Hemp Farms. I wanted to find out what your process is for becoming an approved vendor for your store."
+      },
+      {
+       "t": "remember",
+       "v": "You are asking about <b>their process</b>, not announcing yours. It is a question a real supplier asks, so you get treated like one. Most people will simply answer it."
+      }
+     ]
+    },
+    {
+     "id": "L7b",
+     "title": "\u201cWhat do you sell?\u201d",
+     "blocks": [
+      {
+       "t": "script",
+       "v": "We're vertically integrated from cultivation through fulfilment. We wholesale THCa flower, pre-rolls, vapes, edibles and other hemp products. What categories are moving best for you right now?"
+      },
+      {
+       "t": "text",
+       "v": "Notice the question on the end. You answered in one sentence and handed the conversation straight back. Without it you will be asked to \u201csend the menu\u201d and the call is over."
+      }
+     ]
+    },
+    {
+     "id": "L7c",
+     "title": "Discovery \u2014 ask, do not interrogate",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "What flower or cannabinoid categories are moving best right now?",
+        "What price points do your customers actually buy?",
+        "How much flower do you typically go through?",
+        "What does your current supplier do well?",
+        "If you could fix one thing about them, what would it be?",
+        "Are you usually after margin, premium quality, or a mix?",
+        "Who normally makes the buying decision?",
+        "When do you expect to restock?"
+       ]
+      },
+      {
+       "t": "text",
+       "v": "You will not ask all eight. Ask three or four, listen properly, and follow what they say. The question about what their supplier does <b>well</b> is the one most reps skip and it is the most useful \u2014 it tells you what you have to match, and it does not put them on the defensive."
+      },
+      {
+       "t": "remember",
+       "v": "<b>Ask. Listen. Recommend.</b> In that order. A rep who recommends before listening is guessing in public."
+      }
+     ]
+    },
+    {
+     "id": "L7d",
+     "title": "Getting past the counter",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Often the person answering is not the buyer. That is fine \u2014 they are not an obstacle, they are the route."
+      },
+      {
+       "t": "script",
+       "v": "No problem at all. When's the best time to catch them? And is there a name I should ask for?"
+      },
+      {
+       "t": "text",
+       "v": "Now you have a name and a time, which is a far better outcome than a pitch to someone who cannot buy. Log it as your next action."
+      },
+      {
+       "t": "try",
+       "v": "You reach the owner. They say: \u201cJust email me your catalog.\u201d What is the best response?",
+       "answers": [
+        "\u201cSure, what's your email?\u201d and send it",
+        "\u201cAbsolutely. Before I do \u2014 what are you mainly looking for: flower, vapes, edibles, or a mix? I can point you at the right part instead of making you dig through everything.\u201d",
+        "\u201cI'd rather walk you through it, do you have five minutes?\u201d",
+        "\u201cOur catalog is online, I'll text you the link.\u201d"
+       ],
+       "right": 1,
+       "why": "You agree immediately \u2014 never fight it \u2014 but you buy one question first. That question gives you something to follow up on and a reason to call back. Option 1 ends the relationship at an unread email. Option 3 refuses what they asked for."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What is the EHF opener?",
+     "a": [
+      "A pitch about product quality",
+      "Asking what their process is for becoming an approved vendor",
+      "Asking if they want to see a catalog",
+      "Offering a first-order discount"
+     ],
+     "right": 1,
+     "why": "It is a vendor question, not a pitch. It sounds like a real supplier and most people simply answer it."
+    },
+    {
+     "q": "Why does the vendor opener work better than a product pitch?",
+     "a": [
+      "It's shorter",
+      "It starts a legitimate B2B conversation instead of sounding like telemarketing",
+      "It mentions price",
+      "It's harder to refuse"
+     ],
+     "right": 1,
+     "why": "Shops refuse pitches reflexively. They answer process questions, because suppliers ask them all the time."
+    },
+    {
+     "q": "Which discovery question do most reps skip?",
+     "a": [
+      "How much volume do you do?",
+      "What does your current supplier do well?",
+      "What's your budget?",
+      "Who's the decision-maker?"
+     ],
+     "right": 1,
+     "why": "Asking what the supplier does well tells you what you must match, and it does not make the buyer defensive the way attacking the incumbent would."
+    },
+    {
+     "q": "A customer asks what you sell. What should your answer end with?",
+     "a": [
+      "Your phone number",
+      "A question back to them",
+      "A price",
+      "An offer to email the catalog"
+     ],
+     "right": 1,
+     "why": "Answer briefly, then hand it back. Without a question on the end you get \u201csend me the menu\u201d and the call is finished."
+    },
+    {
+     "q": "The person answering is not the owner. What is the best outcome of that call?",
+     "a": [
+      "Pitch them anyway",
+      "Get a name and the best time to call back, then log it",
+      "Leave your number",
+      "Hang up and try another shop"
+     ],
+     "right": 1,
+     "why": "A name and a time is a real next action. A pitch to someone who cannot buy is nothing."
+    },
+    {
+     "q": "What is the right order?",
+     "a": [
+      "Recommend, ask, listen",
+      "Ask, listen, recommend",
+      "Listen, recommend, ask",
+      "Pitch, ask, close"
+     ],
+     "right": 1,
+     "why": "Recommending before listening is guessing out loud, and the buyer can tell."
+    }
+   ]
+  },
+  {
+   "id": "L8",
+   "n": 8,
+   "title": "Present & Sell",
+   "mins": 7,
+   "blurb": "Three choices, retailer economics, and why you never quote a resale price.",
+   "lessons": [
+    {
+     "id": "L8a",
+     "title": "Value, balance, premium",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "You listened. Now recommend <b>two or three products</b> that fit what they told you \u2014 not a catalog."
+      },
+      {
+       "t": "script",
+       "v": "I can show you three directions. If you're looking for margin, here's my value option. If you want the best balance of price and quality, I'd look here. And if you want something that really pops in the jar, this indoor exotic is where I'd go."
+      },
+      {
+       "t": "text",
+       "v": "Which one they ask about tells you what they actually care about. That is worth more than anything they said earlier in the call."
+      }
+     ]
+    },
+    {
+     "id": "L8b",
+     "title": "Retailer economics",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Shops buy on what they can make, not on what you charge. Talk about the gross dollars available to them \u2014 then stop."
+      },
+      {
+       "t": "never",
+       "v": "<b>Do not promise a resale price or a profit.</b> You do not control what they charge, what their rent is, or what their competition does. Promising a margin you cannot deliver is how a first order becomes a last one."
+      },
+      {
+       "t": "script",
+       "v": "What do you normally sell a pound like this for in your shop?"
+      },
+      {
+       "t": "text",
+       "v": "Ask instead of telling. They know their market and you do not, and the answer gives you the number to work with for the rest of the conversation."
+      }
+     ]
+    },
+    {
+     "id": "L8c",
+     "title": "Order size",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>Small orders are fine.</b> A first order that is small is still a customer.",
+        "<b>Larger orders are preferred</b>, and pound pricing is generally the best flower pricing.",
+        "<b>There is no rigid EHF minimum.</b>"
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "You may use quantity thresholds strategically \u2014 \u201cat a pound I can do better for you\u201d is a real tool. But <b>never lose a good sale over an arbitrary minimum.</b> A $300 first order from a shop that reorders monthly beats a $3,000 order you talked yourself out of."
+      },
+      {
+       "t": "try",
+       "v": "A shop wants a quarter pound to test. You know pound pricing is much better. What do you do?",
+       "answers": [
+        "Tell them the minimum is a pound",
+        "Sell the quarter, and mention what a pound would have cost per unit so they have it in mind for next time",
+        "Refuse and offer samples instead",
+        "Give them pound pricing on a quarter"
+       ],
+       "right": 1,
+       "why": "You take the order and plant the next one. There is no minimum, so inventing one loses the customer. And quietly giving pound pricing on a quarter trains them to expect it and costs margin on every future order."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "How many products should you present?",
+     "a": [
+      "The full catalog",
+      "Two or three that fit what they told you",
+      "One, the highest margin",
+      "As many as they'll listen to"
+     ],
+     "right": 1,
+     "why": "Two or three turns browsing into a decision. A full catalog gets \u201csend it over\u201d and nothing happens."
+    },
+    {
+     "q": "A buyer asks what they can sell your flower for. What do you say?",
+     "a": [
+      "Quote a typical retail price",
+      "Ask what they normally sell comparable flower for in their shop",
+      "Promise they'll double their money",
+      "Send the catalog price list"
+     ],
+     "right": 1,
+     "why": "Never promise a resale price or profit. Asking gets you a real number and makes them do the maths themselves."
+    },
+    {
+     "q": "What is EHF's minimum order?",
+     "a": [
+      "One pound",
+      "$500",
+      "$1,000",
+      "There is no rigid minimum"
+     ],
+     "right": 3,
+     "why": "No rigid minimum. Larger is preferred and pound pricing is better, but inventing a floor to pressure a buyer loses sales."
+    },
+    {
+     "q": "A shop wants a small test order. What is the right instinct?",
+     "a": [
+      "Push for a pound",
+      "Take it \u2014 a small first order from a shop that reorders is worth more than a lost big one",
+      "Refuse politely",
+      "Offer free shipping to upsize it"
+     ],
+     "right": 1,
+     "why": "Customers compound. The first order is the start of the account, not the whole value of it."
+    },
+    {
+     "q": "Which one they ask about tells you\u2026",
+     "a": [
+      "Nothing useful",
+      "What they actually care about \u2014 margin, balance, or bag appeal",
+      "Their budget",
+      "Whether they'll buy"
+     ],
+     "right": 1,
+     "why": "The question they ask reveals their real priority, which is often different from what they said earlier."
+    }
+   ]
+  },
+  {
+   "id": "L9",
+   "n": 9,
+   "title": "Objections",
+   "mins": 10,
+   "blurb": "Fifteen things you will hear, what to say, and why it works.",
+   "lessons": [
+    {
+     "id": "L9a",
+     "title": "The rule before the scripts",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "An objection is <b>information</b>, not rejection. \u201cYour price is too high\u201d means they are still talking to you. The ones who are not interested say nothing and hang up."
+      },
+      {
+       "t": "never",
+       "v": "<b>Never attack a competitor.</b> You do not know what the shop's relationship with them is, and running them down makes you sound small. Find out what the incumbent does well, then be better at something that matters."
+      }
+     ]
+    },
+    {
+     "id": "L9b",
+     "title": "The cards",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "Tap any one to see the response and why it works. These are the fifteen you will actually hear."
+      },
+      {
+       "t": "cards",
+       "v": [
+        [
+         "I already have a vendor.",
+         "That makes sense \u2014 most good shops do. I'm not asking you to replace anyone today. What would we have to do to earn a spot as a backup or secondary vendor?",
+         "Removes the threat. Nobody has to fire anyone. Being the backup is how you get the call when the incumbent is out of stock \u2014 and they will be."
+        ],
+        [
+         "Your price is too high.",
+         "Compared with what you're buying now \u2014 is the issue the total ticket, the price per pound, or the margin you need at retail?",
+         "\u201cToo high\u201d is three different problems and each has a different fix. Discounting blind solves the wrong one and gives away margin you did not need to."
+        ],
+        [
+         "I can get pounds cheaper.",
+         "You probably can. Let me understand what you're getting at that number \u2014 quality tier, consistency, potency \u2014 so I can compare the right product instead of just throwing out a lower number.",
+         "Agreeing disarms them. Then you move from price to comparison, which is the only ground where you can win."
+        ],
+        [
+         "Send me the menu.",
+         "Absolutely. Before I send it \u2014 what are you mainly looking for: flower, vapes, edibles, or a mix? I can point you at the right part instead of making you dig through everything.",
+         "You never refuse. You buy one question, which gives you something specific to follow up on instead of an unread email."
+        ],
+        [
+         "Send samples.",
+         "We can do a small targeted sample \u2014 usually one or two relevant strains, or a few items. It's normally $10 shipping and handling. What are you actually considering buying if the sample checks out?",
+         "The question at the end is the whole point. It separates a buyer from someone collecting free product, without you having to accuse anyone."
+        ],
+        [
+         "Is it sprayed?",
+         "Our regular THCa flower is natural THCa flower. We do have certain infused options when specifically needed, and I'll always tell you which one I'm quoting rather than mixing the two.",
+         "Direct, honest, and it makes the distinction before they have to ask twice. Dodging this question is fatal with an experienced buyer."
+        ],
+        [
+         "Is this real weed?",
+         "It's real cannabis flower. THCa occurs naturally and converts substantially to delta-9 THC when it's heated. The regulatory classification is a separate question, which we verify by product and state.",
+         "Answers the product question confidently and separates it from the legal one \u2014 which is the distinction most reps blur and then get caught on."
+        ],
+        [
+         "Is this legal here?",
+         "Rules vary by state and product and change quickly. Let me verify your location against EHF's current compliance policy before I promise availability.",
+         "The only safe answer. It also sounds like a company with a process rather than a guy with a phone."
+        ],
+        [
+         "I'm stocked.",
+         "Perfect \u2014 when do you think you'll be buying again? I'll follow up before you get low rather than bothering you today.",
+         "You accept it immediately and convert a no into a dated next action. Most reps argue here and get remembered as a nuisance."
+        ],
+        [
+         "Call me next week.",
+         "Absolutely. What day is usually best, and is there anything specific you're looking for so I can have the right options ready?",
+         "Turns a brush-off into an appointment with an agenda. \u201cNext week\u201d without a day is a polite no."
+        ],
+        [
+         "I need to think about it.",
+         "Of course. What part are you deciding on \u2014 product, price, quantity, or timing?",
+         "Surfaces the real hesitation. Usually it is one specific thing you can answer in a sentence."
+        ],
+        [
+         "What's your best price?",
+         "The live catalog is our normal wholesale price. I have some room depending on the order. Tell me what you're looking to buy and I'll put together the strongest deal I can within my authority.",
+         "You do not discount into a vacuum. Price moves in exchange for order size, never for being asked."
+        ],
+        [
+         "I don't know you.",
+         "Fair enough. We're vertically integrated \u2014 we grow it, process it and ship it ourselves \u2014 and everything we sell has a potency COA you can read before you buy anything. What would you need to see to be comfortable with a first order?",
+         "Answers the real question, which is risk. Then asks them to name their own condition, which is usually smaller than you feared."
+        ],
+        [
+         "Nobody asks for THCa.",
+         "That's worth knowing. What are they asking for? If it's vapes or edibles I'd rather show you those than push flower that won't move for you.",
+         "Believe them and pivot. Pushing a category a shop cannot sell burns the relationship for everything else."
+        ],
+        [
+         "Your THCa percentage is too low.",
+         "Potency's one piece of it. How does the flower you're buying at a higher number look and smell in the jar? I'd rather send you something that sells through than something that tests well.",
+         "Reframes from number to sell-through, which is what the shop actually gets paid on. Do not fight the number directly."
+        ]
+       ]
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "\u201cI already have a vendor.\u201d What is the right move?",
+     "a": [
+      "Explain why EHF is better",
+      "Ask what it would take to earn a spot as a backup or secondary vendor",
+      "Ask who the vendor is and beat their price",
+      "Move on"
+     ],
+     "right": 1,
+     "why": "Nobody has to fire anyone. Backup is a low-threat position, and the incumbent will eventually be out of stock."
+    },
+    {
+     "q": "\u201cYour price is too high.\u201d What do you do first?",
+     "a": [
+      "Offer 5% off",
+      "Find out whether the problem is total ticket, price per pound, or retail margin",
+      "Explain your quality",
+      "Ask what they're paying now"
+     ],
+     "right": 1,
+     "why": "Three different problems, three different fixes. Discounting blind solves the wrong one and gives away margin."
+    },
+    {
+     "q": "A shop asks for samples. What question must you ask?",
+     "a": [
+      "What's your address?",
+      "What are you considering buying if the sample checks out?",
+      "How many do you want?",
+      "Can you cover shipping?"
+     ],
+     "right": 1,
+     "why": "It separates buyers from collectors without accusing anyone, and it tells you what the follow-up conversation is about."
+    },
+    {
+     "q": "Should you tell a buyer their current supplier is poor quality?",
+     "a": [
+      "Yes, if it's true",
+      "No \u2014 never attack a competitor",
+      "Only if they bring it up",
+      "Only if you have proof"
+     ],
+     "right": 1,
+     "why": "You do not know the relationship, and running someone down makes you sound small. Find what the incumbent does well and beat them somewhere that matters."
+    },
+    {
+     "q": "\u201cNobody asks for THCa.\u201d What is the best response?",
+     "a": [
+      "Explain that THCa is the same as what they're already selling",
+      "Ask what customers do ask for, and pivot to that category",
+      "Offer a discount to try it",
+      "Send the COA"
+     ],
+     "right": 1,
+     "why": "Believe them. Pushing a category a shop cannot sell costs you the relationship for the categories they can."
+    },
+    {
+     "q": "\u201cI'm stocked.\u201d What is the goal of your reply?",
+     "a": [
+      "Convince them to buy anyway",
+      "Get a dated next action \u2014 when will they be buying again",
+      "Leave your number",
+      "Offer a better price"
+     ],
+     "right": 1,
+     "why": "Accept it and convert the no into a date. Arguing here is what gets a rep remembered as a nuisance."
+    },
+    {
+     "q": "\u201cYour THCa percentage is too low.\u201d What do you reframe to?",
+     "a": [
+      "A lower price",
+      "Sell-through \u2014 how it looks and smells, and whether it actually moves",
+      "Another strain with a higher number",
+      "The COA calculation"
+     ],
+     "right": 1,
+     "why": "The shop gets paid on sell-through, not on the number. Fighting the number directly is a fight you lose."
+    }
+   ]
+  },
+  {
+   "id": "L10",
+   "n": 10,
+   "title": "Pricing & Commission",
+   "mins": 8,
+   "blurb": "What you may discount, what you get paid, and the line you need approval to cross.",
+   "lessons": [
+    {
+     "id": "L10a",
+     "title": "What you may do with price",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "<b>Standard price is the live catalog price.</b> That is the number you start from, every time."
+      },
+      {
+       "t": "status",
+       "v": [
+        [
+         "UP TO 5% OFF",
+         "Your call. No approval needed.",
+         "g"
+        ],
+        [
+         "MORE THAN 5% OFF",
+         "Owner approval required. Ask Scott before you promise it.",
+         "y"
+        ],
+        [
+         "ABOVE CATALOG",
+         "Allowed. If the customer accepts it, you earn on the higher number.",
+         "g"
+        ]
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "Discount in exchange for <b>something</b> \u2014 order size, a second category, a commitment to reorder. Never because you were asked."
+      }
+     ]
+    },
+    {
+     "id": "L10b",
+     "title": "How commission works",
+     "blocks": [
+      {
+       "t": "rate",
+       "v": "Your rate is shown here once you are signed in."
+      },
+      {
+       "t": "text",
+       "v": "It is calculated on the <b>actual product-only subtotal</b> \u2014 what the customer really paid for product, after any discount you gave."
+      },
+      {
+       "t": "never",
+       "v": "Commission is <b>not</b> paid on tax, shipping, or any other fee. $2,500 of product plus $75 shipping commissions on $2,500."
+      },
+      {
+       "t": "calc",
+       "v": "comm"
+      }
+     ]
+    },
+    {
+     "id": "L10c",
+     "title": "When you get paid",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Order submitted",
+         "You fill the invoice and submit it. Nothing is earned yet."
+        ],
+        [
+         "EHF approves",
+         "Scott reviews and approves the order."
+        ],
+        [
+         "Paid in full",
+         "The customer pays. EHF confirms cleared funds \u2014 not a screenshot."
+        ],
+        [
+         "It ships",
+         "Orders ship after payment, not before."
+        ],
+        [
+         "You are paid",
+         "Weekly, Friday at the latest, for the previous week's fully paid sales."
+        ]
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "<b>Paid in full is the trigger.</b> A submitted invoice earns nothing. A partially paid one earns nothing. This is also your protection \u2014 commission is tied to money that actually arrived."
+      }
+     ]
+    },
+    {
+     "id": "L10d",
+     "title": "Your customers stay yours",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "The salesperson who brings in a customer <b>owns that account</b> while they are with EHF, and earns commission on reorders."
+      },
+      {
+       "t": "never",
+       "v": "That is conditional on <b>staying involved</b>. You are expected to take and submit the reorders yourself. An account you stop touching is an account you stop being needed on."
+      },
+      {
+       "t": "try",
+       "v": "A customer you brought in six months ago emails EHF directly to reorder. What should have happened?",
+       "answers": [
+        "Nothing \u2014 you get the commission either way",
+        "You should have called them before they needed to reorder",
+        "EHF should refuse and tell them to call you",
+        "You should ask Scott to redirect them"
+       ],
+       "right": 1,
+       "why": "The reorder is the easiest sale you will ever make, and it should never be a surprise. Knowing roughly when they will run low and calling first is the whole job of owning an account."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "How much may you discount without approval?",
+     "a": [
+      "Nothing",
+      "Up to 5%",
+      "Up to 10%",
+      "Whatever closes the deal"
+     ],
+     "right": 1,
+     "why": "Up to 5% is yours. Beyond that needs Scott, before you promise it to anyone."
+    },
+    {
+     "q": "You sell $1,000 of catalog product at $950. Commission is calculated on\u2026",
+     "a": [
+      "$1,000",
+      "$950",
+      "$900",
+      "The catalog price regardless"
+     ],
+     "right": 1,
+     "why": "Actual product subtotal \u2014 what they really paid. A 5% discount reduces your commission as well as the price, which is why discounts should buy something."
+    },
+    {
+     "q": "$2,500 of product plus $75 shipping. What is commissionable?",
+     "a": [
+      "$2,575",
+      "$2,500",
+      "$2,425",
+      "Depends on the shipping method"
+     ],
+     "right": 1,
+     "why": "Product only. Shipping, tax and fees never count."
+    },
+    {
+     "q": "Can you sell above the catalog price?",
+     "a": [
+      "No, catalog is fixed",
+      "Yes \u2014 and you earn commission on the higher number",
+      "Only with approval",
+      "Only on flower"
+     ],
+     "right": 1,
+     "why": "Allowed, and your commission follows the actual sale price upward."
+    },
+    {
+     "q": "When is commission earned?",
+     "a": [
+      "When the invoice is submitted",
+      "When EHF approves the order",
+      "When the order is paid in full and EHF confirms cleared funds",
+      "When it ships"
+     ],
+     "right": 2,
+     "why": "Paid in full, confirmed by EHF. This protects you too \u2014 it ties your pay to money that actually arrived."
+    },
+    {
+     "q": "When are commissions paid out?",
+     "a": [
+      "Monthly",
+      "Weekly, Friday at the latest, for the previous week's fully paid sales",
+      "On the 1st and 15th",
+      "When you invoice EHF"
+     ],
+     "right": 1,
+     "why": "Weekly, by Friday, for the previous week's fully paid sales."
+    },
+    {
+     "q": "A customer you signed reorders. Do you earn on it?",
+     "a": [
+      "No, only first orders",
+      "Yes \u2014 the account is yours, provided you stay involved in taking and submitting reorders",
+      "Only for the first year",
+      "Only if you ask"
+     ],
+     "right": 1,
+     "why": "Yours while you are with EHF and staying involved. Reorders are the easiest money in the job and they should never surprise you."
+    }
+   ]
+  },
+  {
+   "id": "L11",
+   "n": 11,
+   "title": "Samples",
+   "mins": 5,
+   "blurb": "Small, targeted, and always with a question attached.",
+   "lessons": [
+    {
+     "id": "L11a",
+     "title": "What a sample is",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "3.5g of one or two relevant strains,",
+        "and/or one or two pre-rolls,",
+        "and/or a few targeted items from another category they actually asked about."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "<b>Do not send one of everything.</b> A box of twelve products says you were not listening, costs real money, and still does not tell the buyer what to order."
+      },
+      {
+       "t": "text",
+       "v": "Shipping and handling is normally <b>$10</b>. That small charge does most of the filtering for you \u2014 people collecting free product will not pay it, and genuine buyers will not blink."
+      }
+     ]
+    },
+    {
+     "id": "L11b",
+     "title": "The question that comes with it",
+     "blocks": [
+      {
+       "t": "script",
+       "v": "What are you actually considering buying if the sample checks out?"
+      },
+      {
+       "t": "text",
+       "v": "Ask it every time. It is not pushy \u2014 it is the normal question a supplier asks. The answer tells you whether this is a real opportunity and gives you the exact thing to follow up about."
+      },
+      {
+       "t": "remember",
+       "v": "<b>Do not lose a legitimate sale over $10.</b> If a serious buyer with real volume baulks at the shipping, escalate it rather than dying on the hill."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What does a normal sample look like?",
+     "a": [
+      "One of each product",
+      "3.5g of one or two relevant strains, and/or a couple of pre-rolls or targeted items",
+      "A full pound",
+      "Whatever they ask for"
+     ],
+     "right": 1,
+     "why": "Small and targeted at what they told you they sell. A box of everything says you were not listening."
+    },
+    {
+     "q": "What is the normal sample shipping charge?",
+     "a": [
+      "Free",
+      "$10",
+      "$25",
+      "Depends on the state"
+     ],
+     "right": 1,
+     "why": "$10, and it does most of the filtering for you."
+    },
+    {
+     "q": "Why charge for sample shipping at all?",
+     "a": [
+      "To cover costs",
+      "It filters out people collecting free product, without you having to judge anyone",
+      "Company policy",
+      "To discourage samples"
+     ],
+     "right": 1,
+     "why": "A genuine buyer pays $10 without thinking. Someone working through vendors for free product does not."
+    },
+    {
+     "q": "A buyer with serious volume refuses to pay the $10. What do you do?",
+     "a": [
+      "Hold firm \u2014 it's policy",
+      "Escalate rather than lose a legitimate sale over $10",
+      "Pay it yourself",
+      "Send it anyway and say nothing"
+     ],
+     "right": 1,
+     "why": "The charge is a filter, not a revenue line. When it is clearly filtering out a real customer, it has stopped doing its job \u2014 escalate."
+    },
+    {
+     "q": "What question must go with every sample?",
+     "a": [
+      "When will you decide?",
+      "What are you considering buying if the sample checks out?",
+      "Can you pay the shipping?",
+      "Who else are you sampling?"
+     ],
+     "right": 1,
+     "why": "It qualifies the opportunity and hands you the exact subject of your follow-up call."
+    }
+   ]
+  },
+  {
+   "id": "L12",
+   "n": 12,
+   "title": "Close the Sale",
+   "mins": 5,
+   "blurb": "Four sentences, and the nerve to use them.",
+   "lessons": [
+    {
+     "id": "L12a",
+     "title": "Closes that do not sound like closing",
+     "blocks": [
+      {
+       "t": "script",
+       "v": "Which direction makes the most sense for your shop \u2014 value, middle, or premium?"
+      },
+      {
+       "t": "script",
+       "v": "Do you want to start smaller, or take advantage of the better pound pricing?"
+      },
+      {
+       "t": "script",
+       "v": "If that works for you, I can get the order submitted now."
+      },
+      {
+       "t": "script",
+       "v": "What would you like me to put together for the first order?"
+      },
+      {
+       "t": "text",
+       "v": "None of these are pressure. Each one assumes the conversation is going somewhere and offers a choice rather than a yes-or-no. That is the whole trick."
+      }
+     ]
+    },
+    {
+     "id": "L12b",
+     "title": "The actual problem",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "<b>Do not be afraid to ask for the order.</b> Most sales that are lost were never asked for. The buyer was interested, the call ended pleasantly, and nobody said \u201cshall we do it?\u201d"
+      },
+      {
+       "t": "text",
+       "v": "The discomfort is one second long. The alternative is a warm prospect who drifts, a follow-up call that is harder than this one, and a competitor who did ask."
+      },
+      {
+       "t": "try",
+       "v": "You have presented three options. The buyer says \u201cyeah, the middle one looks good.\u201d What do you say next?",
+       "answers": [
+        "\u201cGreat, I'll email you the details.\u201d",
+        "\u201cPerfect. How much do you want to start with?\u201d",
+        "\u201cLet me know when you're ready.\u201d",
+        "\u201cWant me to send the COA first?\u201d"
+       ],
+       "right": 1,
+       "why": "They just told you which one. The only thing left is quantity \u2014 so ask for it. The other three all hand the decision back and give the moment away."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Why are most sales lost?",
+     "a": [
+      "Price",
+      "Nobody asked for the order",
+      "Compliance",
+      "Competition"
+     ],
+     "right": 1,
+     "why": "Interested buyer, pleasant call, no ask. It is the most common and most avoidable loss in the job."
+    },
+    {
+     "q": "Which is a good close?",
+     "a": [
+      "\u201cLet me know if you're interested.\u201d",
+      "\u201cWhat would you like me to put together for the first order?\u201d",
+      "\u201cI'll follow up next week.\u201d",
+      "\u201cDoes that sound okay?\u201d"
+     ],
+     "right": 1,
+     "why": "It assumes the order and asks only what goes in it. The others hand the decision back."
+    },
+    {
+     "q": "A buyer picks one of your three options. What is the immediate next question?",
+     "a": [
+      "Shall I send the COA?",
+      "How much do you want to start with?",
+      "Do you want to think about it?",
+      "Should I email you the details?"
+     ],
+     "right": 1,
+     "why": "They have chosen. The only open question is quantity. Anything else gives the moment away."
+    },
+    {
+     "q": "Why does \u201cvalue, middle, or premium?\u201d work as a close?",
+     "a": [
+      "It's shorter",
+      "It offers a choice rather than a yes-or-no",
+      "It mentions price",
+      "It sounds friendly"
+     ],
+     "right": 1,
+     "why": "A yes-or-no invites no. A choice between three assumes the sale and asks only which shape it takes."
+    }
+   ]
+  },
+  {
+   "id": "L13",
+   "n": 13,
+   "title": "Build the Invoice",
+   "mins": 9,
+   "blurb": "The exact steps, the one thing you must do before submitting, and the mistakes that cost money.",
+   "lessons": [
+    {
+     "id": "L13a",
+     "title": "Where it happens",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "The invoice portal uses the same access code you used to sign in here. Your job on the invoice is one thing: <b>accuracy</b>."
+      },
+      {
+       "t": "link",
+       "v": {
+        "label": "Open the invoice portal",
+        "href": "/invoice"
+       }
+      },
+      {
+       "t": "text",
+       "v": "Once you submit, EHF receives it for approval and takes over. You do not manage fulfilment."
+      }
+     ]
+    },
+    {
+     "id": "L13b",
+     "title": "The checklist",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Customer",
+         "Returning, or new. Check before creating a duplicate."
+        ],
+        [
+         "Business and contact name",
+         "Both. The business is who pays; the contact is who answers."
+        ],
+        [
+         "Email and phone",
+         "Accurately. A typo here means they never get the invoice."
+        ],
+        [
+         "Shipping address",
+         "Exactly as the box will be labelled \u2014 street, suite or unit, city, state, ZIP."
+        ],
+        [
+         "Products",
+         "From the catalog, or Custom item where appropriate. Confirm option, quantity and unit price."
+        ],
+        [
+         "Shipping method",
+         "What the customer asked for. Use the shipping calculator."
+        ],
+        [
+         "Payment method",
+         "Clover card or debit, or wire transfer. Anything else needs arranging first."
+        ],
+        [
+         "Special instructions",
+         "Anything agreed that EHF needs to know."
+        ],
+        [
+         "Review the totals",
+         "Subtotal, shipping, tax, total."
+        ],
+        [
+         "Email to customer?",
+         "Decide whether the system should send it."
+        ],
+        [
+         "Certify",
+         "Tick to confirm you double-checked customer, products, quantities, prices and shipping."
+        ],
+        [
+         "Review & Submit",
+         "The invoice number is assigned on submission."
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "L13c",
+     "title": "Shipping options",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>USPS Ground</b> \u2014 cheapest and slowest.",
+        "<b>USPS 2-Day Priority</b>.",
+        "<b>UPS Ground</b>.",
+        "<b>UPS Overnight</b> \u2014 fastest and dearest.",
+        "<b>Customer provides own label</b> \u2014 where they arrange carriage themselves."
+       ]
+      },
+      {
+       "t": "never",
+       "v": "<b>Local pickup is not yours to offer.</b> It needs Scott's approval and the system will refuse it from a rep's login. Do not mention it as an option."
+      },
+      {
+       "t": "remember",
+       "v": "There is <b>no automatic free shipping</b>. Every order is quoted and charged for carriage. Free shipping happens only when Scott approves it, and that is uncommon."
+      }
+     ]
+    },
+    {
+     "id": "L13d",
+     "title": "Before you press submit",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "<b>Read the order back to the customer.</b> Product, quantity, price, shipping method, ship-to address, total. Out loud. Every time."
+      },
+      {
+       "t": "text",
+       "v": "Thirty seconds here catches the wrong quantity, the old address, the strain they changed their mind about. After submission those cost a credit note, a re-ship, or a box going to the wrong state."
+      },
+      {
+       "t": "never",
+       "v": "<b>Do not submit twice</b> because you are impatient. The invoice number is assigned on submission, and a double submit makes two orders."
+      },
+      {
+       "t": "try",
+       "v": "You submitted an invoice and realise the shipping address has the wrong suite number. What do you do?",
+       "answers": [
+        "Submit a corrected invoice",
+        "Tell Scott immediately so it is fixed before the label is printed",
+        "Email the customer and ask them to watch for it",
+        "Nothing \u2014 the carrier will work it out"
+       ],
+       "right": 1,
+       "why": "Speed is everything once it is submitted. Before the label prints it is a one-line fix; after it ships it is a lost box. A second invoice just creates a duplicate order to untangle."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "What must you do before pressing submit?",
+     "a": [
+      "Email the customer a draft",
+      "Read the order back: product, quantity, price, shipping method, address, total",
+      "Check the COA",
+      "Confirm the commission"
+     ],
+     "right": 1,
+     "why": "Thirty seconds catches the mistakes that cost a credit note or a misdirected box."
+    },
+    {
+     "q": "Which shipping option may a rep NOT offer?",
+     "a": [
+      "USPS Ground",
+      "UPS Overnight",
+      "Local pickup",
+      "Customer provides own label"
+     ],
+     "right": 2,
+     "why": "Local pickup needs Scott's approval and is refused server-side from a rep login. Do not raise it as an option."
+    },
+    {
+     "q": "When does an order ship free?",
+     "a": [
+      "Over $5,000",
+      "Over $10,000",
+      "Only when Scott approves it, which is uncommon",
+      "On UPS Ground"
+     ],
+     "right": 2,
+     "why": "There is no automatic free shipping. Every order is quoted and charged for carriage unless Scott waives it."
+    },
+    {
+     "q": "When is the invoice number assigned?",
+     "a": [
+      "When you start the form",
+      "On submission",
+      "When EHF approves it",
+      "When it's paid"
+     ],
+     "right": 1,
+     "why": "On submission \u2014 which is exactly why submitting twice creates two orders."
+    },
+    {
+     "q": "You realise an address is wrong just after submitting. What do you do?",
+     "a": [
+      "Submit a corrected invoice",
+      "Tell Scott immediately, before the label is printed",
+      "Call the carrier",
+      "Email the customer"
+     ],
+     "right": 1,
+     "why": "Before the label prints it is a one-line fix. A second invoice creates a duplicate order that somebody then has to untangle."
+    },
+    {
+     "q": "Who handles fulfilment after you submit?",
+     "a": [
+      "You",
+      "EHF",
+      "The customer",
+      "The carrier"
+     ],
+     "right": 1,
+     "why": "You sell and submit. EHF approves, confirms payment and ships."
+    },
+    {
+     "q": "Which is the cheapest shipping option?",
+     "a": [
+      "USPS Ground",
+      "USPS 2-Day Priority",
+      "UPS Ground",
+      "UPS Overnight"
+     ],
+     "right": 0,
+     "why": "USPS Ground \u2014 cheapest and slowest. Worth offering when the customer is not in a hurry."
+    }
+   ]
+  },
+  {
+   "id": "L14",
+   "n": 14,
+   "title": "Payment",
+   "mins": 6,
+   "blurb": "What counts as paid, what absolutely does not, and why that protects you.",
+   "lessons": [
+    {
+     "id": "L14a",
+     "title": "How customers pay",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>Clover</b> \u2014 card or debit, through the official EHF payment page.",
+        "<b>Wire transfer</b>.",
+        "Anything else needs arranging with Scott first."
+       ]
+      },
+      {
+       "t": "text",
+       "v": "EHF absorbs the card processing fees, so there is no surcharge to explain and no reason to steer a customer away from paying by card."
+      },
+      {
+       "t": "text",
+       "v": "You may send the customer the payment link, or \u2014 with their authorisation \u2014 help them complete it on the official page. You never hold their card details and you never need to."
+      }
+     ]
+    },
+    {
+     "id": "L14b",
+     "title": "What counts as paid",
+     "blocks": [
+      {
+       "t": "never",
+       "v": "A screenshot is <b>not</b> payment.<br>\u201cI sent it\u201d is <b>not</b> payment.<br>A pending transaction is <b>not</b> payment.<br>Your own assumption is <b>not</b> payment."
+      },
+      {
+       "t": "text",
+       "v": "Only <b>EHF confirming cleared funds</b> makes an order paid. Until then it has not shipped, and no commission exists on it."
+      },
+      {
+       "t": "remember",
+       "v": "This rule protects you as much as EHF. Your commission is tied to money that actually arrived \u2014 so nobody can claw it back later, and you are never the person who authorised a shipment against a payment that bounced."
+      },
+      {
+       "t": "try",
+       "v": "A customer texts you a screenshot showing a completed card payment, and asks you to get the order moving today. What do you do?",
+       "answers": [
+        "Forward it to Scott and tell the customer it's shipping",
+        "Thank them, pass the screenshot to Scott, and tell the customer EHF will confirm as soon as the funds clear",
+        "Tell them the screenshot is not valid",
+        "Wait and say nothing"
+       ],
+       "right": 1,
+       "why": "You are helpful and honest at the same time. The screenshot is useful \u2014 it helps Scott find the transaction \u2014 but it is not confirmation, and promising a ship date you cannot control is how you end up apologising for something that was never yours to promise."
+      }
+     ]
+    },
+    {
+     "id": "L14c",
+     "title": "How you will hear",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "When an order clears, the intention is that you get a simple notification:"
+      },
+      {
+       "t": "notify",
+       "v": [
+        "PAYMENT CONFIRMED",
+        "Invoice #100044",
+        "ABC Smoke Shop",
+        "Product subtotal: $2,450",
+        "Commission eligible: $245"
+       ]
+      },
+      {
+       "t": "text",
+       "v": "That tells you what you need and nothing more. You never get access to financial accounts, and you do not need it."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "A customer sends a screenshot of a completed payment. Is the order paid?",
+     "a": [
+      "Yes",
+      "No \u2014 only EHF confirming cleared funds counts",
+      "Yes, if the amount matches",
+      "Yes, if it's from their bank app"
+     ],
+     "right": 1,
+     "why": "Screenshots, \u201cI sent it\u201d and pending transactions are all common and all meaningless. Cleared funds, confirmed by EHF."
+    },
+    {
+     "q": "Who absorbs card processing fees?",
+     "a": [
+      "The customer",
+      "EHF",
+      "Split",
+      "The salesperson"
+     ],
+     "right": 1,
+     "why": "EHF absorbs them, so there is no surcharge to explain and no reason to steer anyone away from paying by card."
+    },
+    {
+     "q": "May you help a customer complete a card payment?",
+     "a": [
+      "Never",
+      "Yes, with their authorisation, using the official EHF payment page",
+      "Only by phone",
+      "Only if Scott is on the call"
+     ],
+     "right": 1,
+     "why": "With their authorisation, on the official page. You never hold or store their card details."
+    },
+    {
+     "q": "Why does the payment rule protect the salesperson?",
+     "a": [
+      "It doesn't",
+      "Commission is tied to money that actually arrived, so it can't be clawed back",
+      "It speeds up payment",
+      "It reduces paperwork"
+     ],
+     "right": 1,
+     "why": "You are never the person who released goods against a payment that bounced, and your commission is never reversed."
+    },
+    {
+     "q": "What are the two main payment methods?",
+     "a": [
+      "Cash and cheque",
+      "Clover card/debit and wire transfer",
+      "PayPal and Venmo",
+      "Card only"
+     ],
+     "right": 1,
+     "why": "Clover and wire. Anything else is arranged with Scott first."
+    }
+   ]
+  },
+  {
+   "id": "L15",
+   "n": 15,
+   "title": "Shipping & Problems",
+   "mins": 5,
+   "blurb": "What you can offer, what you cannot authorise, and the sentence to use when something goes wrong.",
+   "lessons": [
+    {
+     "id": "L15a",
+     "title": "The options",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "<b>USPS Ground</b> \u2014 cheapest, slowest.",
+        "<b>USPS 2-Day Priority</b>.",
+        "<b>UPS Ground</b>.",
+        "<b>UPS Overnight</b> \u2014 fastest, dearest.",
+        "<b>Customer provides own label</b>."
+       ]
+      },
+      {
+       "t": "text",
+       "v": "The customer chooses. Quote it with the invoice's shipping calculator rather than guessing \u2014 a guess that comes in low is money off your own deal."
+      },
+      {
+       "t": "never",
+       "v": "<b>Local pickup is owner-approval only</b> and the system refuses it from a rep login. Never offer it.<br><br><b>No free shipping</b> unless Scott approves it, which is uncommon."
+      }
+     ]
+    },
+    {
+     "id": "L15b",
+     "title": "All sales are final",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "No returns, no refunds, no exchanges \u2014 unless Scott makes a specific exception."
+      },
+      {
+       "t": "never",
+       "v": "<b>You cannot authorise an exception.</b> Not a credit, not a replacement, not a partial refund, not \u201cI'll sort it out for you\u201d. Promising one you cannot deliver turns a product problem into a trust problem."
+      },
+      {
+       "t": "script",
+       "v": "I'll get this in front of the owner and operations side and make sure it gets reviewed."
+      },
+      {
+       "t": "text",
+       "v": "That is the whole answer. It is honest, it commits you to doing something, and it promises no outcome. Then actually escalate it \u2014 today."
+      }
+     ]
+    },
+    {
+     "id": "L15c",
+     "title": "When a shipment goes wrong",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Get the facts",
+         "Invoice number, what arrived, what is wrong, photos if relevant."
+        ],
+        [
+         "Say the line",
+         "Tell them you are escalating it for review. Do not speculate about the cause."
+        ],
+        [
+         "Escalate the same day",
+         "Scott and operations. Do not sit on it hoping it resolves."
+        ],
+        [
+         "Keep the customer updated",
+         "Even when the update is \u201cstill being reviewed\u201d. Silence is what loses accounts."
+        ]
+       ]
+      },
+      {
+       "t": "try",
+       "v": "A customer says a pound arrived short. They are angry and want a replacement sent today. What do you say?",
+       "answers": [
+        "\u201cI'll get a replacement out to you today.\u201d",
+        "\u201cThat shouldn't have happened \u2014 I'll get this in front of the owner and operations side today and make sure it's reviewed. Can you send me a photo and the invoice number?\u201d",
+        "\u201cAll sales are final, I'm afraid.\u201d",
+        "\u201cLet me check with the warehouse and get back to you.\u201d"
+       ],
+       "right": 1,
+       "why": "You take it seriously, commit to an action you control, promise no outcome, and collect what Scott will need. Option 1 promises something that is not yours to give. Option 3 is correct policy delivered in the least helpful way possible. Option 4 is vaguer and slower."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Who chooses the shipping method?",
+     "a": [
+      "The salesperson",
+      "The customer",
+      "EHF",
+      "The warehouse"
+     ],
+     "right": 1,
+     "why": "The customer chooses; you quote it with the invoice calculator rather than guessing."
+    },
+    {
+     "q": "Can you authorise a refund for a damaged order?",
+     "a": [
+      "Yes, up to $500",
+      "Yes, with the customer's photos",
+      "No \u2014 only Scott can make an exception",
+      "Yes, if it's clearly EHF's fault"
+     ],
+     "right": 2,
+     "why": "All sales are final unless Scott makes an exception. Promising one you cannot deliver turns a product problem into a trust problem."
+    },
+    {
+     "q": "What is the right sentence when something goes wrong?",
+     "a": [
+      "\u201cI'll sort it out for you.\u201d",
+      "\u201cI'll get this in front of the owner and operations side and make sure it gets reviewed.\u201d",
+      "\u201cAll sales are final.\u201d",
+      "\u201cThat's not our fault.\u201d"
+     ],
+     "right": 1,
+     "why": "Honest, commits you to an action you control, promises no outcome."
+    },
+    {
+     "q": "When is free shipping available?",
+     "a": [
+      "Over $5,000",
+      "Always on UPS Ground",
+      "Only when Scott approves it \u2014 uncommon",
+      "Never"
+     ],
+     "right": 2,
+     "why": "No automatic threshold. Scott waives it occasionally and it is not something to offer on your own."
+    },
+    {
+     "q": "A customer asks about local pickup. What do you say?",
+     "a": [
+      "Offer it \u2014 it saves them shipping",
+      "It needs owner approval; do not offer it as an option",
+      "Add it to the invoice",
+      "Tell them it's not available at all"
+     ],
+     "right": 1,
+     "why": "Owner-approval only and refused server-side from a rep login. Raising it sets an expectation you cannot meet."
+    }
+   ]
+  },
+  {
+   "id": "L16",
+   "n": 16,
+   "title": "Follow-Up & Reorders",
+   "mins": 6,
+   "blurb": "The first order is the beginning. This level is where the money actually is.",
+   "lessons": [
+    {
+     "id": "L16a",
+     "title": "The loop",
+     "blocks": [
+      {
+       "t": "remember",
+       "v": "<b>The first order is not the finish line.</b> It is the most expensive sale you will ever make to that shop. Everything after it is cheaper and easier."
+      },
+      {
+       "t": "flow",
+       "v": [
+        "Order",
+        "Delivery",
+        "Check in \u2014 did it arrive, what do they think",
+        "What moved?",
+        "Estimate when they run out",
+        "Contact BEFORE they run out",
+        "Reorder",
+        "Cross-sell",
+        "Repeat"
+       ]
+      },
+      {
+       "t": "text",
+       "v": "The step reps miss is <b>\u201cestimate when they run out\u201d</b>. If a shop bought two pounds and goes through roughly a pound a fortnight, you know when to call. Put it in the log the day the order ships."
+      }
+     ]
+    },
+    {
+     "id": "L16b",
+     "title": "Follow up with a reason",
+     "blocks": [
+      {
+       "t": "never",
+       "v": "<b>\u201cJust checking in\u201d</b> is the weakest sentence in sales. It tells the buyer you want something and have nothing to offer."
+      },
+      {
+       "t": "text",
+       "v": "Every follow-up needs a reason. Any of these will do:"
+      },
+      {
+       "t": "bullets",
+       "v": [
+        "Relevant inventory just landed.",
+        "A new drop in a category they sell.",
+        "Restock timing \u2014 you estimated they would be low about now.",
+        "A better price tier at a quantity they are close to.",
+        "An answer to a question they asked last time.",
+        "A COA they wanted.",
+        "A sample arriving.",
+        "A new category worth a look."
+       ]
+      },
+      {
+       "t": "text",
+       "v": "Same call, same person, same ask. The reason is what turns a nuisance into a supplier."
+      }
+     ]
+    },
+    {
+     "id": "L16c",
+     "title": "The timeline",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Same day",
+         "Send whatever you promised \u2014 catalog, COA, price. Log the next action."
+        ],
+        [
+         "1\u20132 days",
+         "Follow up on the specific thing you discussed. Not \u201cjust checking in\u201d."
+        ],
+        [
+         "3\u20137 days",
+         "Bring a reason: inventory, price tier, sample, restock timing, an answer."
+        ],
+        [
+         "After a paid order",
+         "Stay available. Let EHF handle fulfilment."
+        ],
+        [
+         "After delivery",
+         "Confirm it arrived and ask what they think. This is the call that builds the relationship."
+        ],
+        [
+         "Before depletion",
+         "Ask what moved and build the reorder before they run out."
+        ],
+        [
+         "Ongoing",
+         "Share relevant drops and cross-sells. Do not spam."
+        ]
+       ]
+      },
+      {
+       "t": "try",
+       "v": "A shop bought two pounds three weeks ago and told you they move about a pound a fortnight. What is your next action?",
+       "answers": [
+        "Wait for them to call",
+        "Call now \u2014 they are about due, and ask what moved",
+        "Send the full catalog",
+        "Offer a discount to reorder early"
+       ],
+       "right": 1,
+       "why": "They are roughly out. Calling now is a reason, not a nuisance \u2014 and asking what moved tells you what to put in the reorder. Waiting hands the sale to whoever calls first, and discounting a reorder they were going to place anyway just costs you margin."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Why is the first order not the finish line?",
+     "a": [
+      "It's usually small",
+      "It is the most expensive sale you will make to that shop \u2014 everything after is cheaper",
+      "Commission is lower",
+      "It often gets cancelled"
+     ],
+     "right": 1,
+     "why": "Winning a new account costs the most effort. The reorders are where the return on that effort shows up."
+    },
+    {
+     "q": "What is wrong with \u201cjust checking in\u201d?",
+     "a": [
+      "Nothing",
+      "It tells the buyer you want something and have nothing to offer",
+      "It's too formal",
+      "It's too frequent"
+     ],
+     "right": 1,
+     "why": "Every follow-up needs a reason. Without one you are a nuisance rather than a supplier."
+    },
+    {
+     "q": "Which step do reps most often miss?",
+     "a": [
+      "Confirming delivery",
+      "Estimating when the customer will run out",
+      "Sending the COA",
+      "Cross-selling"
+     ],
+     "right": 1,
+     "why": "If you know their burn rate you know when to call. Logged on the day the order ships, it turns reorders from luck into a schedule."
+    },
+    {
+     "q": "When should you contact a customer about a reorder?",
+     "a": [
+      "When they call you",
+      "Before they run out",
+      "The day they run out",
+      "Monthly regardless"
+     ],
+     "right": 1,
+     "why": "Before. A shop that has run out has already called someone else."
+    },
+    {
+     "q": "After delivery, what is the most valuable call?",
+     "a": [
+      "Asking for a reorder",
+      "Confirming it arrived and asking what they think",
+      "Sending the next catalog",
+      "Asking for a referral"
+     ],
+     "right": 1,
+     "why": "It is the call that builds the relationship, and it tells you what to recommend next time. The reorder follows from it."
+    },
+    {
+     "q": "A customer bought two pounds and moves about a pound a fortnight. When do you call?",
+     "a": [
+      "In three months",
+      "At about three weeks, before they run out",
+      "When they contact you",
+      "Weekly until they buy"
+     ],
+     "right": 1,
+     "why": "Roughly when they are getting low. That is a reason to call, which is what separates a supplier from a pest."
     }
    ]
   }
