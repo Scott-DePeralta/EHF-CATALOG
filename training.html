@@ -132,8 +132,6 @@ button{font-family:inherit;cursor:pointer}
 .st-y .st-m{background:rgba(251,191,36,.18);color:var(--amber)} .st-y b{color:var(--amber)}
 .st-r{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.32)}
 .st-r .st-m{background:rgba(255,107,107,.16);color:var(--red)} .st-r b{color:var(--red)}
-.st-grid{display:flex;flex-wrap:wrap;gap:7px}
-.st-chip{padding:6px 13px;border-radius:99px;font-size:12.5px;font-weight:700;border:1px solid}
 
 /* ── payment notification mock ── */
 .notify{background:var(--card3);border:1px solid rgba(0,255,136,.3);border-radius:13px;
@@ -577,7 +575,6 @@ function block(b){
   if(b.t==='script') return blkScript(b.v);
   if(b.t==='cat')    return blkCat(b.v);
   if(b.t==='status') return blkStatus(b.v);
-  if(b.t==='states') return blkStates();
   if(b.t==='link')   return blkLink(b.v);
   if(b.t==='notify') return blkNotify(b.v);
   if(b.t==='cards')  return blkCards(b.v);
@@ -737,7 +734,7 @@ function blkCat(c){
   '</div></div>';
 }
 
-/* GREEN / YELLOW / RED, or the discount tiers. Never colour alone — every row
+/* Tiered rows — used for discount authority. Never colour alone: every row
    carries a word and a symbol, so it still reads on a mono screen or to
    somebody who cannot distinguish the colours. */
 function blkStatus(rows){
@@ -746,21 +743,6 @@ function blkStatus(rows){
     return '<div class="st st-'+r[2]+'"><span class="st-m">'+mark[r[2]]+'</span>'+
       '<span class="st-b"><b>'+esc(r[0])+'</b><span>'+esc(r[1])+'</span></span></div>';
   }).join('')+'</div>';
-}
-
-/* The live state list. Until it is published this says so plainly rather than
-   inventing a list — a wrong compliance list is worse than no list. */
-function blkStates(){
-  var S=(typeof TRAINING!=='undefined' && TRAINING.states) ? TRAINING.states : null;
-  if(!S || !S.length){
-    return '<div class="blk"><div class="box nev">'+
-      '<div class="box-t">The state list is not published here yet</div>'+
-      'Until it is, treat <b>every</b> state as YELLOW: ask EHF before you promise '+
-      'availability to anyone. The habit above is what matters — a list you '+
-      'half-remember is not a status.</div></div>';
-  }
-  return '<div class="blk"><div class="st-grid">'+S.map(function(s){
-    return '<div class="st-chip st-'+s[1]+'">'+esc(s[0])+'</div>'; }).join('')+'</div></div>';
 }
 
 /* A link out — catalog, invoice, a toolkit page. */
@@ -905,7 +887,7 @@ function certHTML(){
       'Explain why a potency COA and legal sellability are different questions.',
       'Read a COA and find THCa, delta-9, the lab and the date.',
       'Calculate potential total THC.',
-      'State the GREEN / YELLOW / RED rule and what you do at each.',
+      'Explain why you research a state before prospecting it, and why that still does not let you promise legality.',
       'Find three qualified leads and write a next action for each.',
       'Deliver the vendor opener and five discovery questions naturally.',
       'Present value / balance / premium without dumping the catalog.',
@@ -965,8 +947,8 @@ function kitHTML(id){
       '<div class="blk"><ul>'+cols.map(function(c){ return '<li>'+esc(c)+'</li>'; }).join('')+'</ul></div>';
   }
   if(id==='compliance'){
-    title='Compliance check';
-    body=grab('L5',function(b){ return b.t==='status'||b.t==='states'||b.t==='never'||b.t==='script'; })
+    title='Before you promise anything';
+    body=grab('L5',function(b){ return b.t==='never'||b.t==='script'||b.t==='bullets'; })
            .map(function(b){ return block(b); }).join('');
   }
 
