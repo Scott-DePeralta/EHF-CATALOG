@@ -1,7 +1,156 @@
+const COA_DEMO = {"title": "Night Walker \u2014 PharmLabs San Diego", "sampleId": "SD260420-019", "lab": "PharmLabs San Diego", "accred": "ISO/IEC 17025:2017 \u00b7 Acc. 85368", "analyzed": "17 April 2026", "reported": "20 April 2026", "matrix": "Flower", "rows": [["THCA", "Tetrahydrocannabinolic acid", "37.57%", "375.69 mg/g", "k", "The big one. This is what converts when it is heated."], ["Delta-9 THC", "&Delta;9-THC", "0.30%", "3.00 mg/g", "k", "Right on the 0.3% line of the current federal standard. Nothing to round down."], ["Total THC", "(THCA &times; 0.877) + &Delta;9", "33.25%", "332.48 mg/g", "k", "The lab did the sum for you. Check it: 37.57 &times; 0.877 = 32.95, + 0.30 = 33.25."], ["Delta-8 THC", "&Delta;8-THC", "ND", "&mdash;", "", "Not detected above the lab's threshold. Not the same as zero."], ["CBGA", "Cannabigerolic acid", "0.45%", "4.50 mg/g", "", ""], ["CBG", "Cannabigerol", "0.20%", "2.00 mg/g", "", ""], ["Total cannabinoids", "", "37.72%", "377.15 mg/g", "", "Everything the lab found, added up."], ["Moisture", "", "9.4%", "limit 13%", "", "Under the limit. Wet flower moulds in transit."], ["Water activity", "", "0.63", "limit 0.85", "", ""]], "missing": ["Pesticides", "Heavy metals", "Residual solvents", "Microbials", "Mycotoxins"]};
+const FED_NOTE = {"asOf": "3 October 2026", "lines": [["12 November 2026", "Converted cannabinoids &mdash; Delta-8, HHC, THC-O, THC-P &mdash; are widely reported to lose federal hemp status on this date."], ["Reported as 11 December 2026", "Some sources report a delay to this date for THCa flower, vapes, concentrates and hemp Delta-9 edibles, moving them to a total-THC standard plus a 0.4&nbsp;mg per-container cap."], ["The sources disagree", "Public reporting does not agree on the dates or exactly what each one covers. That disagreement is itself the point."]]};
+const FINAL_TEST = {"pass": 85, "q": [{"q": "What does vertically integrated mean for EHF?", "a": ["We control cultivation through fulfilment ourselves", "We only sell to licensed dispensaries", "We own our own delivery fleet", "We have the lowest price in the market"], "right": 0, "why": "EHF owns the chain from growing to shipping, so there is no middleman's margin stacked on top."}, {"q": "Who does EHF sell to?", "a": ["Licensed dispensaries only", "Smoke shops, vape shops, hemp retailers and distributors", "Anyone who can pay", "Consumers over 21"], "right": 1, "why": "B2B wholesale. Business contacts, 21+, never a retail consumer."}, {"q": "What happens to THCa when it is heated?", "a": ["It becomes CBD", "It evaporates", "It converts substantially to delta-9 THC", "Nothing"], "right": 2, "why": "Decarboxylation. It is why high-THCa flower is intoxicating when smoked."}, {"q": "Are hemp and marijuana different plants?", "a": ["Hemp is male, marijuana female", "Hemp is outdoor-grown", "Yes, different species", "No \u2014 same plant, different legal categories"], "right": 3, "why": "Same plant. The line is drawn by measured THC content, not biology."}, {"q": "A customer asks whether THCa is legal in their state. You should\u2026", "a": ["Verify against EHF's current compliance policy first", "Tell them to check with their lawyer", "Say yes if delta-9 is under 0.3%", "Send them the COA"], "right": 0, "why": "Legality is a policy question. Never answered from a COA or from memory."}, {"q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026", "a": ["30.25%", "26.56%", "26.31%", "27.00%"], "right": 1, "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."}, {"q": "A potency COA proves the product is free of pesticides.", "a": ["False", "True"], "right": 0, "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually be on the report."}, {"q": "What does ND mean on a COA?", "a": ["Not dated", "No data", "None detected \u2014 an absolute zero", "Not detected above the lab's reporting threshold"], "right": 3, "why": "Below the method's threshold, which is not the same as zero."}, {"q": "Catalog says 31% THCa; the COA says 24%. What do you do?", "a": ["Stop and ask EHF", "Quote the catalog", "Quote the COA", "Quote the average"], "right": 0, "why": "A material disagreement means something is wrong. Either number is a figure you cannot stand behind."}, {"q": "Higher THCa always means better flower.", "a": ["True", "False"], "right": 1, "why": "Nose, bag appeal, structure, trim, freshness and consistency all matter. Leading with the number invites a price fight."}, {"q": "What is the three-choice presentation?", "a": ["Three payment terms", "Three strains at one price", "Value, balance, premium", "Three quantity tiers"], "right": 2, "why": "Three directions turn an open browse into a decision, and which one they ask about tells you their real priority."}, {"q": "A state is marked YELLOW. What do you do?", "a": ["Never offer it", "Ask the customer to confirm legality", "Sell carefully", "Stop and ask EHF before offering"], "right": 3, "why": "Yellow means ask. Conditions may apply and you are not the person who knows them."}, {"q": "Which sentence may you say to a customer?", "a": ["Rules vary by state and product \u2014 let me verify your location", "The COA proves it's compliant where you are", "It's legal in all 50 states", "Under .3 means we can ship anywhere"], "right": 0, "why": "The only one that is true and the only one that does not make a promise you cannot keep."}, {"q": "What is the non-negotiable rule for your lead log?", "a": ["Fifty leads a week", "Every live lead has a next action and a date", "Record every owner's email", "Colour-code by state"], "right": 1, "why": "Without a next action a lead quietly disappears."}, {"q": "What is the EHF vendor opener?", "a": ["Asking to email the catalog", "A pitch on quality", "Asking their process for becoming an approved vendor", "Offering a first-order discount"], "right": 2, "why": "A process question, not a pitch. Shops answer process questions because suppliers ask them all the time."}, {"q": "Which discovery question do most reps skip?", "a": ["How much volume?", "Who decides?", "What's your budget?", "What does your current supplier do well?"], "right": 3, "why": "It tells you what you must match and does not make the buyer defensive."}, {"q": "A buyer asks what they can sell your flower for. You should\u2026", "a": ["Ask what they sell comparable flower for locally", "Send a margin calculator", "Quote a typical retail price", "Promise they'll double their money"], "right": 0, "why": "Never promise a resale price or profit. Asking gets a real number and makes them do the maths."}, {"q": "What is EHF's minimum order?", "a": ["$500", "There is no rigid minimum", "One pound", "$1,000"], "right": 1, "why": "No rigid minimum. Inventing one to pressure a buyer loses sales."}, {"q": "\u201cI already have a vendor.\u201d Best response?", "a": ["Move on", "Explain why EHF is better", "Ask what it would take to earn a spot as backup or secondary", "Ask who it is and beat the price"], "right": 2, "why": "Nobody has to fire anyone, and the incumbent will eventually be out of stock."}, {"q": "Should you tell a buyer their current supplier is poor quality?", "a": ["Only with evidence", "Yes if true", "Only if they raise it", "No \u2014 never attack a competitor"], "right": 3, "why": "You do not know the relationship, and it makes you sound small."}, {"q": "How much may you discount without approval?", "a": ["Up to 5%", "Up to 10%", "Whatever closes it", "Nothing"], "right": 0, "why": "Up to 5% is yours. Beyond that, ask Scott before promising it."}, {"q": "$2,500 of product plus $75 shipping. What is commissionable?", "a": ["$2,575", "$2,500", "$2,425", "Depends on the carrier"], "right": 1, "why": "Product only. Shipping, tax and fees never count."}, {"q": "When is commission earned?", "a": ["On submission", "On EHF approval", "When paid in full and EHF confirms cleared funds", "On delivery"], "right": 2, "why": "Paid in full, confirmed by EHF. It ties your pay to money that actually arrived."}, {"q": "A customer sends a screenshot of payment. Is the order paid?", "a": ["Yes if it's from their bank", "Yes", "Yes if the amount matches", "No \u2014 only EHF confirming cleared funds counts"], "right": 3, "why": "Screenshots, \u201cI sent it\u201d and pending are all meaningless. Cleared funds only."}, {"q": "What is the normal sample shipping charge?", "a": ["$10", "$25", "Varies", "Free"], "right": 0, "why": "$10, and it does most of the filtering for you."}, {"q": "What question must accompany every sample?", "a": ["Who else are you sampling?", "What are you considering buying if it checks out?", "Can you cover shipping?", "When will you decide?"], "right": 1, "why": "It qualifies the opportunity and gives you the subject of your follow-up."}, {"q": "Which shipping option may a rep NOT offer?", "a": ["UPS Overnight", "Customer provides own label", "Local pickup", "USPS Ground"], "right": 2, "why": "Owner approval only, and refused server-side from a rep login."}, {"q": "When does an order ship free?", "a": ["Over $5,000", "Over $10,000", "On UPS Ground", "Only when Scott approves it, which is uncommon"], "right": 3, "why": "There is no automatic free shipping. Every order is quoted and charged for carriage."}, {"q": "Can you authorise a refund for a damaged order?", "a": ["No \u2014 only Scott can make an exception", "Yes if it's clearly EHF's fault", "Yes, up to $500", "Yes with photos"], "right": 0, "why": "All sales are final unless Scott makes an exception. Promising one turns a product problem into a trust problem."}, {"q": "A shop bought two pounds and moves about a pound a fortnight. When do you call?", "a": ["When they call you", "At about three weeks, before they run out", "In three months", "Weekly until they buy"], "right": 1, "why": "Before they run out. A shop that has already run out has called someone else."}]};
+const CLOSED = {"before": [["Say the order back", "Product, quantity, price, shipping method, ship-to address, total. Out loud, before you hang up. Thirty seconds here beats a credit note later."], ["Get the ship-to exactly", "Street, suite or unit, city, state, ZIP \u2014 as the box will be labelled. Not \u201cthe usual\u201d. Read it back."], ["Get the email right", "The invoice goes there. A typo means they never see it and you spend a week wondering why they have not paid."], ["Agree the shipping method", "USPS Ground, USPS 2-Day Priority, UPS Ground or UPS Overnight. Their choice, and it is quoted on the invoice. There is no automatic free shipping."], ["Agree how they are paying", "Clover card or debit, or wire. Anything else needs arranging with Scott first."]], "now": [["Submit the invoice today", "Prices and stock move. An order you sit on for two days is an order that may not be quotable at the same number."], ["Submit it once", "The invoice number is assigned on submission. Pressing it twice makes two orders and somebody has to untangle it."], ["Tell the customer what happens next", "Use the script below. Saying it now prevents the \u201cwhere is my order?\u201d call on day two."], ["Log the follow-up", "Next action: payment check. Next date: two days out. The system nudges you as well, but the log is yours."]], "theirs": [["Scott approves it", "Your submission lands in Slack. Status becomes APPROVED."], ["The customer pays", "Clover link or wire. Card fees are absorbed by EHF."], ["EHF confirms cleared funds", "Not a screenshot, not \u201cI sent it\u201d. This is the moment the order becomes real \u2014 and the moment your commission exists."], ["The warehouse packs and ships", "Nothing ships before payment clears."], ["Tracking is posted", "The label is photographed into Slack and attaches to the invoice automatically."]], "never": ["Do not promise a ship date. You do not control approval, payment clearing or the warehouse queue.", "Do not confirm payment yourself. A screenshot is not payment.", "Do not chase the warehouse. If something is late, ask Scott.", "Do not authorise a refund, credit, replacement or free shipping. None of those are yours."], "say": "You'll get the invoice by email shortly. You can pay by card on the link in it, or by wire if you'd rather. Once the payment clears it goes straight to our warehouse \u2014 I'll let you know as soon as it's on its way.", "chase": [["Day 2", "The system nudges you if it is still unpaid. Call them \u2014 a friendly check that the invoice arrived."], ["Day 5", "Second nudge to you."], ["Day 8", "Scott is copied in."], ["Day 14", "Scott escalates."]], "after": [["It ships", "Tell them it is on the way and give them the tracking. This is a call worth making, not a text."], ["On delivery", "Confirm it arrived and ask what they think. Easiest relationship-building call in the job."], ["A week or two in", "Ask what moved. That tells you what goes in the reorder."], ["Before they run out", "Estimate their burn rate and call first. A shop that has already run out has rung somebody else."]]};
 const TRAINING = {
  "version": 1,
  "pass": 80,
  "levels": [
+  {
+   "id": "L0",
+   "n": 0,
+   "title": "Start Here",
+   "mins": 4,
+   "blurb": "What is happening in the market right now, and your first seven days.",
+   "lessons": [
+    {
+     "id": "L0a",
+     "title": "Read this first",
+     "blocks": [
+      {
+       "t": "fed",
+       "v": 1
+      },
+      {
+       "t": "text",
+       "v": "You do not need to follow the legislation. You need to know that it is moving, and that <b>EHF's current policy is the only thing you quote</b> \u2014 never a rule you remember, never a date you read somewhere."
+      },
+      {
+       "t": "remember",
+       "v": "If a customer asks what happens after the federal change, the answer is: <b>\u201cThat's being worked through \u2014 let me get you a straight answer from EHF rather than guess.\u201d</b> Then ask Scott."
+      }
+     ]
+    },
+    {
+     "id": "L0b",
+     "title": "Your first seven days",
+     "blocks": [
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Day 1 \u2014 Understand",
+         "EHF, the THCa basics, the compliance rule. Practise the 30-second explanation out loud."
+        ],
+        [
+         "Day 2 \u2014 Product &amp; COA",
+         "Categories, flower tiers, the live catalog, the six-step COA check, the potency sum."
+        ],
+        [
+         "Day 3 \u2014 Learn to sell",
+         "Lead sourcing, the vendor opener, discovery, presenting, objections. Build 25\u201350 qualified prospects."
+        ],
+        [
+         "Day 4 \u2014 Go live",
+         "Real calls. Aim at reaching owners and managers. Log every next action."
+        ],
+        [
+         "Day 5 \u2014 Follow up",
+         "Call back warm prospects. Send targeted catalog and COA links. Practise the sample and price objections."
+        ],
+        [
+         "Day 6 \u2014 Close and invoice",
+         "Practise closing. Complete mock invoices until they are error-free. Start asking for orders."
+        ],
+        [
+         "Day 7 \u2014 Review",
+         "Numbers, weak spots, objections you heard, next week's pipeline. Repeat what worked."
+        ]
+       ]
+      },
+      {
+       "t": "text",
+       "v": "Then four weeks: <b>week 1</b> competence and first conversations \u00b7 <b>week 2</b> consistent prospecting and real quotes \u00b7 <b>week 3</b> better objection handling and targeted sampling \u00b7 <b>week 4</b> close paid orders and set reorder dates."
+      },
+      {
+       "t": "remember",
+       "v": "<b>Day 30: at least 2\u20133 paid sales.</b> A target to aim at, not a test you fail. Nothing locks if you miss it."
+      }
+     ]
+    },
+    {
+     "id": "L0c",
+     "title": "What to track daily",
+     "blocks": [
+      {
+       "t": "bullets",
+       "v": [
+        "New qualified shops added",
+        "Calls attempted",
+        "Owners or managers actually reached",
+        "Vendor conversations had",
+        "Catalogs and COAs sent",
+        "Follow-ups completed",
+        "Quotes or orders discussed",
+        "Invoices submitted",
+        "Paid sales",
+        "Reorders"
+       ]
+      },
+      {
+       "t": "text",
+       "v": "These are coaching tools, not quotas. Twenty rushed calls that reach nobody are worth less than six that reach decision-makers."
+      }
+     ]
+    }
+   ],
+   "quiz": [
+    {
+     "q": "The federal hemp framework is changing. What does that mean for you on a call?",
+     "a": [
+      "Learn the new dates and quote them",
+      "Quote EHF's current policy and never a rule you remember",
+      "Tell customers to check with a lawyer",
+      "Avoid the subject"
+     ],
+     "right": 1,
+     "why": "The dates and their scope are still being reported inconsistently. EHF policy is the only thing you quote."
+    },
+    {
+     "q": "A customer asks what happens to THCa after the federal change. What do you say?",
+     "a": [
+      "Explain the total-THC standard in detail",
+      "That it's being worked through, and you'll get them a straight answer from EHF",
+      "That nothing will change",
+      "That everything becomes illegal"
+     ],
+     "right": 1,
+     "why": "Honest, and it does not commit EHF to a position on something still moving."
+    },
+    {
+     "q": "What is the Day 30 target?",
+     "a": [
+      "50 leads",
+      "At least 2\u20133 paid sales",
+      "$10,000 in orders",
+      "Certification"
+     ],
+     "right": 1,
+     "why": "Two to three paid sales plus demonstrated competence. A target, not a gate."
+    },
+    {
+     "q": "What happens if you miss the Day 30 target?",
+     "a": [
+      "Your access is revoked",
+      "Nothing locks \u2014 it is a performance target, not a permission",
+      "You restart training",
+      "You lose your accounts"
+     ],
+     "right": 1,
+     "why": "It is there to aim at. Nothing in the system locks you out for missing it."
+    }
+   ]
+  },
   {
    "id": "L1",
    "n": 1,
@@ -154,12 +303,12 @@ const TRAINING = {
        "t": "try",
        "v": "A shop owner asks: \u201cCan you ship this to me here?\u201d You are not sure. What do you say?",
        "answers": [
-        "\u201cYes, we ship everywhere.\u201d",
         "\u201cRules vary by state and product and change quickly. Let me verify your location against EHF's current policy before I promise availability.\u201d",
-        "\u201cProbably \u2014 let me check and call you back.\u201d"
+        "\u201cProbably \u2014 let me check and call you back.\u201d",
+        "\u201cYes, we ship everywhere.\u201d"
        ],
-       "right": 1,
-       "why": "The second answer is honest, sounds professional, and keeps the conversation alive. The first is a promise you cannot make. The third is closer but vaguer \u2014 \u201cprobably\u201d is still a guess, and the customer will remember it as a yes."
+       "right": 0,
+       "why": "Verifying first is honest, sounds professional, and keeps the conversation alive. Promising you ship everywhere is a promise you cannot make. And \u201cprobably, let me check\u201d is still a guess \u2014 the customer will remember it as a yes."
       }
      ]
     }
@@ -168,12 +317,12 @@ const TRAINING = {
     {
      "q": "EHF is vertically integrated. What does that mean on a sales call?",
      "a": [
-      "We have the lowest prices anywhere",
       "We control cultivation through fulfilment ourselves, so we are the source rather than a middleman",
       "We only sell to licensed dispensaries",
-      "We guarantee next-day delivery"
+      "We guarantee next-day delivery",
+      "We have the lowest prices anywhere"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Vertical integration means EHF owns the chain from growing through shipping. On a call it is the honest answer to \u201cwhy you?\u201d \u2014 no one else's margin is stacked on top."
     },
     {
@@ -190,34 +339,34 @@ const TRAINING = {
     {
      "q": "After you submit an invoice, who handles approval, payment confirmation and fulfilment?",
      "a": [
+      "The shipping carrier",
       "The salesperson",
       "EHF",
-      "The customer",
-      "The shipping carrier"
+      "The customer"
      ],
-     "right": 1,
+     "right": 2,
      "why": "You sell and submit. EHF approves, confirms payment and ships. Staying out of fulfilment is what lets you spend your time selling."
     },
     {
      "q": "A customer sends you a screenshot of a payment. Is the order paid?",
      "a": [
+      "Yes, if they also say they sent it",
       "Yes, a screenshot is proof",
       "Yes, if the amount matches",
-      "No \u2014 only EHF confirming cleared funds counts",
-      "Yes, if they also say they sent it"
+      "No \u2014 only EHF confirming cleared funds counts"
      ],
-     "right": 2,
+     "right": 3,
      "why": "Screenshots, \u201cI sent it\u201d and pending transactions are all common and all meaningless. An order is paid when EHF sees cleared funds, and not before. This protects you too \u2014 commission is tied to real money."
     },
     {
      "q": "Commission is calculated on\u2026",
      "a": [
-      "The invoice total including shipping and tax",
       "The product-only subtotal",
       "The catalog price regardless of what it sold for",
-      "The amount after EHF's costs"
+      "The amount after EHF's costs",
+      "The invoice total including shipping and tax"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Product-only subtotal. Shipping, tax and fees are excluded. $2,500 of product plus $75 shipping commissions on $2,500."
     },
     {
@@ -325,7 +474,7 @@ const TRAINING = {
         "\u201cIt's hemp, so it's different from weed.\u201d"
        ],
        "right": 1,
-       "why": "The second is true on both counts and it sounds like someone who knows the business. The first makes a legal promise you cannot keep. The third is misleading \u2014 it is the same plant, and a buyer who later feels misled is a buyer you lose."
+       "why": "Explaining the conversion and separating out the legal question is true on both counts, and it sounds like someone who knows the business. Calling it legal weed makes a promise you cannot keep. Calling it \u201cdifferent from weed\u201d is misleading \u2014 it is the same plant, and a buyer who later feels misled is a buyer you lose."
       }
      ]
     },
@@ -356,67 +505,67 @@ const TRAINING = {
     {
      "q": "What happens to THCa when it is heated?",
      "a": [
-      "Nothing \u2014 it stays THCa",
-      "It converts substantially into delta-9 THC",
       "It turns into CBD",
-      "It evaporates"
+      "It evaporates",
+      "Nothing \u2014 it stays THCa",
+      "It converts substantially into delta-9 THC"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Heat drives decarboxylation and most of the THCa becomes delta-9 THC. That is why high-THCa flower is intoxicating when smoked or vaped."
     },
     {
      "q": "Are hemp and marijuana different plants?",
      "a": [
-      "Yes, botanically different species",
       "No \u2014 same plant, different legal categories based on measured THC",
       "Hemp is the male plant",
-      "Marijuana is grown indoors, hemp outdoors"
+      "Marijuana is grown indoors, hemp outdoors",
+      "Yes, botanically different species"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Same plant. The distinction is a legal line drawn by measured THC content, not biology."
     },
     {
      "q": "A customer asks if THCa is legal. What is the right response?",
      "a": [
-      "\u201cYes, it's federally legal under the Farm Bill.\u201d",
       "\u201cIt's under 0.3% delta-9, so we can ship anywhere.\u201d",
       "\u201cRules vary by state and product and change quickly \u2014 let me verify your location against EHF's current policy.\u201d",
-      "\u201cOur COA proves it's compliant.\u201d"
+      "\u201cOur COA proves it's compliant.\u201d",
+      "\u201cYes, it's federally legal under the Farm Bill.\u201d"
      ],
-     "right": 2,
-     "why": "Legality is a policy question, not a product question. The other three are promises you cannot keep, and two of them are the exact phrases that get companies in trouble."
+     "right": 1,
+     "why": "Legality is a policy question, not a product question. Every other answer is a promise you cannot keep, and two of them are the exact phrases that get companies in trouble."
     },
     {
      "q": "What is scheduled to change on 12 November 2026?",
      "a": [
+      "Shipping rules change",
       "Nothing",
       "The federal hemp definition moves toward total THC including THCa",
-      "THCa becomes federally illegal in all forms",
-      "Shipping rules change"
+      "THCa becomes federally illegal in all forms"
      ],
-     "right": 1,
+     "right": 2,
      "why": "A 2025 amendment takes effect then and shifts the definition toward total THC including THCa, with added restrictions. It is the reason nothing about legality should be learned by heart."
     },
     {
      "q": "Is it accurate to call THCa flower \u201cfake weed\u201d?",
      "a": [
-      "Yes, it's a hemp substitute",
-      "No \u2014 it is real cannabis flower",
       "Only if it tests under 0.3%",
-      "Yes, because it isn't intoxicating"
+      "Yes, because it isn't intoxicating",
+      "Yes, it's a hemp substitute",
+      "No \u2014 it is real cannabis flower"
      ],
-     "right": 1,
+     "right": 3,
      "why": "It is real cannabis flower and it can be intoxicating. Calling it fake undersells the product and is simply untrue."
     },
     {
      "q": "A buyer asks which strain will help them sleep. What do you do?",
      "a": [
-      "Recommend an indica \u2014 they're sedating",
       "Avoid a medical claim; ask what their customers actually ask for and buy",
       "Check the COA for sleep cannabinoids",
-      "Tell them all THCa helps with sleep"
+      "Tell them all THCa helps with sleep",
+      "Recommend an indica \u2014 they're sedating"
      ],
-     "right": 1,
+     "right": 0,
      "why": "No health or medical claims, ever. And the more useful question commercially is what their customers request \u2014 that tells you what will sell."
     }
    ]
@@ -495,6 +644,14 @@ const TRAINING = {
       {
        "t": "remember",
        "v": "If catalog and COA disagree: <b>do not pick whichever number sounds better.</b> Stop and ask EHF. Quoting a number you cannot stand behind is worse than taking an extra hour to check."
+      },
+      {
+       "t": "text",
+       "v": "Here is a real EHF report, with the three lines that matter marked:"
+      },
+      {
+       "t": "coa",
+       "v": 1
       }
      ]
     },
@@ -574,12 +731,12 @@ const TRAINING = {
     {
      "q": "THCa is 27.50% and delta-9 THC is 0.20%. What is the potential total THC?",
      "a": [
+      "27.50%",
       "27.70%",
       "24.32%",
-      "23.95%",
-      "27.50%"
+      "23.95%"
      ],
-     "right": 1,
+     "right": 2,
      "why": "(27.50 \u00d7 0.877) + 0.20 = 24.1175 + 0.20 = approximately 24.32%."
     },
     {
@@ -594,12 +751,12 @@ const TRAINING = {
     {
      "q": "The catalog says 31% THCa. The attached COA says 24% THCa. What do you do?",
      "a": [
+      "Stop and ask EHF",
       "Quote 31% \u2014 the catalog is the source of truth",
       "Quote 24% \u2014 the lab is the source of truth",
-      "Quote the average",
-      "Stop and ask EHF"
+      "Quote the average"
      ],
-     "right": 3,
+     "right": 0,
      "why": "Materially disagreeing numbers mean something is wrong \u2014 the wrong COA, an old batch, a typo. Picking either number means quoting a figure you cannot stand behind."
     },
     {
@@ -616,34 +773,34 @@ const TRAINING = {
     {
      "q": "A customer says: \u201cYour COA shows under 0.3% delta-9, so you can ship to me.\u201d What is the right reply?",
      "a": [
+      "\u201cLet me send you the COA again.\u201d",
       "\u201cCorrect, that's the federal standard.\u201d",
       "\u201cThe COA is a potency document, not a legal clearance \u2014 let me verify your location against EHF's current policy.\u201d",
-      "\u201cYes, as long as your state allows hemp.\u201d",
-      "\u201cLet me send you the COA again.\u201d"
+      "\u201cYes, as long as your state allows hemp.\u201d"
      ],
-     "right": 1,
+     "right": 2,
      "why": "This is the most common trap in the job. The COA says what is in the product. It does not say where the product may be sold."
     },
     {
      "q": "A COA reports in mg/g rather than %. 250 mg/g is roughly\u2026",
      "a": [
-      "2.5%",
-      "25%",
       "0.25%",
-      "250%"
+      "250%",
+      "2.5%",
+      "25%"
      ],
-     "right": 1,
+     "right": 3,
      "why": "1,000 mg/g is 100%, so 250 mg/g is 25%. Misreading units is an easy way to quote a number that is off by a factor of ten."
     },
     {
      "q": "When should you use a COA to tell a customer a product is legal in their state?",
      "a": [
-      "When delta-9 is under 0.3%",
-      "When the lab is accredited",
       "Never \u2014 that is an EHF policy question, not a lab question",
-      "When the report is recent"
+      "When the report is recent",
+      "When delta-9 is under 0.3%",
+      "When the lab is accredited"
      ],
-     "right": 2,
+     "right": 0,
      "why": "Never. The COA is evidence about the product. Legality is a policy and jurisdiction question, and EHF answers it."
     }
    ]
@@ -830,12 +987,12 @@ const TRAINING = {
     {
      "q": "Why should you avoid memorising the current strain list?",
      "a": [
+      "The names change",
       "It's too long",
       "Inventory changes constantly \u2014 the live catalog is the source of truth",
-      "Strains don't matter",
-      "The names change"
+      "Strains don't matter"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Products, prices and availability move. A rep quoting from memory eventually quotes something that is sold out or priced differently."
     },
     {
@@ -850,12 +1007,12 @@ const TRAINING = {
     {
      "q": "What is the three-choice presentation?",
      "a": [
-      "Three strains at the same price",
       "Value, balance, premium \u2014 and let the buyer pick",
       "Three quantity tiers",
-      "Three payment options"
+      "Three payment options",
+      "Three strains at the same price"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Three directions turns an open-ended browse into a decision. It also tells you what the buyer actually cares about by which one they ask about."
     },
     {
@@ -872,23 +1029,23 @@ const TRAINING = {
     {
      "q": "A shop wants its own branded gummies. What do you do?",
      "a": [
+      "Offer 5% off for volume",
       "Quote them from the catalog with a discount",
       "Escalate to Scott \u2014 white label is priced case by case",
-      "Tell them EHF doesn't do that",
-      "Offer 5% off for volume"
+      "Tell them EHF doesn't do that"
      ],
-     "right": 1,
+     "right": 2,
      "why": "White and private label pricing is not a rep-priced conversation. Gather volume, categories, packaging and timeline, then bring Scott in."
     },
     {
      "q": "Which is the best cross-sell for flower?",
      "a": [
-      "Topicals",
-      "Pre-rolls",
       "Gel caps",
-      "Tinctures"
+      "Tinctures",
+      "Topicals",
+      "Pre-rolls"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Pre-rolls are the natural companion \u2014 same customer, low decision cost, easy counter add-on."
     }
    ]
@@ -976,13 +1133,13 @@ const TRAINING = {
        "t": "try",
        "v": "A buyer in a yellow state wants to place an order today for a product you are not sure about. What do you do?",
        "answers": [
-        "Take the order \u2014 you can always cancel it",
         "Tell them no and move on",
         "Take the details, tell them you are confirming availability with EHF today, and give them a time you will call back",
-        "Send the COA and let them decide"
+        "Send the COA and let them decide",
+        "Take the order \u2014 you can always cancel it"
        ],
-       "right": 2,
-       "why": "You keep the deal alive without promising anything. Taking an order you may have to cancel damages trust; refusing outright throws away a sale that might be perfectly fine; sending the COA pushes a legal decision onto the customer, which is exactly what you must not do."
+       "right": 1,
+       "why": "Taking the details and confirming with EHF keeps the deal alive without promising anything. Taking the order outright damages trust if you have to cancel it; refusing throws away a sale that might be perfectly fine; and sending the COA pushes a legal decision onto the customer, which is exactly what you must not do."
       }
      ]
     }
@@ -991,56 +1148,56 @@ const TRAINING = {
     {
      "q": "A state is marked YELLOW. What does that mean?",
      "a": [
-      "Sell it, but carefully",
       "Stop and ask EHF before offering",
       "Never offer it",
-      "It depends on the product's THCa"
+      "It depends on the product's THCa",
+      "Sell it, but carefully"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Yellow means stop and ask. Conditions may apply, and the person who knows them is not you."
     },
     {
      "q": "Which of these may you say to a customer?",
      "a": [
-      "\u201cIt's legal in all 50 states.\u201d",
       "\u201cUnder .3 means we can ship anywhere.\u201d",
       "\u201cRules vary by state and product \u2014 let me verify your location against EHF's current policy.\u201d",
-      "\u201cThe COA proves it's compliant in your state.\u201d"
+      "\u201cThe COA proves it's compliant in your state.\u201d",
+      "\u201cIt's legal in all 50 states.\u201d"
      ],
-     "right": 2,
+     "right": 1,
      "why": "The only one of the four that is true, and the only one that does not make a legal promise you have no authority to make."
     },
     {
      "q": "A customer says every other shop in town sells it. Does that change what you can offer?",
      "a": [
+      "Yes, if they sign a waiver",
       "Yes \u2014 if it's being sold locally it's clearly fine",
       "No \u2014 EHF policy decides, not local practice",
-      "Only if they can show you a licence",
-      "Yes, if they sign a waiver"
+      "Only if they can show you a licence"
      ],
-     "right": 1,
+     "right": 2,
      "why": "What other vendors risk is not EHF policy and is not your liability to take on."
     },
     {
      "q": "Who decides whether a product can be sold into a given state?",
      "a": [
-      "The salesperson, using the COA",
-      "EHF's current compliance policy",
       "The customer",
-      "Whichever lab issued the report"
+      "Whichever lab issued the report",
+      "The salesperson, using the COA",
+      "EHF's current compliance policy"
      ],
-     "right": 1,
+     "right": 3,
      "why": "EHF policy. Your job is to check it and relay it, not to interpret law."
     },
     {
      "q": "Why does compliance live as updateable data rather than being written into this training?",
      "a": [
-      "To save space",
       "Because the rules change \u2014 and a lesson you cannot update becomes wrong without anyone noticing",
       "For legal reasons",
-      "It doesn't"
+      "It doesn't",
+      "To save space"
      ],
-     "right": 1,
+     "right": 0,
      "why": "A hardcoded rule is a rule nobody can fix. The federal framework changes in November 2026 alone. The habit of checking is what is trained here; the list itself is maintained separately."
     }
    ]
@@ -1150,34 +1307,34 @@ const TRAINING = {
     {
      "q": "What is the single non-negotiable rule for your lead log?",
      "a": [
+      "Colour-code by state",
       "Log at least 50 leads a week",
       "Every live lead has a next action and a date",
-      "Record the owner's email",
-      "Colour-code by state"
+      "Record the owner's email"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Without a next action, a lead quietly disappears. Everything else in the log is optional by comparison."
     },
     {
      "q": "Which is usually the best lead source?",
      "a": [
-      "Cold Google Maps",
-      "Referrals from existing customers",
       "Instagram",
-      "Yelp"
+      "Yelp",
+      "Cold Google Maps",
+      "Referrals from existing customers"
      ],
-     "right": 1,
+     "right": 3,
      "why": "A referral arrives pre-trusted. It is also the one most reps forget to ask for."
     },
     {
      "q": "Before calling, you should check\u2026",
      "a": [
-      "Their social media following",
       "Whether it's a real business in an approved state with a working phone and a reachable decision-maker",
       "Their current supplier",
-      "How long they've been open"
+      "How long they've been open",
+      "Their social media following"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Those five checks take five minutes and save an hour of calling shops that could never have bought."
     },
     {
@@ -1194,12 +1351,12 @@ const TRAINING = {
     {
      "q": "A shop looks real but is in a state you are not sure about. What do you do?",
      "a": [
+      "Call and avoid the legality question",
       "Call anyway and find out later",
       "Check EHF's current compliance status before you spend time on it",
-      "Skip it",
-      "Call and avoid the legality question"
+      "Skip it"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Prospecting into a market you cannot sell to is time spent for nothing \u2014 and the conversation ends badly if they want to buy."
     }
    ]
@@ -1304,7 +1461,7 @@ const TRAINING = {
         "\u201cOur catalog is online, I'll text you the link.\u201d"
        ],
        "right": 1,
-       "why": "You agree immediately \u2014 never fight it \u2014 but you buy one question first. That question gives you something to follow up on and a reason to call back. Option 1 ends the relationship at an unread email. Option 3 refuses what they asked for."
+       "why": "Agree immediately \u2014 never fight it \u2014 but buy one question first. That question gives you something to follow up on and a reason to call back. Just sending the catalog ends the relationship at an unread email, and refusing to send it ignores what they asked for."
       }
      ]
     }
@@ -1313,23 +1470,23 @@ const TRAINING = {
     {
      "q": "What is the EHF opener?",
      "a": [
-      "A pitch about product quality",
-      "Asking what their process is for becoming an approved vendor",
       "Asking if they want to see a catalog",
-      "Offering a first-order discount"
+      "Offering a first-order discount",
+      "A pitch about product quality",
+      "Asking what their process is for becoming an approved vendor"
      ],
-     "right": 1,
+     "right": 3,
      "why": "It is a vendor question, not a pitch. It sounds like a real supplier and most people simply answer it."
     },
     {
      "q": "Why does the vendor opener work better than a product pitch?",
      "a": [
-      "It's shorter",
       "It starts a legitimate B2B conversation instead of sounding like telemarketing",
       "It mentions price",
-      "It's harder to refuse"
+      "It's harder to refuse",
+      "It's shorter"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Shops refuse pitches reflexively. They answer process questions, because suppliers ask them all the time."
     },
     {
@@ -1346,34 +1503,34 @@ const TRAINING = {
     {
      "q": "A customer asks what you sell. What should your answer end with?",
      "a": [
+      "An offer to email the catalog",
       "Your phone number",
       "A question back to them",
-      "A price",
-      "An offer to email the catalog"
+      "A price"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Answer briefly, then hand it back. Without a question on the end you get \u201csend me the menu\u201d and the call is finished."
     },
     {
      "q": "The person answering is not the owner. What is the best outcome of that call?",
      "a": [
-      "Pitch them anyway",
-      "Get a name and the best time to call back, then log it",
       "Leave your number",
-      "Hang up and try another shop"
+      "Hang up and try another shop",
+      "Pitch them anyway",
+      "Get a name and the best time to call back, then log it"
      ],
-     "right": 1,
+     "right": 3,
      "why": "A name and a time is a real next action. A pitch to someone who cannot buy is nothing."
     },
     {
      "q": "What is the right order?",
      "a": [
-      "Recommend, ask, listen",
       "Ask, listen, recommend",
       "Listen, recommend, ask",
-      "Pitch, ask, close"
+      "Pitch, ask, close",
+      "Recommend, ask, listen"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Recommending before listening is guessing out loud, and the buyer can tell."
     }
    ]
@@ -1445,13 +1602,13 @@ const TRAINING = {
        "t": "try",
        "v": "A shop wants a quarter pound to test. You know pound pricing is much better. What do you do?",
        "answers": [
-        "Tell them the minimum is a pound",
-        "Sell the quarter, and mention what a pound would have cost per unit so they have it in mind for next time",
         "Refuse and offer samples instead",
-        "Give them pound pricing on a quarter"
+        "Give them pound pricing on a quarter",
+        "Tell them the minimum is a pound",
+        "Sell the quarter, and mention what a pound would have cost per unit so they have it in mind for next time"
        ],
-       "right": 1,
-       "why": "You take the order and plant the next one. There is no minimum, so inventing one loses the customer. And quietly giving pound pricing on a quarter trains them to expect it and costs margin on every future order."
+       "right": 3,
+       "why": "Take the order and plant the next one. There is no minimum, so inventing one loses the customer \u2014 and quietly giving pound pricing on a quarter trains them to expect it, costing margin on every future order."
       }
      ]
     }
@@ -1460,34 +1617,34 @@ const TRAINING = {
     {
      "q": "How many products should you present?",
      "a": [
+      "As many as they'll listen to",
       "The full catalog",
       "Two or three that fit what they told you",
-      "One, the highest margin",
-      "As many as they'll listen to"
+      "One, the highest margin"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Two or three turns browsing into a decision. A full catalog gets \u201csend it over\u201d and nothing happens."
     },
     {
      "q": "A buyer asks what they can sell your flower for. What do you say?",
      "a": [
-      "Quote a typical retail price",
-      "Ask what they normally sell comparable flower for in their shop",
       "Promise they'll double their money",
-      "Send the catalog price list"
+      "Send the catalog price list",
+      "Quote a typical retail price",
+      "Ask what they normally sell comparable flower for in their shop"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Never promise a resale price or profit. Asking gets you a real number and makes them do the maths themselves."
     },
     {
      "q": "What is EHF's minimum order?",
      "a": [
+      "There is no rigid minimum",
       "One pound",
       "$500",
-      "$1,000",
-      "There is no rigid minimum"
+      "$1,000"
      ],
-     "right": 3,
+     "right": 0,
      "why": "No rigid minimum. Larger is preferred and pound pricing is better, but inventing a floor to pressure a buyer loses sales."
     },
     {
@@ -1499,17 +1656,17 @@ const TRAINING = {
       "Offer free shipping to upsize it"
      ],
      "right": 1,
-     "why": "Customers compound. The first order is the start of the account, not the whole value of it."
+     "why": "Customers compound. A first order is the start of an account, not the whole value of it."
     },
     {
      "q": "Which one they ask about tells you\u2026",
      "a": [
+      "Whether they'll buy",
       "Nothing useful",
       "What they actually care about \u2014 margin, balance, or bag appeal",
-      "Their budget",
-      "Whether they'll buy"
+      "Their budget"
      ],
-     "right": 1,
+     "right": 2,
      "why": "The question they ask reveals their real priority, which is often different from what they said earlier."
     }
    ]
@@ -1630,12 +1787,12 @@ const TRAINING = {
     {
      "q": "\u201cI already have a vendor.\u201d What is the right move?",
      "a": [
-      "Explain why EHF is better",
       "Ask what it would take to earn a spot as a backup or secondary vendor",
       "Ask who the vendor is and beat their price",
-      "Move on"
+      "Move on",
+      "Explain why EHF is better"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Nobody has to fire anyone. Backup is a low-threat position, and the incumbent will eventually be out of stock."
     },
     {
@@ -1652,34 +1809,34 @@ const TRAINING = {
     {
      "q": "A shop asks for samples. What question must you ask?",
      "a": [
+      "Can you cover shipping?",
       "What's your address?",
       "What are you considering buying if the sample checks out?",
-      "How many do you want?",
-      "Can you cover shipping?"
+      "How many do you want?"
      ],
-     "right": 1,
+     "right": 2,
      "why": "It separates buyers from collectors without accusing anyone, and it tells you what the follow-up conversation is about."
     },
     {
      "q": "Should you tell a buyer their current supplier is poor quality?",
      "a": [
-      "Yes, if it's true",
-      "No \u2014 never attack a competitor",
       "Only if they bring it up",
-      "Only if you have proof"
+      "Only if you have proof",
+      "Yes, if it's true",
+      "No \u2014 never attack a competitor"
      ],
-     "right": 1,
+     "right": 3,
      "why": "You do not know the relationship, and running someone down makes you sound small. Find what the incumbent does well and beat them somewhere that matters."
     },
     {
      "q": "\u201cNobody asks for THCa.\u201d What is the best response?",
      "a": [
-      "Explain that THCa is the same as what they're already selling",
       "Ask what customers do ask for, and pivot to that category",
       "Offer a discount to try it",
-      "Send the COA"
+      "Send the COA",
+      "Explain that THCa is the same as what they're already selling"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Believe them. Pushing a category a shop cannot sell costs you the relationship for the categories they can."
     },
     {
@@ -1696,12 +1853,12 @@ const TRAINING = {
     {
      "q": "\u201cYour THCa percentage is too low.\u201d What do you reframe to?",
      "a": [
+      "The COA calculation",
       "A lower price",
       "Sell-through \u2014 how it looks and smells, and whether it actually moves",
-      "Another strain with a higher number",
-      "The COA calculation"
+      "Another strain with a higher number"
      ],
-     "right": 1,
+     "right": 2,
      "why": "The shop gets paid on sell-through, not on the number. Fighting the number directly is a fight you lose."
     }
    ]
@@ -1820,12 +1977,12 @@ const TRAINING = {
        "t": "try",
        "v": "A customer you brought in six months ago emails EHF directly to reorder. What should have happened?",
        "answers": [
+        "You should ask Scott to redirect them",
         "Nothing \u2014 you get the commission either way",
         "You should have called them before they needed to reorder",
-        "EHF should refuse and tell them to call you",
-        "You should ask Scott to redirect them"
+        "EHF should refuse and tell them to call you"
        ],
-       "right": 1,
+       "right": 2,
        "why": "The reorder is the easiest sale you will ever make, and it should never be a surprise. Knowing roughly when they will run low and calling first is the whole job of owning an account."
       }
      ]
@@ -1835,23 +1992,23 @@ const TRAINING = {
     {
      "q": "How much may you discount without approval?",
      "a": [
-      "Nothing",
-      "Up to 5%",
       "Up to 10%",
-      "Whatever closes the deal"
+      "Whatever closes the deal",
+      "Nothing",
+      "Up to 5%"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Up to 5% is yours. Beyond that needs Scott, before you promise it to anyone."
     },
     {
      "q": "You sell $1,000 of catalog product at $950. Commission is calculated on\u2026",
      "a": [
-      "$1,000",
       "$950",
       "$900",
-      "The catalog price regardless"
+      "The catalog price regardless",
+      "$1,000"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Actual product subtotal \u2014 what they really paid. A 5% discount reduces your commission as well as the price, which is why discounts should buy something."
     },
     {
@@ -1868,34 +2025,34 @@ const TRAINING = {
     {
      "q": "Can you sell above the catalog price?",
      "a": [
+      "Only on flower",
       "No, catalog is fixed",
       "Yes \u2014 and you earn commission on the higher number",
-      "Only with approval",
-      "Only on flower"
+      "Only with approval"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Allowed, and your commission follows the actual sale price upward."
     },
     {
      "q": "When is commission earned?",
      "a": [
+      "When it ships",
       "When the invoice is submitted",
       "When EHF approves the order",
-      "When the order is paid in full and EHF confirms cleared funds",
-      "When it ships"
+      "When the order is paid in full and EHF confirms cleared funds"
      ],
-     "right": 2,
+     "right": 3,
      "why": "Paid in full, confirmed by EHF. This protects you too \u2014 it ties your pay to money that actually arrived."
     },
     {
      "q": "When are commissions paid out?",
      "a": [
-      "Monthly",
       "Weekly, Friday at the latest, for the previous week's fully paid sales",
       "On the 1st and 15th",
-      "When you invoice EHF"
+      "When you invoice EHF",
+      "Monthly"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Weekly, by Friday, for the previous week's fully paid sales."
     },
     {
@@ -1963,23 +2120,23 @@ const TRAINING = {
     {
      "q": "What does a normal sample look like?",
      "a": [
-      "One of each product",
-      "3.5g of one or two relevant strains, and/or a couple of pre-rolls or targeted items",
       "A full pound",
-      "Whatever they ask for"
+      "Whatever they ask for",
+      "One of each product",
+      "3.5g of one or two relevant strains, and/or a couple of pre-rolls or targeted items"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Small and targeted at what they told you they sell. A box of everything says you were not listening."
     },
     {
      "q": "What is the normal sample shipping charge?",
      "a": [
-      "Free",
       "$10",
       "$25",
-      "Depends on the state"
+      "Depends on the state",
+      "Free"
      ],
-     "right": 1,
+     "right": 0,
      "why": "$10, and it does most of the filtering for you."
     },
     {
@@ -1996,23 +2153,23 @@ const TRAINING = {
     {
      "q": "A buyer with serious volume refuses to pay the $10. What do you do?",
      "a": [
+      "Send it anyway and say nothing",
       "Hold firm \u2014 it's policy",
       "Escalate rather than lose a legitimate sale over $10",
-      "Pay it yourself",
-      "Send it anyway and say nothing"
+      "Pay it yourself"
      ],
-     "right": 1,
+     "right": 2,
      "why": "The charge is a filter, not a revenue line. When it is clearly filtering out a real customer, it has stopped doing its job \u2014 escalate."
     },
     {
      "q": "What question must go with every sample?",
      "a": [
-      "When will you decide?",
-      "What are you considering buying if the sample checks out?",
       "Can you pay the shipping?",
-      "Who else are you sampling?"
+      "Who else are you sampling?",
+      "When will you decide?",
+      "What are you considering buying if the sample checks out?"
      ],
-     "right": 1,
+     "right": 3,
      "why": "It qualifies the opportunity and hands you the exact subject of your follow-up call."
     }
    ]
@@ -2066,13 +2223,38 @@ const TRAINING = {
        "t": "try",
        "v": "You have presented three options. The buyer says \u201cyeah, the middle one looks good.\u201d What do you say next?",
        "answers": [
-        "\u201cGreat, I'll email you the details.\u201d",
         "\u201cPerfect. How much do you want to start with?\u201d",
         "\u201cLet me know when you're ready.\u201d",
-        "\u201cWant me to send the COA first?\u201d"
+        "\u201cWant me to send the COA first?\u201d",
+        "\u201cGreat, I'll email you the details.\u201d"
        ],
-       "right": 1,
-       "why": "They just told you which one. The only thing left is quantity \u2014 so ask for it. The other three all hand the decision back and give the moment away."
+       "right": 0,
+       "why": "They just told you which one. The only thing left is quantity \u2014 so ask for it. Every other reply hands the decision back and gives the moment away."
+      }
+     ]
+    },
+    {
+     "id": "L12c",
+     "title": "They said yes. Now what?",
+     "blocks": [
+      {
+       "t": "text",
+       "v": "The minutes after a yes are where deals get damaged \u2014 a promised ship date nobody can keep, an address taken down wrong, an invoice that sits until Monday."
+      },
+      {
+       "t": "text",
+       "v": "There is a checklist for exactly this moment. Keep it open on your phone while you are on the call."
+      },
+      {
+       "t": "link",
+       "v": {
+        "label": "Open: You just closed. Now what?",
+        "href": "#closed"
+       }
+      },
+      {
+       "t": "remember",
+       "v": "The short version: <b>read the order back, get the address exactly, submit today, submit once, and tell them what happens next.</b> Then log a payment follow-up for two days out."
       }
      ]
     }
@@ -2081,12 +2263,12 @@ const TRAINING = {
     {
      "q": "Why are most sales lost?",
      "a": [
-      "Price",
       "Nobody asked for the order",
       "Compliance",
-      "Competition"
+      "Competition",
+      "Price"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Interested buyer, pleasant call, no ask. It is the most common and most avoidable loss in the job."
     },
     {
@@ -2103,23 +2285,23 @@ const TRAINING = {
     {
      "q": "A buyer picks one of your three options. What is the immediate next question?",
      "a": [
+      "Should I email you the details?",
       "Shall I send the COA?",
       "How much do you want to start with?",
-      "Do you want to think about it?",
-      "Should I email you the details?"
+      "Do you want to think about it?"
      ],
-     "right": 1,
+     "right": 2,
      "why": "They have chosen. The only open question is quantity. Anything else gives the moment away."
     },
     {
      "q": "Why does \u201cvalue, middle, or premium?\u201d work as a close?",
      "a": [
-      "It's shorter",
-      "It offers a choice rather than a yes-or-no",
       "It mentions price",
-      "It sounds friendly"
+      "It sounds friendly",
+      "It's shorter",
+      "It offers a choice rather than a yes-or-no"
      ],
-     "right": 1,
+     "right": 3,
      "why": "A yes-or-no invites no. A choice between three assumes the sale and asks only which shape it takes."
     }
    ]
@@ -2255,13 +2437,13 @@ const TRAINING = {
        "t": "try",
        "v": "You submitted an invoice and realise the shipping address has the wrong suite number. What do you do?",
        "answers": [
-        "Submit a corrected invoice",
         "Tell Scott immediately so it is fixed before the label is printed",
         "Email the customer and ask them to watch for it",
-        "Nothing \u2014 the carrier will work it out"
+        "Nothing \u2014 the carrier will work it out",
+        "Submit a corrected invoice"
        ],
-       "right": 1,
-       "why": "Speed is everything once it is submitted. Before the label prints it is a one-line fix; after it ships it is a lost box. A second invoice just creates a duplicate order to untangle."
+       "right": 0,
+       "why": "Speed is everything once it is submitted. Before the label prints it is a one-line fix; after it ships it is a lost box. Submitting a corrected invoice just creates a duplicate order for somebody to untangle."
       }
      ]
     }
@@ -2292,23 +2474,23 @@ const TRAINING = {
     {
      "q": "When does an order ship free?",
      "a": [
+      "On UPS Ground",
       "Over $5,000",
       "Over $10,000",
-      "Only when Scott approves it, which is uncommon",
-      "On UPS Ground"
+      "Only when Scott approves it, which is uncommon"
      ],
-     "right": 2,
+     "right": 3,
      "why": "There is no automatic free shipping. Every order is quoted and charged for carriage unless Scott waives it."
     },
     {
      "q": "When is the invoice number assigned?",
      "a": [
-      "When you start the form",
       "On submission",
       "When EHF approves it",
-      "When it's paid"
+      "When it's paid",
+      "When you start the form"
      ],
-     "right": 1,
+     "right": 0,
      "why": "On submission \u2014 which is exactly why submitting twice creates two orders."
     },
     {
@@ -2325,23 +2507,23 @@ const TRAINING = {
     {
      "q": "Who handles fulfilment after you submit?",
      "a": [
+      "The carrier",
       "You",
       "EHF",
-      "The customer",
-      "The carrier"
+      "The customer"
      ],
-     "right": 1,
+     "right": 2,
      "why": "You sell and submit. EHF approves, confirms payment and ships."
     },
     {
      "q": "Which is the cheapest shipping option?",
      "a": [
-      "USPS Ground",
       "USPS 2-Day Priority",
       "UPS Ground",
-      "UPS Overnight"
+      "UPS Overnight",
+      "USPS Ground"
      ],
-     "right": 0,
+     "right": 3,
      "why": "USPS Ground \u2014 cheapest and slowest. Worth offering when the customer is not in a hurry."
     }
    ]
@@ -2395,13 +2577,13 @@ const TRAINING = {
        "t": "try",
        "v": "A customer texts you a screenshot showing a completed card payment, and asks you to get the order moving today. What do you do?",
        "answers": [
+        "Wait and say nothing",
         "Forward it to Scott and tell the customer it's shipping",
         "Thank them, pass the screenshot to Scott, and tell the customer EHF will confirm as soon as the funds clear",
-        "Tell them the screenshot is not valid",
-        "Wait and say nothing"
+        "Tell them the screenshot is not valid"
        ],
-       "right": 1,
-       "why": "You are helpful and honest at the same time. The screenshot is useful \u2014 it helps Scott find the transaction \u2014 but it is not confirmation, and promising a ship date you cannot control is how you end up apologising for something that was never yours to promise."
+       "right": 2,
+       "why": "Passing the screenshot on while being clear that EHF confirms is helpful and honest at once. The screenshot is useful \u2014 it helps Scott find the transaction \u2014 but it is not confirmation, and promising a ship date you cannot control is how you end up apologising for something that was never yours to promise."
       }
      ]
     },
@@ -2445,34 +2627,34 @@ const TRAINING = {
     {
      "q": "Who absorbs card processing fees?",
      "a": [
+      "The salesperson",
       "The customer",
       "EHF",
-      "Split",
-      "The salesperson"
+      "Split"
      ],
-     "right": 1,
+     "right": 2,
      "why": "EHF absorbs them, so there is no surcharge to explain and no reason to steer anyone away from paying by card."
     },
     {
      "q": "May you help a customer complete a card payment?",
      "a": [
-      "Never",
-      "Yes, with their authorisation, using the official EHF payment page",
       "Only by phone",
-      "Only if Scott is on the call"
+      "Only if Scott is on the call",
+      "Never",
+      "Yes, with their authorisation, using the official EHF payment page"
      ],
-     "right": 1,
+     "right": 3,
      "why": "With their authorisation, on the official page. You never hold or store their card details."
     },
     {
      "q": "Why does the payment rule protect the salesperson?",
      "a": [
-      "It doesn't",
       "Commission is tied to money that actually arrived, so it can't be clawed back",
       "It speeds up payment",
-      "It reduces paperwork"
+      "It reduces paperwork",
+      "It doesn't"
      ],
-     "right": 1,
+     "right": 0,
      "why": "You are never the person who released goods against a payment that bounced, and your commission is never reversed."
     },
     {
@@ -2570,13 +2752,13 @@ const TRAINING = {
        "t": "try",
        "v": "A customer says a pound arrived short. They are angry and want a replacement sent today. What do you say?",
        "answers": [
-        "\u201cI'll get a replacement out to you today.\u201d",
         "\u201cThat shouldn't have happened \u2014 I'll get this in front of the owner and operations side today and make sure it's reviewed. Can you send me a photo and the invoice number?\u201d",
         "\u201cAll sales are final, I'm afraid.\u201d",
-        "\u201cLet me check with the warehouse and get back to you.\u201d"
+        "\u201cLet me check with the warehouse and get back to you.\u201d",
+        "\u201cI'll get a replacement out to you today.\u201d"
        ],
-       "right": 1,
-       "why": "You take it seriously, commit to an action you control, promise no outcome, and collect what Scott will need. Option 1 promises something that is not yours to give. Option 3 is correct policy delivered in the least helpful way possible. Option 4 is vaguer and slower."
+       "right": 0,
+       "why": "Taking it seriously, committing to an action you control, promising no outcome and collecting what Scott needs does all four jobs at once. Promising a replacement gives away something that is not yours to give. Quoting the no-returns rule is correct policy delivered in the least helpful way possible. And \u201clet me check with the warehouse\u201d is vaguer and slower."
       }
      ]
     }
@@ -2585,23 +2767,23 @@ const TRAINING = {
     {
      "q": "Who chooses the shipping method?",
      "a": [
-      "The salesperson",
-      "The customer",
       "EHF",
-      "The warehouse"
+      "The warehouse",
+      "The salesperson",
+      "The customer"
      ],
-     "right": 1,
+     "right": 3,
      "why": "The customer chooses; you quote it with the invoice calculator rather than guessing."
     },
     {
      "q": "Can you authorise a refund for a damaged order?",
      "a": [
-      "Yes, up to $500",
-      "Yes, with the customer's photos",
       "No \u2014 only Scott can make an exception",
-      "Yes, if it's clearly EHF's fault"
+      "Yes, if it's clearly EHF's fault",
+      "Yes, up to $500",
+      "Yes, with the customer's photos"
      ],
-     "right": 2,
+     "right": 0,
      "why": "All sales are final unless Scott makes an exception. Promising one you cannot deliver turns a product problem into a trust problem."
     },
     {
@@ -2629,12 +2811,12 @@ const TRAINING = {
     {
      "q": "A customer asks about local pickup. What do you say?",
      "a": [
-      "Offer it \u2014 it saves them shipping",
-      "It needs owner approval; do not offer it as an option",
       "Add it to the invoice",
-      "Tell them it's not available at all"
+      "Tell them it's not available at all",
+      "Offer it \u2014 it saves them shipping",
+      "It needs owner approval; do not offer it as an option"
      ],
-     "right": 1,
+     "right": 3,
      "why": "Owner-approval only and refused server-side from a rep login. Raising it sets an expectation you cannot meet."
     }
    ]
@@ -2746,13 +2928,13 @@ const TRAINING = {
        "t": "try",
        "v": "A shop bought two pounds three weeks ago and told you they move about a pound a fortnight. What is your next action?",
        "answers": [
-        "Wait for them to call",
-        "Call now \u2014 they are about due, and ask what moved",
         "Send the full catalog",
-        "Offer a discount to reorder early"
+        "Offer a discount to reorder early",
+        "Wait for them to call",
+        "Call now \u2014 they are about due, and ask what moved"
        ],
-       "right": 1,
-       "why": "They are roughly out. Calling now is a reason, not a nuisance \u2014 and asking what moved tells you what to put in the reorder. Waiting hands the sale to whoever calls first, and discounting a reorder they were going to place anyway just costs you margin."
+       "right": 3,
+       "why": "They are roughly out, so calling now is a reason rather than a nuisance \u2014 and asking what moved tells you what to put in the reorder. Waiting hands the sale to whoever calls first, and discounting a reorder they were going to place anyway just costs margin."
       }
      ]
     }
@@ -2772,34 +2954,34 @@ const TRAINING = {
     {
      "q": "What is wrong with \u201cjust checking in\u201d?",
      "a": [
+      "It's too frequent",
       "Nothing",
       "It tells the buyer you want something and have nothing to offer",
-      "It's too formal",
-      "It's too frequent"
+      "It's too formal"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Every follow-up needs a reason. Without one you are a nuisance rather than a supplier."
     },
     {
      "q": "Which step do reps most often miss?",
      "a": [
-      "Confirming delivery",
-      "Estimating when the customer will run out",
       "Sending the COA",
-      "Cross-selling"
+      "Cross-selling",
+      "Confirming delivery",
+      "Estimating when the customer will run out"
      ],
-     "right": 1,
+     "right": 3,
      "why": "If you know their burn rate you know when to call. Logged on the day the order ships, it turns reorders from luck into a schedule."
     },
     {
      "q": "When should you contact a customer about a reorder?",
      "a": [
-      "When they call you",
       "Before they run out",
       "The day they run out",
-      "Monthly regardless"
+      "Monthly regardless",
+      "When they call you"
      ],
-     "right": 1,
+     "right": 0,
      "why": "Before. A shop that has run out has already called someone else."
     },
     {
@@ -2816,15 +2998,268 @@ const TRAINING = {
     {
      "q": "A customer bought two pounds and moves about a pound a fortnight. When do you call?",
      "a": [
+      "Weekly until they buy",
       "In three months",
       "At about three weeks, before they run out",
-      "When they contact you",
-      "Weekly until they buy"
+      "When they contact you"
      ],
-     "right": 1,
+     "right": 2,
      "why": "Roughly when they are getting low. That is a reason to call, which is what separates a supplier from a pest."
     }
    ]
   }
- ]
+ ],
+ "states": [
+  [
+   "Alabama",
+   "r",
+   "smokable THCa prohibited"
+  ],
+  [
+   "Alaska",
+   "r",
+   "prohibited"
+  ],
+  [
+   "Arizona",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Arkansas",
+   "r",
+   "Act 629 \u2014 intoxicating hemp"
+  ],
+  [
+   "California",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Colorado",
+   "y",
+   "dispensary channel only"
+  ],
+  [
+   "Connecticut",
+   "y",
+   "total-THC testing"
+  ],
+  [
+   "Delaware",
+   "r",
+   "prohibited"
+  ],
+  [
+   "Florida",
+   "y",
+   "total-THC formula; inhalable flower restricted"
+  ],
+  [
+   "Georgia",
+   "r",
+   "flower/leaf retail sale prohibited"
+  ],
+  [
+   "Hawaii",
+   "r",
+   "total-THC testing"
+  ],
+  [
+   "Idaho",
+   "r",
+   "any THC including THCa"
+  ],
+  [
+   "Illinois",
+   "y",
+   "date-specific review needed"
+  ],
+  [
+   "Indiana",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Iowa",
+   "r",
+   "treated as controlled substance analog"
+  ],
+  [
+   "Kansas",
+   "r",
+   "all THC isomers"
+  ],
+  [
+   "Kentucky",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Louisiana",
+   "r",
+   "total-THC law; smokable banned"
+  ],
+  [
+   "Maine",
+   "y",
+   "restricted"
+  ],
+  [
+   "Maryland",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Massachusetts",
+   "y",
+   "gray \u2014 verify"
+  ],
+  [
+   "Michigan",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Minnesota",
+   "y",
+   "potency limits"
+  ],
+  [
+   "Mississippi",
+   "r",
+   "prohibited"
+  ],
+  [
+   "Missouri",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Montana",
+   "y",
+   "dispensary channel only"
+  ],
+  [
+   "Nebraska",
+   "y",
+   "high-THCa flower a significant risk"
+  ],
+  [
+   "Nevada",
+   "y",
+   "regulated cannabis market only"
+  ],
+  [
+   "New Hampshire",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "New Jersey",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "New Mexico",
+   "y",
+   "restricted"
+  ],
+  [
+   "New York",
+   "y",
+   "gray \u2014 verify"
+  ],
+  [
+   "North Carolina",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "North Dakota",
+   "r",
+   "prohibited"
+  ],
+  [
+   "Ohio",
+   "y",
+   "SB 56 effective March 2026"
+  ],
+  [
+   "Oklahoma",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Oregon",
+   "y",
+   "dispensary channel only"
+  ],
+  [
+   "Pennsylvania",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Rhode Island",
+   "r",
+   "total-THC standard"
+  ],
+  [
+   "South Carolina",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "South Dakota",
+   "y",
+   "gray \u2014 verify"
+  ],
+  [
+   "Tennessee",
+   "r",
+   "HB 1376 \u2014 flower banned Jan 2026"
+  ],
+  [
+   "Texas",
+   "r",
+   "DSHS Schedule I listing; litigation ongoing"
+  ],
+  [
+   "Utah",
+   "y",
+   "gray \u2014 verify"
+  ],
+  [
+   "Vermont",
+   "y",
+   "dispensary channel only"
+  ],
+  [
+   "Virginia",
+   "y",
+   "total-THC with per-package cap"
+  ],
+  [
+   "Washington",
+   "y",
+   "gray \u2014 verify"
+  ],
+  [
+   "West Virginia",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Wisconsin",
+   "y",
+   "not confirmed by EHF"
+  ],
+  [
+   "Wyoming",
+   "y",
+   "gray \u2014 verify"
+  ]
+ ],
+ "statesUpdated": "2026-10-03"
 };
