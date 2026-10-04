@@ -2,7 +2,7 @@ const OBJECTIONS = {"groups": [["Getting past the first ten seconds", [["We're n
 const COA_DEMO = {"title": "Night Walker \u2014 PharmLabs San Diego", "sampleId": "SD260420-019", "lab": "PharmLabs San Diego", "accred": "ISO/IEC 17025:2017 \u00b7 Acc. 85368", "analyzed": "17 April 2026", "reported": "20 April 2026", "matrix": "Flower", "rows": [["THCA", "Tetrahydrocannabinolic acid", "37.57%", "375.69 mg/g", "k", "The big one. This is what converts when it is heated."], ["Delta-9 THC", "&Delta;9-THC", "0.30%", "3.00 mg/g", "k", "Right on the 0.3% line of the current federal standard. Nothing to round down."], ["Total THC", "(THCA &times; 0.877) + &Delta;9", "33.25%", "332.48 mg/g", "k", "The lab did the sum for you. Check it: 37.57 &times; 0.877 = 32.95, + 0.30 = 33.25."], ["Delta-8 THC", "&Delta;8-THC", "ND", "&mdash;", "", "Not detected above the lab's threshold. Not the same as zero."], ["CBGA", "Cannabigerolic acid", "0.45%", "4.50 mg/g", "", ""], ["CBG", "Cannabigerol", "0.20%", "2.00 mg/g", "", ""], ["Total cannabinoids", "", "37.72%", "377.15 mg/g", "", "Everything the lab found, added up."], ["Moisture", "", "9.4%", "limit 13%", "", "Under the limit. Wet flower moulds in transit."], ["Water activity", "", "0.63", "limit 0.85", "", ""]], "missing": ["Pesticides", "Heavy metals", "Residual solvents", "Microbials", "Mycotoxins"]};
 const FED_NOTE = {"asOf": "3 October 2026", "lines": [["12 November 2026", "Converted cannabinoids &mdash; Delta-8, HHC, THC-O, THC-P &mdash; are widely reported to lose federal hemp status on this date."], ["Reported as 11 December 2026", "Some sources report a delay to this date for THCa flower, vapes, concentrates and hemp Delta-9 edibles, moving them to a total-THC standard plus a 0.4&nbsp;mg per-container cap."], ["The sources disagree", "Public reporting does not agree on the dates or exactly what each one covers. That disagreement is itself the point."]]};
 const FINAL_TEST = {"pass": 85, "q": [{"q": "What does vertically integrated mean for EHF?", "a": ["We control cultivation through fulfilment ourselves", "We only sell to licensed dispensaries", "We own our own delivery fleet", "We have the lowest price in the market"], "right": 0, "why": "EHF owns the chain from growing to shipping, so there is no middleman's margin stacked on top."}, {"q": "Who does EHF sell to?", "a": ["Licensed dispensaries only", "Smoke shops, vape shops, hemp retailers and distributors", "Anyone who can pay", "Consumers over 21"], "right": 1, "why": "B2B wholesale. Business contacts, 21+, never a retail consumer."}, {"q": "What happens to THCa when it is heated?", "a": ["It becomes CBD", "It evaporates", "It converts substantially to delta-9 THC", "Nothing"], "right": 2, "why": "Decarboxylation. It is why high-THCa flower is intoxicating when smoked."}, {"q": "Are hemp and marijuana different plants?", "a": ["Hemp is male, marijuana female", "Hemp is outdoor-grown", "Yes, different species", "No \u2014 same plant, different legal categories"], "right": 3, "why": "Same plant. The line is drawn by measured THC content, not biology."}, {"q": "A customer asks whether THCa is legal in their state. You should\u2026", "a": ["Verify against EHF's current compliance policy first", "Tell them to check with their lawyer", "Say yes if delta-9 is under 0.3%", "Send them the COA"], "right": 0, "why": "Legality is a policy question. Never answered from a COA or from memory."}, {"q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026", "a": ["30.25%", "26.56%", "26.31%", "27.00%"], "right": 1, "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."}, {"q": "A potency COA proves the product is free of pesticides.", "a": ["False", "True"], "right": 0, "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually be on the report."}, {"q": "What does ND mean on a COA?", "a": ["Not dated", "No data", "None detected \u2014 an absolute zero", "Not detected above the lab's reporting threshold"], "right": 3, "why": "Below the method's threshold, which is not the same as zero."}, {"q": "Catalog says 31% THCa; the COA says 24%. What do you do?", "a": ["Stop and ask EHF", "Quote the catalog", "Quote the COA", "Quote the average"], "right": 0, "why": "A material disagreement means something is wrong. Either number is a figure you cannot stand behind."}, {"q": "Higher THCa always means better flower.", "a": ["True", "False"], "right": 1, "why": "Nose, bag appeal, structure, trim, freshness and consistency all matter. Leading with the number invites a price fight."}, {"q": "What is the three-choice presentation?", "a": ["Three payment terms", "Three strains at one price", "Value, balance, premium", "Three quantity tiers"], "right": 2, "why": "Three directions turn an open browse into a decision, and which one they ask about tells you their real priority."}, {"q": "You have researched a state and it looks fine. A buyer wants to order. What do you do?", "a": ["Refuse the order", "Send the customer your research", "Take the order \u2014 your research says it is fine", "Confirm with EHF before promising availability"], "right": 3, "why": "Research tells you where to prospect. It does not make you the authority on legality."}, {"q": "Which sentence may you say to a customer?", "a": ["Rules vary by state and product \u2014 let me verify your location", "The COA proves it's compliant where you are", "It's legal in all 50 states", "Under .3 means we can ship anywhere"], "right": 0, "why": "The only one that is true and the only one that does not make a promise you cannot keep."}, {"q": "What is the non-negotiable rule for your lead log?", "a": ["Fifty leads a week", "Every live lead has a next action and a date", "Record every owner's email", "Colour-code by state"], "right": 1, "why": "Without a next action a lead quietly disappears."}, {"q": "What is the EHF vendor opener?", "a": ["Asking to email the catalog", "A pitch on quality", "Asking their process for becoming an approved vendor", "Offering a first-order discount"], "right": 2, "why": "A process question, not a pitch. Shops answer process questions because suppliers ask them all the time."}, {"q": "Which discovery question do most reps skip?", "a": ["How much volume?", "Who decides?", "What's your budget?", "What does your current supplier do well?"], "right": 3, "why": "It tells you what you must match and does not make the buyer defensive."}, {"q": "A buyer asks what they can sell your flower for. You should\u2026", "a": ["Ask what they sell comparable flower for locally", "Send a margin calculator", "Quote a typical retail price", "Promise they'll double their money"], "right": 0, "why": "Never promise a resale price or profit. Asking gets a real number and makes them do the maths."}, {"q": "What is EHF's minimum order?", "a": ["$500", "There is no rigid minimum", "One pound", "$1,000"], "right": 1, "why": "No rigid minimum. Inventing one to pressure a buyer loses sales."}, {"q": "\u201cI already have a vendor.\u201d Best response?", "a": ["Move on", "Explain why EHF is better", "Ask what it would take to earn a spot as backup or secondary", "Ask who it is and beat the price"], "right": 2, "why": "Nobody has to fire anyone, and the incumbent will eventually be out of stock."}, {"q": "Should you tell a buyer their current supplier is poor quality?", "a": ["Only with evidence", "Yes if true", "Only if they raise it", "No \u2014 never attack a competitor"], "right": 3, "why": "You do not know the relationship, and it makes you sound small."}, {"q": "How much may you discount without approval?", "a": ["Up to 5%", "Up to 10%", "Whatever closes it", "Nothing"], "right": 0, "why": "Up to 5% is yours. Beyond that, ask Scott before promising it."}, {"q": "$2,500 of product plus $75 shipping. What is commissionable?", "a": ["$2,575", "$2,500", "$2,425", "Depends on the carrier"], "right": 1, "why": "Product only. Shipping, tax and fees never count."}, {"q": "When is commission earned?", "a": ["On submission", "On EHF approval", "When paid in full and EHF confirms cleared funds", "On delivery"], "right": 2, "why": "Paid in full, confirmed by EHF. It ties your pay to money that actually arrived."}, {"q": "A customer sends a screenshot of payment. Is the order paid?", "a": ["Yes if it's from their bank", "Yes", "Yes if the amount matches", "No \u2014 only EHF confirming cleared funds counts"], "right": 3, "why": "Screenshots, \u201cI sent it\u201d and pending are all meaningless. Cleared funds only."}, {"q": "What is the normal sample shipping charge?", "a": ["$10", "$25", "Varies", "Free"], "right": 0, "why": "$10, and it does most of the filtering for you."}, {"q": "What question must accompany every sample?", "a": ["Who else are you sampling?", "What are you considering buying if it checks out?", "Can you cover shipping?", "When will you decide?"], "right": 1, "why": "It qualifies the opportunity and gives you the subject of your follow-up."}, {"q": "Which shipping option may a rep NOT offer?", "a": ["UPS Overnight", "Customer provides own label", "Local pickup", "USPS Ground"], "right": 2, "why": "Owner approval only, and refused server-side from a rep login."}, {"q": "When does an order ship free?", "a": ["Over $5,000", "Over $10,000", "On UPS Ground", "Only when Scott approves it, which is uncommon"], "right": 3, "why": "There is no automatic free shipping. Every order is quoted and charged for carriage."}, {"q": "Can you authorise a refund for a damaged order?", "a": ["No \u2014 only Scott can make an exception", "Yes if it's clearly EHF's fault", "Yes, up to $500", "Yes with photos"], "right": 0, "why": "All sales are final unless Scott makes an exception. Promising one turns a product problem into a trust problem."}, {"q": "A shop bought two pounds and moves about a pound a fortnight. When do you call?", "a": ["When they call you", "At about three weeks, before they run out", "In three months", "Weekly until they buy"], "right": 1, "why": "Before they run out. A shop that has already run out has called someone else."}]};
-const CLOSED = {"before": [["Say the order back", "Product, quantity, price, shipping method, ship-to address, total. Out loud, before you hang up. Thirty seconds here beats a credit note later."], ["Get the ship-to exactly", "Street, suite or unit, city, state, ZIP \u2014 as the box will be labelled. Not \u201cthe usual\u201d. Read it back."], ["Get the email right", "The invoice goes there. A typo means they never see it and you spend a week wondering why they have not paid."], ["Agree the shipping method", "USPS Ground, USPS 2-Day Priority, UPS Ground or UPS Overnight. Their choice, and it is quoted on the invoice. There is no automatic free shipping."], ["Agree how they are paying", "Clover card or debit, or wire. Anything else needs arranging with Scott first."]], "now": [["Submit the invoice today", "Prices and stock move. An order you sit on for two days is an order that may not be quotable at the same number."], ["Submit it once", "The invoice number is assigned on submission. Pressing it twice makes two orders and somebody has to untangle it."], ["Tell the customer what happens next", "Use the script below. Saying it now prevents the \u201cwhere is my order?\u201d call on day two."], ["Log the follow-up", "Next action: payment check. Next date: two days out. The system nudges you as well, but the log is yours."]], "theirs": [["Scott approves it", "Your submission lands in Slack. Status becomes APPROVED."], ["The customer pays", "Clover link or wire. Card fees are absorbed by EHF."], ["EHF confirms cleared funds", "Not a screenshot, not \u201cI sent it\u201d. This is the moment the order becomes real \u2014 and the moment your commission exists."], ["The warehouse packs and ships", "Nothing ships before payment clears."], ["Tracking is posted", "The label is photographed into Slack and attaches to the invoice automatically."]], "never": ["Do not promise a ship date. You do not control approval, payment clearing or the warehouse queue.", "Do not confirm payment yourself. A screenshot is not payment.", "Do not chase the warehouse. If something is late, ask Scott.", "Do not authorise a refund, credit, replacement or free shipping. None of those are yours."], "say": "You'll get the invoice by email shortly. You can pay by card on the link in it, or by wire if you'd rather. Once the payment clears it goes straight to our warehouse \u2014 I'll let you know as soon as it's on its way.", "chase": [["Day 2", "The system nudges you if it is still unpaid. Call them \u2014 a friendly check that the invoice arrived."], ["Day 5", "Second nudge to you."], ["Day 8", "Scott is copied in."], ["Day 14", "Scott escalates."]], "after": [["It ships", "Tell them it is on the way and give them the tracking. This is a call worth making, not a text."], ["On delivery", "Confirm it arrived and ask what they think. Easiest relationship-building call in the job."], ["A week or two in", "Ask what moved. That tells you what goes in the reorder."], ["Before they run out", "Estimate their burn rate and call first. A shop that has already run out has rung somebody else."]]};
+const CLOSED = {"before": [["Say the order back", "Product, quantity, price, shipping method, ship-to address, total. Out loud, before you hang up. Thirty seconds here beats a credit note later."], ["Get the ship-to exactly", "Street, suite or unit, city, state, ZIP \u2014 as the box will be labelled. Not \u201cthe usual\u201d. Read it back."], ["Get the email right", "The invoice goes there. A typo means they never see it and you spend a week wondering why they have not paid."], ["Agree the shipping method", "USPS Ground, USPS 2-Day Priority, UPS Ground or UPS Overnight. Their choice, and it is quoted on the invoice. There is no automatic free shipping."], ["Agree how they are paying", "Clover card or debit, or wire. Anything else needs arranging with Scott first."]], "now": [["Submit the invoice today", "Prices and stock move. An order you sit on for two days is an order that may not be quotable at the same number."], ["Submit it once", "The invoice number is assigned on submission. Pressing it twice makes two orders and somebody has to untangle it."], ["Tell the customer what happens next", "Use the script below. Saying it now prevents the \u201cwhere is my order?\u201d call on day two."], ["Log it in your pipeline", "Open the shop on My Pipeline and log the call. The system sets the payment follow-up for you."]], "theirs": [["Scott approves it", "Your submission lands in Slack. Status becomes APPROVED."], ["The customer pays", "Clover link or wire. Card fees are absorbed by EHF."], ["EHF confirms cleared funds", "Not a screenshot, not \u201cI sent it\u201d. This is the moment the order becomes real \u2014 and the moment your commission exists."], ["The warehouse packs and ships", "Nothing ships before payment clears."], ["Tracking is posted", "The label is photographed into Slack and attaches to the invoice automatically."]], "never": ["Do not promise a ship date. You do not control approval, payment clearing or the warehouse queue.", "Do not confirm payment yourself. A screenshot is not payment.", "Do not chase the warehouse. If something is late, ask Scott.", "Do not authorise a refund, credit, replacement or free shipping. None of those are yours."], "say": "You'll get the invoice by email shortly. You can pay by card on the link in it, or by wire if you'd rather. Once the payment clears it goes straight to our warehouse \u2014 I'll let you know as soon as it's on its way.", "chase": [["If they pay you directly", "Use <b>Send payment confirmation</b> on that deal \u2014 invoice number, amount, method and a photo. It goes straight to Scott."], ["Day 2", "The system nudges you if it is still unpaid. Call them \u2014 a friendly check that the invoice arrived."], ["Day 5", "Second nudge to you."], ["Day 8", "Scott is copied in."], ["Day 14", "Scott escalates."]], "after": [["It ships", "Tell them it is on the way and give them the tracking. This is a call worth making, not a text."], ["On delivery", "Confirm it arrived and ask what they think. Easiest relationship-building call in the job."], ["A week or two in", "Ask what moved. That tells you what goes in the reorder."], ["Before they run out", "Estimate their burn rate and call first. A shop that has already run out has rung somebody else."]]};
 const TRAINING = {
  "version": 1,
  "pass": 80,
@@ -214,6 +214,22 @@ const TRAINING = {
      "id": "LT3",
      "title": "The dashboard, screen by screen",
      "blocks": [
+      {
+       "t": "tool",
+       "v": [
+        "My Pipeline",
+        "The shops you are working. This is the screen you open first.",
+        "<b>Call today</b> shows everyone due or overdue, oldest first. Tap a number to dial. After the call, <b>Log a call</b> \u2014 one tap sets what happens next and when. Nothing is ever left without a next action."
+       ]
+      },
+      {
+       "t": "tool",
+       "v": [
+        "Add a shop \u00b7 Get leads from the list",
+        "Two ways a shop enters your pipeline.",
+        "<b>Add a shop</b> for one you found yourself. <b>Get leads from the list</b> pulls a batch from our contact list, claimed to you so nobody else gets them. Anyone who opted out or is already a customer is skipped."
+       ]
+      },
       {
        "t": "tool",
        "v": [
@@ -1812,30 +1828,31 @@ const TRAINING = {
      "blocks": [
       {
        "t": "text",
-       "v": "You keep your own log. Spreadsheet, notebook, whatever you will actually use. These are the columns that matter:"
+       "v": "Your lead log is built in. It is the <b>My Pipeline</b> tab on your dashboard, and it is the first thing you should open each morning."
       },
       {
        "t": "bullets",
        "v": [
-        "Business \u00b7 City \u00b7 State \u00b7 Phone",
-        "Owner or manager \u00b7 Email",
-        "Source \u2014 where you found them",
-        "Products of interest",
-        "Last contact \u00b7 Result",
-        "<b>Next action</b> \u00b7 <b>Next action date</b>",
-        "Quote \u00b7 Order \u00b7 Reorder \u00b7 Notes"
+        "<b>Call today</b> \u2014 everyone due or overdue, oldest first.",
+        "<b>Add a shop</b> \u2014 one you found yourself.",
+        "<b>Get leads from the list</b> \u2014 a claimed batch from our contact list.",
+        "<b>Log a call</b> \u2014 one tap after every call."
        ]
       },
       {
        "t": "link",
        "v": {
-        "label": "Copy the lead tracker template",
-        "href": "#tracker"
+        "label": "Open My Pipeline",
+        "href": "/operations"
        }
       },
       {
        "t": "never",
-       "v": "<b>No live lead without a next action and a date.</b> A lead with no next action is not a lead, it is a name you will never call again."
+       "v": "<b>Log every call.</b> The system sets the next action for you, but only if you tell it what happened. An unlogged call is a prospect that quietly disappears."
+      },
+      {
+       "t": "remember",
+       "v": "You will get <b>one email each morning</b> listing who is due and which deals are unpaid. Reps who work that list earn more than reps who do not. That is the whole of it."
       }
      ]
     }
@@ -3128,6 +3145,39 @@ const TRAINING = {
        ],
        "right": 2,
        "why": "Passing the screenshot on while being clear that EHF confirms is helpful and honest at once. The screenshot is useful \u2014 it helps Scott find the transaction \u2014 but it is not confirmation, and promising a ship date you cannot control is how you end up apologising for something that was never yours to promise."
+      },
+      {
+       "t": "text",
+       "v": "When a customer pays you and sends a confirmation, put it into the system yourself:"
+      },
+      {
+       "t": "steps",
+       "v": [
+        [
+         "Open the deal",
+         "On your Deals tab, find the invoice."
+        ],
+        [
+         "Send payment confirmation",
+         "The button appears on any deal of yours with money still owed."
+        ],
+        [
+         "Invoice number, amount, method",
+         "All three are required. The invoice number especially \u2014 a photo with no invoice is a photo nobody can act on."
+        ],
+        [
+         "Add the photo",
+         "Optional. A wire often has no screenshot."
+        ],
+        [
+         "Send",
+         "It goes straight to Scott."
+        ]
+       ]
+      },
+      {
+       "t": "remember",
+       "v": "It is <b>not recorded as paid</b> until Scott confirms the funds cleared. You will see the balance change on that deal when it does."
       }
      ]
     },
