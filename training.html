@@ -259,6 +259,35 @@ button{font-family:inherit;cursor:pointer}
 .src-w{display:block;font-family:var(--mono,monospace);font-size:12px;color:var(--blue-l);margin-top:2px}
 .src-d{font-size:14px;color:#d7dcf0;line-height:1.65;margin-top:7px}
 .src-l{display:inline-block;margin-top:8px;font-size:12px;font-weight:700}
+
+/* ── the three links ── */
+.lnk3{display:flex;align-items:center;gap:14px;background:var(--card2);border:1px solid var(--line2);
+  border-radius:13px;padding:15px 17px;margin-bottom:9px;text-decoration:none;color:inherit;transition:.16s}
+.lnk3:hover{border-color:var(--purple);background:rgba(168,85,247,.07);text-decoration:none}
+.lnk3-i{flex:0 0 34px;height:34px;border-radius:9px;background:rgba(168,85,247,.16);
+  border:1px solid rgba(168,85,247,.35);color:var(--purple-l);display:flex;align-items:center;
+  justify-content:center;font-size:16px}
+.lnk3-b{flex:1;min-width:0}
+.lnk3-b>b{display:block;font-size:15.5px;color:#fff}
+.lnk3-u{display:block;font-family:var(--mono,monospace);font-size:12px;color:var(--blue-l);margin:2px 0 3px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lnk3-d{display:block;font-size:13.5px;color:var(--muted);line-height:1.55}
+.lnk3-x{flex:0 0 auto;color:var(--dim);font-size:15px}
+
+/* ── the five documents ── */
+.doc{display:flex;gap:13px;align-items:flex-start;background:var(--card2);border:1px solid var(--line2);
+  border-radius:12px;padding:13px 15px;margin-bottom:8px}
+.doc-n{flex:0 0 26px;height:26px;border-radius:50%;border:2px solid var(--line2);color:var(--dim);
+  display:flex;align-items:center;justify-content:center;font-family:var(--orb);font-weight:900;font-size:11px}
+.doc-b>b{display:block;font-size:15px;color:#fff;margin-bottom:2px}
+.doc-b>span{font-size:13.5px;color:#d7dcf0;line-height:1.6}
+
+/* ── a dashboard feature ── */
+.tl{background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:14px 16px;
+  border-left:3px solid var(--blue)}
+.tl-h>b{font-size:15.5px;color:#fff}
+.tl-h>span{display:block;font-size:12.5px;color:var(--blue-l);margin-top:2px}
+.tl-d{font-size:14px;color:#d7dcf0;line-height:1.65;margin-top:8px}
 button.cert{cursor:pointer}
 
 
@@ -621,6 +650,9 @@ function block(b){
   if(b.t==='tests')  return blkTests();
   if(b.t==='units')  return blkUnits();
   if(b.t==='cann')   return blkCann(b.v);
+  if(b.t==='links3') return blkLinks3();
+  if(b.t==='docs')   return blkDocs();
+  if(b.t==='tool')   return blkTool(b.v);
   if(b.t==='try'){
     var id='try'+Math.random().toString(36).slice(2,8);
     TRY[id]=b;
@@ -1265,5 +1297,47 @@ function sourcesHTML(){
       'Other vendors. Reddit. What a customer tells you the law is. What you remember from last month. '+
       'A guide you found with no date on it. None of these are sources.</div></div>'+
     '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back</button></div></div>';
+}
+</script>
+<script>
+/* ── THE THREE LINKS ─────────────────────────────────────────── */
+function blkLinks3(){
+  var L=[
+   ['/operations','Your dashboard','Deals, quotes, customers, tracking, your commission, your profile.','&#9636;'],
+   ['/invoice','The invoice form','Where you submit an order once they say yes.','&#9993;'],
+   ['/training','This academy','Every level, the toolkit, and the objection bank.','&#9733;']
+  ];
+  return '<div class="blk">'+L.map(function(x){
+    return '<a class="lnk3" href="'+x[0]+'" target="_blank" rel="noopener">'+
+      '<span class="lnk3-i">'+x[3]+'</span>'+
+      '<span class="lnk3-b"><b>'+esc(x[1])+'</b>'+
+        '<span class="lnk3-u">exclusive-hemp-farms.com'+x[0]+'</span>'+
+        '<span class="lnk3-d">'+esc(x[2])+'</span></span>'+
+      '<span class="lnk3-x">&#8599;</span></a>';
+  }).join('')+'</div>';
+}
+
+/* ── THE FIVE DOCUMENTS ──────────────────────────────────────── */
+function blkDocs(){
+  var D=[
+   ['Signed W-9','Nobody can legally pay you without it. It carries your taxpayer number, which is why it is first.'],
+   ['Driver\'s licence or state ID','Proof of identity and that you are over 21.'],
+   ['Direct deposit form','Where your commission goes. Attach a voided check.'],
+   ['Signed NDA','Pricing, customers and supply are confidential.'],
+   ['Signed contractor agreement','Your commission rate, what you may and may not say, and that you are an independent contractor paid by Scott DePeralta Consulting LLC.']
+  ];
+  return '<div class="blk">'+D.map(function(d,i){
+    return '<div class="doc"><span class="doc-n">'+(i+1)+'</span>'+
+      '<span class="doc-b"><b>'+esc(d[0])+'</b><span>'+esc(d[1])+'</span></span></div>';
+  }).join('')+
+  '<div class="box rem" style="margin-top:12px"><div class="box-t">When all five are in</div>'+
+  'Your profile shows a green <b>ACTIVE</b> check and everything unlocks immediately.</div></div>';
+}
+
+/* ── A DASHBOARD FEATURE, EXPLAINED ──────────────────────────── */
+function blkTool(t){
+  return '<div class="blk"><div class="tl">'+
+    '<div class="tl-h"><b>'+esc(t[0])+'</b><span>'+esc(t[1])+'</span></div>'+
+    '<div class="tl-d">'+t[2]+'</div></div></div>';
 }
 </script>
