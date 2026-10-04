@@ -226,6 +226,39 @@ button{font-family:inherit;cursor:pointer}
 .ck-d{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line2);margin-top:1px;
   display:flex;align-items:center;justify-content:center}
 .ck-d::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--dim)}
+
+/* ── the two tests ── */
+.tests{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.tst{border-radius:13px;padding:16px 17px;border:1px solid}
+.tst-now{background:rgba(0,255,136,.055);border-color:rgba(0,255,136,.3)}
+.tst-next{background:rgba(56,189,248,.06);border-color:rgba(56,189,248,.3)}
+.tst-h{font-family:var(--orb);font-size:15px;font-weight:700;color:#fff;margin-bottom:3px}
+.tst-s{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:10px}
+.tst-now .tst-s{color:var(--neon)} .tst-next .tst-s{color:var(--blue-l)}
+.tst-b{font-size:14px;line-height:1.7;color:#d7dcf0}
+@media(max-width:620px){.tests{grid-template-columns:1fr}}
+
+/* ── cannabinoid rows ── */
+.cn{background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:14px 16px;margin-bottom:8px}
+.cn-h b{font-family:var(--orb);font-size:15px;color:#fff;font-weight:700}
+.cn-h span{font-size:12px;color:var(--dim);margin-left:9px}
+.cn-w{font-size:14.5px;color:#d7dcf0;line-height:1.65;margin:7px 0}
+.cn-u{font-size:13.5px;color:var(--muted);line-height:1.6;padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.05)}
+.cn-u span{display:block;font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);margin-bottom:3px}
+
+/* ── sources ── */
+.src{display:flex;gap:14px;background:var(--card2);border:1px solid var(--line2);
+  border-radius:12px;padding:15px 17px;margin-bottom:9px}
+.src-n{flex:0 0 28px;height:28px;border-radius:8px;background:rgba(168,85,247,.16);
+  border:1px solid rgba(168,85,247,.35);color:var(--purple-l);display:flex;align-items:center;
+  justify-content:center;font-family:var(--orb);font-weight:900;font-size:13px}
+.src-b{flex:1}
+.src-b>b{font-size:15.5px;color:#fff}
+.src-w{display:block;font-family:var(--mono,monospace);font-size:12px;color:var(--blue-l);margin-top:2px}
+.src-d{font-size:14px;color:#d7dcf0;line-height:1.65;margin-top:7px}
+.src-l{display:inline-block;margin-top:8px;font-size:12px;font-weight:700}
 button.cert{cursor:pointer}
 
 
@@ -444,6 +477,9 @@ function render(){
   if(VIEW.name==='kit')    v.innerHTML=kitHTML(VIEW.id);
   if(VIEW.name==='final')  { v.innerHTML=finalHTML(); FSTATE={}; }
   if(VIEW.name==='closed') v.innerHTML=closedHTML();
+  if(VIEW.name==='kit' && VIEW.id==='obj')     v.innerHTML=objHTML();
+  if(VIEW.name==='kit' && VIEW.id==='sources') v.innerHTML=sourcesHTML();
+  try{ if(document.getElementById('uOut')) calcUnits(); }catch(e){}
   // Calculators are inert markup until their first run, so a rep sees a
   // worked example rather than an empty box.
   try{ if(document.getElementById('cTHCout')) calcTHC();
@@ -465,6 +501,7 @@ function homeHTML(){
     ['✅','Just closed?','closed'],
     ['📞','Call script','script'],
     ['💬','Objections','obj'],
+    ['📚','Sources','sources'],
     ['🔬','COA guide','coa'],
     ['🧮','Commission','calc'],
     ['📋','Lead tracker','tracker'],
@@ -581,6 +618,9 @@ function block(b){
   if(b.t==='calc')   return blkCalc(b.v);
   if(b.t==='fed')    return blkFed();
   if(b.t==='coa')    return blkCOA();
+  if(b.t==='tests')  return blkTests();
+  if(b.t==='units')  return blkUnits();
+  if(b.t==='cann')   return blkCann(b.v);
   if(b.t==='try'){
     var id='try'+Math.random().toString(36).slice(2,8);
     TRY[id]=b;
@@ -922,10 +962,7 @@ function kitHTML(id){
          grab('L12',function(b){ return b.t==='script'; }).map(function(b){ return blkScript(b.v); }).join('')+
          grab('L7',function(b){ return b.t==='bullets'; }).map(function(b){ return block(b); }).join('');
   }
-  if(id==='obj'){
-    title='Objection cheat sheet';
-    body=grab('L9',function(b){ return b.t==='cards'; }).map(function(b){ return blkCards(b.v); }).join('');
-  }
+
   if(id==='coa'){
     title='COA cheat sheet';
     body=grab('L3',function(b){ return b.t==='steps'||b.t==='calc'||b.t==='bullets'; })
@@ -1128,5 +1165,105 @@ function closedHTML(){
       'point cleanly.</div></div>'+
 
     '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back to the dashboard</button></div></div>';
+}
+</script>
+<script>
+/* ── THE TWO TESTS ───────────────────────────────────────────
+   The distinction reps get wrong most often, laid out side by side. */
+function blkTests(){
+  return '<div class="blk"><div class="tests">'+
+    '<div class="tst tst-now"><div class="tst-h">Delta-9 THC only</div>'+
+      '<div class="tst-s">The current federal test</div>'+
+      '<div class="tst-b">Hemp is defined as no more than <b>0.3% delta-9 THC</b> on a dry-weight '+
+      'basis. THCa is <b>not counted</b> in that figure. This is the whole reason high-THCa flower '+
+      'reached the hemp market at all.</div></div>'+
+    '<div class="tst tst-next"><div class="tst-h">Total THC</div>'+
+      '<div class="tst-s">Potency now · the standard in several states · where federal is heading</div>'+
+      '<div class="tst-b"><b>(THCa &times; 0.877) + delta-9</b>. It tells you how strong the flower '+
+      'actually is once heated. Several states already test this way, and the federal definition is '+
+      'moving toward it.</div></div>'+
+  '</div></div>';
+}
+
+/* ── UNIT CONVERSION ─────────────────────────────────────────
+   The factor-of-ten error, made impossible to make. */
+function blkUnits(){
+  return '<div class="blk"><div class="calc">'+
+    '<div class="calc-t">mg/g &harr; percent</div>'+
+    '<div class="calc-f">1,000 mg/g = 100% &nbsp;&middot;&nbsp; divide by 10</div>'+
+    '<div class="calc-row"><label>mg/g on the report</label>'+
+      '<input id="uMg" type="number" step="0.1" value="375.69" oninput="calcUnits()"></div>'+
+    '<div class="calc-out" id="uOut"></div>'+
+    '<div class="calc-n" style="margin-top:10px">Quick ones worth knowing by heart: '+
+      '1&nbsp;mg/g = 0.1% &middot; 3&nbsp;mg/g = 0.3% (the federal line) &middot; '+
+      '100&nbsp;mg/g = 10% &middot; 300&nbsp;mg/g = 30%</div>'+
+  '</div></div>';
+}
+function calcUnits(){
+  var m=parseFloat((document.getElementById('uMg')||{}).value)||0;
+  var el=document.getElementById('uOut'); if(!el) return;
+  el.innerHTML='<div class="calc-big">'+(m/10).toFixed(2)+'%</div>'+
+    '<div class="calc-n">'+m.toFixed(2)+' mg/g &divide; 10</div>';
+}
+
+/* ── THE CANNABINOID TABLE ───────────────────────────────── */
+function blkCann(rows){
+  return '<div class="blk">'+rows.map(function(r){
+    return '<div class="cn"><div class="cn-h"><b>'+r[0]+'</b>'+
+      (r[1]&&r[1]!=='&mdash;'?('<span>'+r[1]+'</span>'):'')+'</div>'+
+      '<div class="cn-w">'+r[2]+'</div>'+
+      '<div class="cn-u"><span>Where you meet it</span>'+r[3]+'</div></div>';
+  }).join('')+'</div>';
+}
+
+/* ── THE FULL OBJECTION BANK ─────────────────────────────── */
+var OBJ_OPEN={};
+function objHTML(){
+  var O=(typeof OBJECTIONS!=='undefined')?OBJECTIONS:null;
+  if(!O) return '<div class="none">Not in the content file.</div>';
+  var n=0;
+  return '<div class="lesson"><div class="crumb">Sales toolkit</div>'+
+    '<h2>Objections</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">'+O.count+' of them, grouped. Tap to see the '+
+      'response and why it works &mdash; think of your own answer first, or none of this sticks.</p></div>'+
+    O.groups.map(function(g){
+      return '<div class="sec-h">'+esc(g[0])+'</div>'+
+        g[1].map(function(c){
+          var id='ob'+(n++); CARDS[id]=c;
+          return '<div class="card-o" id="'+id+'">'+
+            '<button class="card-q" onclick="showCard(\''+id+'\')">'+
+              '<span>&ldquo;'+esc(c[0])+'&rdquo;</span>'+
+              '<span class="card-x">Show</span></button>'+
+            '<div class="card-a"></div></div>';
+        }).join('');
+    }).join('')+
+    '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back</button></div></div>';
+}
+
+/* ── SOURCES ─────────────────────────────────────────────── */
+function sourcesHTML(){
+  var S=[
+   ["The live catalog","exclusive-hemp-farms.com","Products, pricing, availability and COAs. The source of truth for anything you quote. Everything else is secondary to this.","/"],
+   ["The invoice portal","exclusive-hemp-farms.com/invoice","Where orders are submitted. Same access code as this.","/invoice"],
+   ["Scott","Direct","Compliance, pricing above your authority, white label, international, exceptions, anything you are unsure of. There is no question too small for this list.",""],
+   ["The COA on the product","Linked in the catalog","What the lab measured in that sample. Potency only.",""],
+   ["State agriculture or health department","Official state sites","When researching a market before prospecting it. Use the state's own site, never a vendor blog.",""],
+   ["This academy","exclusive-hemp-farms.com/training","Everything here. The toolkit pages are built to be opened mid-call.","/training"]
+  ];
+  return '<div class="lesson"><div class="crumb">Sales toolkit</div><h2>Where answers come from</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">In order. If two of these disagree, the one higher '+
+      'up this list wins &mdash; except Scott, who wins over everything.</p></div>'+
+    S.map(function(s,i){
+      return '<div class="src"><div class="src-n">'+(i+1)+'</div><div class="src-b">'+
+        '<b>'+esc(s[0])+'</b><span class="src-w">'+esc(s[1])+'</span>'+
+        '<div class="src-d">'+esc(s[2])+'</div>'+
+        (s[3]?('<a href="'+s[3]+'" target="_blank" rel="noopener" class="src-l">Open &#8599;</a>'):'')+
+      '</div></div>';
+    }).join('')+
+    '<div class="blk" style="margin-top:18px"><div class="box nev">'+
+      '<div class="box-t">Not on this list</div>'+
+      'Other vendors. Reddit. What a customer tells you the law is. What you remember from last month. '+
+      'A guide you found with no date on it. None of these are sources.</div></div>'+
+    '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back</button></div></div>';
 }
 </script>
