@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>EHF Sales Academy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   EHF SALES ACADEMY — /training
+   Same visual language as the catalog: dark, premium, B2B.
+   The page is an ENGINE. Every word of training lives in
+   training.json, so content changes never touch this file.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --bg:#03040d; --card:#0a0b1a; --card2:#0d0e22; --card3:#11132b;
+  --line:#181a30; --line2:#242745;
+  --purple:#a855f7; --purple-d:#6d28d9; --purple-l:#c084fc;
+  --blue:#38bdf8; --blue-l:#7dd3fc; --neon:#00ff88; --neon-d:#00cc6a;
+  --gold:#c9a84c; --gold-l:#e2c46e; --red:#ff6b6b; --amber:#fbbf24;
+  --text:#e8eaf6; --muted:#8a9ac4; --dim:#4a5278;
+  --sans:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --disp:'Bebas Neue',sans-serif; --orb:'Orbitron',sans-serif;
+  --r:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-weight:300;
+  font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden;
+  padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}
+a{color:var(--blue-l)}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--purple-l);outline-offset:2px}
+
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 35% at 15% 8%,rgba(109,40,217,.2) 0%,transparent 60%),
+             radial-gradient(ellipse 45% 55% at 85% 85%,rgba(0,255,136,.07) 0%,transparent 55%)}
+
+/* ── confidentiality bar ── */
+.conf{position:relative;z-index:5;background:rgba(201,168,76,.08);
+  border-bottom:1px solid rgba(201,168,76,.2);padding:7px 16px;text-align:center;
+  font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-l)}
+
+/* ── masthead ── */
+.top{position:relative;z-index:10;padding:20px 22px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(180deg,rgba(109,40,217,.07),transparent)}
+.eye{font-family:var(--orb);font-size:8px;font-weight:700;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--neon);margin-bottom:6px}
+.wm{font-family:var(--disp);font-size:clamp(28px,5vw,42px);letter-spacing:.05em;line-height:.9}
+.wm .g{background:linear-gradient(120deg,#a855f7,#38bdf8 50%,#00ff88);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.top .sp{flex:1}
+.who{text-align:right;font-size:12px;color:var(--muted);line-height:1.6}
+.who b{display:block;color:#fff;font-size:14px;font-weight:700}
+.signout{background:none;border:1px solid var(--line2);color:var(--dim);border-radius:8px;
+  padding:6px 12px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-top:6px}
+.signout:hover{color:var(--text);border-color:var(--muted)}
+
+.wrap{position:relative;z-index:5;max-width:860px;margin:0 auto;padding:24px 18px 100px}
+
+/* ── progress ── */
+.prog-card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+  padding:22px 24px;margin-bottom:18px}
+.prog-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.prog-pct{font-family:var(--orb);font-size:40px;font-weight:900;line-height:1;
+  background:linear-gradient(120deg,#38bdf8,#c084fc,#fff);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;background-clip:text}
+.prog-lbl{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.prog-track{height:10px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin:14px 0 6px}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#38bdf8,#a855f7,#00ff88);
+  transition:width .6s cubic-bezier(.4,0,.2,1)}
+.prog-sub{font-size:12.5px;color:var(--muted)}
+.cert{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:5px 12px;border-radius:99px;
+  font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border:1px solid}
+.cert.no{background:rgba(255,255,255,.03);color:var(--dim);border-color:var(--line2)}
+.cert.on{background:rgba(0,255,136,.09);color:var(--neon);border-color:rgba(0,255,136,.3)}
+.cert.go{background:rgba(201,168,76,.1);color:var(--gold-l);border-color:rgba(201,168,76,.35)}
+
+.sec-h{font-family:var(--orb);font-size:11px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--purple-l);margin:26px 0 12px}
+
+/* ── level list ── */
+.lv{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:15px 17px;margin-bottom:9px;transition:.18s;width:100%;text-align:left;
+  color:inherit}
+.lv:hover{border-color:rgba(168,85,247,.4);transform:translateY(-1px)}
+.lv-n{flex:0 0 38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--orb);font-weight:900;font-size:14px;border:2px solid var(--line2);color:var(--dim)}
+.lv.done .lv-n{background:rgba(0,255,136,.12);border-color:rgba(0,255,136,.45);color:var(--neon)}
+.lv.now .lv-n{background:rgba(168,85,247,.16);border-color:var(--purple);color:var(--purple-l)}
+.lv-b{flex:1;min-width:0}
+.lv-t{font-size:15.5px;font-weight:700;color:#fff}
+.lv-s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.lv-r{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.lv.done .lv-r{color:var(--neon)}
+.lv.locked{opacity:.45}
+
+/* ── toolkit ── */
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+.tool{background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:14px 13px;
+  text-align:center;text-decoration:none;color:var(--text);transition:.16s;display:block}
+.tool:hover{border-color:var(--purple);background:rgba(168,85,247,.08);transform:translateY(-2px)}
+.tool-i{font-size:22px;display:block;margin-bottom:6px}
+.tool-t{font-size:12px;font-weight:700}
+
+/* ── lesson view ── */
+.lesson{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 24px 22px}
+.lesson h2{font-family:var(--disp);font-size:32px;letter-spacing:.04em;line-height:1.05;margin-bottom:4px}
+.lesson .crumb{font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--purple-l);margin-bottom:10px}
+.blk{margin:16px 0}
+.blk p{font-size:15.5px;line-height:1.75;color:#d7dcf0}
+.blk b{color:#fff;font-weight:700}
+.blk ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.blk li{padding-left:22px;position:relative;font-size:15px;color:#d7dcf0;line-height:1.65}
+.blk li::before{content:'';position:absolute;left:4px;top:10px;width:6px;height:6px;border-radius:50%;
+  background:var(--purple)}
+.flow{display:flex;flex-direction:column;gap:0;margin:6px 0}
+.flow-i{background:var(--card3);border:1px solid var(--line2);border-radius:10px;padding:11px 15px;
+  font-weight:600;font-size:14.5px;text-align:center}
+.flow-a{text-align:center;color:var(--purple);font-size:17px;line-height:1.1;padding:3px 0}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:13px;align-items:flex-start}
+.step-n{flex:0 0 26px;height:26px;border-radius:7px;background:rgba(168,85,247,.16);
+  border:1px solid rgba(168,85,247,.35);color:var(--purple-l);display:flex;align-items:center;
+  justify-content:center;font-size:10px;font-weight:800;letter-spacing:.04em;margin-top:2px}
+.step-b b{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--blue-l);margin-bottom:2px}
+.step-b span{font-size:14.5px;color:#d7dcf0}
+.box{border-radius:12px;padding:15px 17px;border:1px solid;font-size:14.5px;line-height:1.7}
+.box-t{font-size:9.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;margin-bottom:7px}
+.box.rem{background:rgba(0,255,136,.055);border-color:rgba(0,255,136,.28)}
+.box.rem .box-t{color:var(--neon)}
+.box.nev{background:rgba(255,107,107,.06);border-color:rgba(255,107,107,.3)}
+.box.nev .box-t{color:var(--red)}
+.box.rate{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.3)}
+.box.rate .box-t{color:var(--gold-l)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.two-c{border-radius:12px;padding:14px 15px;border:1px solid}
+.two-c.g{background:rgba(0,255,136,.05);border-color:rgba(0,255,136,.22)}
+.two-c.b{background:rgba(255,107,107,.05);border-color:rgba(255,107,107,.22)}
+.two-h{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:9px}
+.two-c.g .two-h{color:var(--neon)} .two-c.b .two-h{color:var(--red)}
+.two-c ul{gap:6px} .two-c li{font-size:13.5px;padding-left:16px}
+.two-c.g li::before{background:var(--neon-d)} .two-c.b li::before{background:var(--red)}
+
+/* ── try it + quiz share the option style ── */
+.q{background:var(--card2);border:1px solid var(--line2);border-radius:14px;padding:18px 19px;margin:16px 0}
+.q-t{font-size:9.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--amber);
+  margin-bottom:9px}
+.q-q{font-size:16px;font-weight:600;color:#fff;line-height:1.55;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;background:var(--card3);border:1px solid var(--line2);
+  border-radius:11px;padding:13px 15px;margin-bottom:8px;font-size:14.5px;color:#d7dcf0;
+  transition:.15s;line-height:1.55;min-height:46px}
+.opt:hover:not(:disabled){border-color:var(--purple);background:rgba(168,85,247,.08)}
+.opt:disabled{cursor:default}
+.opt.right{background:rgba(0,255,136,.1);border-color:rgba(0,255,136,.5);color:#b8ffd9}
+.opt.wrong{background:rgba(255,107,107,.09);border-color:rgba(255,107,107,.45);color:#ffc9c9}
+.opt .mk{font-weight:800;margin-right:7px}
+.why{margin-top:11px;padding:13px 15px;border-radius:11px;font-size:14px;line-height:1.7;
+  background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.25);color:#cfe6f7}
+.why b{color:#fff}
+
+/* ── buttons ── */
+.btn{background:linear-gradient(135deg,var(--purple-d),var(--purple),var(--blue));color:#fff;border:0;
+  border-radius:11px;padding:15px 26px;font-size:13px;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;min-height:48px;transition:.18s;display:inline-flex;align-items:center;
+  justify-content:center;gap:8px;text-decoration:none}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(109,40,217,.5)}
+.btn:disabled{opacity:.45;transform:none;box-shadow:none;cursor:default}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--muted);box-shadow:none}
+.btn.ghost:hover{color:var(--text);border-color:var(--muted);transform:none;box-shadow:none}
+.btn.full{width:100%}
+.nav{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.nav .btn{flex:1;min-width:130px}
+
+/* ── gate ── */
+#gate{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;position:relative;z-index:10}
+#gate .box2{background:var(--card);border:1px solid rgba(168,85,247,.4);border-radius:20px;
+  padding:42px 34px;max-width:420px;width:100%;text-align:center;
+  box-shadow:0 0 90px rgba(109,40,217,.25)}
+#gate input{width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:11px;
+  padding:15px;color:#fff;font-size:16px;text-align:center;letter-spacing:.18em;margin-top:20px;
+  font-family:var(--orb)}
+#gate input:focus{border-color:var(--purple);outline:none}
+#gate .err{color:var(--red);font-size:13.5px;margin-top:12px;min-height:20px}
+#gate .hint{font-size:12px;color:var(--dim);margin-top:18px;line-height:1.7}
+
+.none{text-align:center;color:var(--dim);padding:40px 20px;font-style:italic}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(140px);
+  background:var(--card3);border:1px solid var(--line2);color:#fff;padding:14px 24px;border-radius:12px;
+  font-size:14px;z-index:200;transition:transform .3s;max-width:90vw;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+#toast.up{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:620px){
+  .wrap{padding:16px 13px 90px}
+  .two{grid-template-columns:1fr}
+  .lesson{padding:19px 17px 18px;border-radius:14px}
+  .lesson h2{font-size:26px}
+  .top{padding:15px 14px 13px}
+  .who{text-align:left;width:100%}
+  .nav .btn{min-width:0}
+  .tools{grid-template-columns:repeat(2,1fr)}
+}
+</style></head><body>
+<div class="glow"></div>
+<div class="conf">Confidential &amp; Proprietary · Exclusive Hemp Farms · Internal Use Only</div>
+
+<div id="gate">
+  <div class="box2">
+    <div class="eye">Exclusive Hemp Farms</div>
+    <div class="wm"><span class="g">SALES<br>ACADEMY</span></div>
+    <input id="code" placeholder="Your access code" autocomplete="off"
+      onkeydown="if(event.key==='Enter')signIn()">
+    <button class="btn full" style="margin-top:13px" onclick="signIn()">Sign in</button>
+    <div class="err" id="err"></div>
+    <div class="hint">Use the same access code you use for the invoice form.<br>
+      No second account, no second password.</div>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="top">
+    <div>
+      <div class="eye">Exclusive Hemp Farms</div>
+      <div class="wm"><span class="g">SALES ACADEMY</span></div>
+    </div>
+    <span class="sp"></span>
+    <div class="who"><b id="whoName">—</b><span id="whoSub"></span>
+      <button class="signout" onclick="signOut()">Sign out</button></div>
+  </div>
+  <div class="wrap" id="view"></div>
+</div>
+<div id="toast"></div>
+<script src="/training.json.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   EHF SALES ACADEMY — the engine.
+   No training copy lives here. Everything comes from TRAINING,
+   loaded from training.json.js, so content edits never touch code.
+   ══════════════════════════════════════════════════════════════ */
+var EXEC='https://script.google.com/macros/s/AKfycbw_3jfvJY1Y2UVXs_XODHDbUMTNzB36kwraR_UZle-l8Rq94pHB_qEgo4DPxsvR-D22fg/exec';
+var CODE='', ME=null, ROWS={}, VIEW={name:'home'};
+var PASS=80;   // a level's quiz must reach this to count as complete
+
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function toast(m){ var t=document.getElementById('toast'); t.textContent=m;
+  t.classList.add('up'); setTimeout(function(){ t.classList.remove('up'); },2800); }
+function levels(){ return (typeof TRAINING!=='undefined' && TRAINING.levels) ? TRAINING.levels : []; }
+
+function call(action, extra, done, fail){
+  fetch(EXEC,{ method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(Object.assign({action:action, code:CODE}, extra||{})) })
+  .then(function(r){ return r.json(); }).then(done)
+  .catch(function(e){ (fail||function(){ toast('Could not reach the server.'); })(e); });
+}
+
+/* ── sign in ─────────────────────────────────────────────────── */
+function signIn(){
+  CODE=(document.getElementById('code').value||'').trim();
+  if(!CODE){ document.getElementById('err').textContent='Enter your access code.'; return; }
+  document.getElementById('err').textContent='Checking…';
+  call('trainWhoAmI', {}, function(w){
+    if(!w||!w.ok){ document.getElementById('err').textContent=w?w.msg:'Could not sign you in.'; return; }
+    ME=w; ROWS=w.rows||{};
+    // Remembered for this tab only. Closing it signs them out, which is the
+    // right default on a shop counter or a shared laptop.
+    try{ sessionStorage.setItem('ehf_train', CODE); }catch(e){}
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('whoName').textContent=w.name;
+    document.getElementById('whoSub').textContent=w.isAdmin?'Owner':('Commission '+w.commissionPct+'%');
+    go({name:'home'});
+  }, function(){ document.getElementById('err').textContent='Could not reach the server.'; });
+}
+function signOut(){
+  try{ sessionStorage.removeItem('ehf_train'); }catch(e){}
+  location.reload();
+}
+(function resume(){
+  var c=null; try{ c=sessionStorage.getItem('ehf_train'); }catch(e){}
+  if(!c) return;
+  document.getElementById('code').value=c;
+  signIn();
+})();
+
+/* ── progress maths ──────────────────────────────────────────── */
+function lvDone(l){ var r=ROWS[l.id]; return !!(r && r.status==='complete'); }
+function lvScore(l){ var r=ROWS[l.id]; return r?r.score:0; }
+function pctDone(){
+  var L=levels(); if(!L.length) return 0;
+  return Math.round(L.filter(lvDone).length / L.length * 100);
+}
+function nextLevel(){
+  var L=levels();
+  for(var i=0;i<L.length;i++) if(!lvDone(L[i])) return L[i];
+  return null;
+}
+function certState(){
+  var L=levels();
+  if(!L.length) return 'none';
+  var done=L.filter(lvDone).length;
+  if(done===0) return 'none';
+  if(done<L.length) return 'training';
+  return 'certified';
+}
+
+/* ── router ──────────────────────────────────────────────────── */
+function go(v){ VIEW=v; window.scrollTo(0,0); render(); }
+function render(){
+  var v=document.getElementById('view');
+  if(VIEW.name==='home')   v.innerHTML=homeHTML();
+  if(VIEW.name==='level')  v.innerHTML=levelHTML(VIEW.id);
+  if(VIEW.name==='quiz')   { v.innerHTML=quizHTML(VIEW.id); QSTATE={}; }
+}
+</script>
+<script>
+/* ── THE DASHBOARD ───────────────────────────────────────────── */
+function homeHTML(){
+  var L=levels(), pct=pctDone(), nx=nextLevel(), cs=certState();
+  var certCls = cs==='certified'?'on':(cs==='training'?'go':'no');
+  var certTxt = cs==='certified'?'✓ Certified'
+              : cs==='training' ?'In training' : 'Not started';
+
+  var tools=[
+    ['📖','Live catalog','/'],
+    ['🧾','Invoice','/invoice'],
+    ['🧮','Commission','#calc'],
+    ['📞','Call script','#script'],
+    ['🔬','COA guide','#coa'],
+    ['💬','Objections','#obj']
+  ];
+
+  return (
+  '<div class="prog-card">'+
+    '<div class="prog-top">'+
+      '<div><div class="prog-lbl">Training progress</div>'+
+        '<div class="prog-pct">'+pct+'%</div></div>'+
+      '<div style="text-align:right"><div class="prog-lbl">Levels</div>'+
+        '<div style="font-family:var(--orb);font-size:19px;font-weight:700;color:#fff">'+
+          L.filter(lvDone).length+' / '+L.length+'</div></div>'+
+    '</div>'+
+    '<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
+    '<div class="prog-sub">'+(nx
+      ? ('Next up: <b style="color:#fff">Level '+nx.n+' — '+esc(nx.title)+'</b>')
+      : 'Every level finished. Nicely done.')+'</div>'+
+    '<div class="cert '+certCls+'">'+certTxt+'</div>'+
+    (nx?('<div style="margin-top:16px"><button class="btn full" onclick="go({name:\'level\',id:\''+
+      nx.id+'\'})">'+(pct?'Continue training':'Start training')+'</button></div>'):'')+
+  '</div>'+
+
+  '<div class="prog-card" style="padding:18px 22px">'+
+    '<div class="prog-lbl">Your 30-day mission</div>'+
+    '<div style="font-size:15.5px;color:#d7dcf0;margin-top:7px;line-height:1.7">'+
+      'Become competent and close <b style="color:#fff">at least 2–3 paid sales</b>.'+
+      '<br><span style="font-size:13px;color:var(--muted)">A target to aim at, not a test you fail. '+
+      'Nothing locks if you miss it.</span></div>'+
+  '</div>'+
+
+  '<div class="sec-h">Levels</div>'+
+  L.map(function(l){
+    var done=lvDone(l), isNext=(nx&&nx.id===l.id);
+    return '<button class="lv '+(done?'done':(isNext?'now':''))+'" '+
+      'onclick="go({name:\'level\',id:\''+l.id+'\'})">'+
+      '<span class="lv-n">'+(done?'✓':l.n)+'</span>'+
+      '<span class="lv-b"><span class="lv-t">'+esc(l.title)+'</span>'+
+        '<span class="lv-s">'+esc(l.blurb)+'</span></span>'+
+      '<span class="lv-r">'+(done?(lvScore(l)+'%'):(l.mins+' min'))+'</span></button>';
+  }).join('')+
+
+  '<div class="sec-h">Sales toolkit</div>'+
+  '<div class="tools">'+tools.map(function(t){
+    return '<a class="tool" href="'+t[2]+'"'+(t[2].charAt(0)==='/'?' target="_blank"':'')+'>'+
+      '<span class="tool-i">'+t[0]+'</span><span class="tool-t">'+t[1]+'</span></a>';
+  }).join('')+'</div>'+
+  (ME&&ME.isAdmin?('<div class="sec-h">Owner</div>'+
+    '<button class="btn ghost full" onclick="everyone()">See everyone\'s progress</button>'):'')
+  );
+}
+
+/* ── A LEVEL: all its lessons, then the quiz ─────────────────── */
+function levelHTML(id){
+  var L=levels(), l=L.filter(function(x){ return x.id===id; })[0];
+  if(!l) return '<div class="none">That level is not in the content file.</div>';
+  var i=L.indexOf(l), prev=L[i-1], next=L[i+1];
+
+  return '<div class="lesson">'+
+    '<div class="crumb">Level '+l.n+' · '+l.lessons.length+' lessons · about '+l.mins+' min</div>'+
+    '<h2>'+esc(l.title)+'</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">'+esc(l.blurb)+'</p></div>'+
+    l.lessons.map(function(ls,n){
+      return '<div style="margin-top:26px;padding-top:22px;'+
+        (n?'border-top:1px solid var(--line)':'')+'">'+
+        '<div class="crumb" style="color:var(--blue-l)">'+esc(ls.title)+'</div>'+
+        ls.blocks.map(block).join('')+'</div>';
+    }).join('')+
+    '<div class="nav">'+
+      '<button class="btn ghost" onclick="go({name:\'home\'})">All levels</button>'+
+      '<button class="btn" onclick="go({name:\'quiz\',id:\''+l.id+'\'})">'+
+        (lvDone(l)?'Retake the quiz':'Take the quiz')+'</button>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ── BLOCK RENDERERS — one per content type ──────────────────── */
+function block(b){
+  if(b.t==='text')    return '<div class="blk"><p>'+b.v+'</p></div>';
+  if(b.t==='bullets') return '<div class="blk"><ul>'+b.v.map(function(x){
+                               return '<li>'+x+'</li>'; }).join('')+'</ul></div>';
+  if(b.t==='flow')    return '<div class="blk"><div class="flow">'+b.v.map(function(x,i){
+                               return (i?'<div class="flow-a">↓</div>':'')+
+                                 '<div class="flow-i">'+esc(x)+'</div>'; }).join('')+'</div></div>';
+  if(b.t==='steps')   return '<div class="blk"><div class="steps">'+b.v.map(function(s,i){
+                               return '<div class="step"><span class="step-n">'+(i+1)+'</span>'+
+                                 '<span class="step-b"><b>'+esc(s[0])+'</b><span>'+s[1]+'</span></span></div>';
+                             }).join('')+'</div></div>';
+  if(b.t==='remember')return '<div class="blk"><div class="box rem">'+
+                               '<div class="box-t">Remember this</div>'+b.v+'</div></div>';
+  if(b.t==='never')   return '<div class="blk"><div class="box nev">'+
+                               '<div class="box-t">Never say this</div>'+b.v+'</div></div>';
+  if(b.t==='rate')    return '<div class="blk"><div class="box rate">'+
+                               '<div class="box-t">Your rate</div>'+
+                               (ME?('You are on <b style="font-size:20px;font-family:var(--orb)">'+
+                                 ME.commissionPct+'%</b> of the product-only subtotal.'):b.v)+
+                             '</div></div>';
+  if(b.t==='two')     return '<div class="blk"><div class="two">'+
+                               '<div class="two-c g"><div class="two-h">Sell this</div><ul>'+
+                                 b.v.good.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div>'+
+                               '<div class="two-c b"><div class="two-h">Don\'t reduce us to this</div><ul>'+
+                                 b.v.bad.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div>'+
+                             '</div></div>';
+  if(b.t==='try'){
+    var id='try'+Math.random().toString(36).slice(2,8);
+    TRY[id]=b;
+    return '<div class="q" id="'+id+'"><div class="q-t">Try it</div>'+
+      '<div class="q-q">'+esc(b.v)+'</div>'+
+      b.answers.map(function(a,i){
+        return '<button class="opt" onclick="tryPick(\''+id+'\','+i+')">'+
+          '<span class="mk">'+'ABCDEF'.charAt(i)+'</span>'+esc(a)+'</button>';
+      }).join('')+'<div class="whyslot"></div></div>';
+  }
+  return '';
+}
+var TRY={};
+function tryPick(id, i){
+  var b=TRY[id], el=document.getElementById(id);
+  if(!b||!el) return;
+  var opts=el.querySelectorAll('.opt');
+  for(var k=0;k<opts.length;k++){
+    opts[k].disabled=true;
+    if(k===b.right) opts[k].classList.add('right');
+    else if(k===i)  opts[k].classList.add('wrong');
+  }
+  el.querySelector('.whyslot').innerHTML='<div class="why"><b>'+
+    (i===b.right?'That\'s the one. ':'Not quite. ')+'</b>'+b.why+'</div>';
+}
+</script>
+<script>
+/* ── THE QUIZ ────────────────────────────────────────────────── */
+var QSTATE={};
+function quizHTML(id){
+  var l=levels().filter(function(x){ return x.id===id; })[0];
+  if(!l) return '<div class="none">Level not found.</div>';
+  return '<div class="lesson">'+
+    '<div class="crumb">Level '+l.n+' quiz · '+l.quiz.length+' questions · '+PASS+'% to pass</div>'+
+    '<h2>'+esc(l.title)+'</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">Answer each one. You will see straight away '+
+      'whether it was right and <b>why</b>. Retake it as often as you like — '+
+      'your best score is the one that is kept.</p></div>'+
+    l.quiz.map(function(q,i){
+      return '<div class="q" id="q'+i+'"><div class="q-t">Question '+(i+1)+' of '+l.quiz.length+'</div>'+
+        '<div class="q-q">'+esc(q.q)+'</div>'+
+        q.a.map(function(a,k){
+          return '<button class="opt" onclick="pick(\''+id+'\','+i+','+k+')">'+
+            '<span class="mk">'+'ABCDEF'.charAt(k)+'</span>'+esc(a)+'</button>';
+        }).join('')+'<div class="whyslot"></div></div>';
+    }).join('')+
+    '<div id="qresult"></div>'+
+    '<div class="nav">'+
+      '<button class="btn ghost" onclick="go({name:\'level\',id:\''+id+'\'})">Back to the lesson</button>'+
+      '<button class="btn" id="qdone" disabled onclick="finish(\''+id+'\')">Finish</button>'+
+    '</div></div>';
+}
+
+function pick(levelId, qi, ki){
+  if(QSTATE[qi]!==undefined) return;          // answered already
+  var l=levels().filter(function(x){ return x.id===levelId; })[0];
+  var q=l.quiz[qi], el=document.getElementById('q'+qi);
+  QSTATE[qi]=ki;
+  var opts=el.querySelectorAll('.opt');
+  for(var k=0;k<opts.length;k++){
+    opts[k].disabled=true;
+    if(k===q.right) opts[k].classList.add('right');
+    else if(k===ki) opts[k].classList.add('wrong');
+  }
+  el.querySelector('.whyslot').innerHTML='<div class="why"><b>'+
+    (ki===q.right?'Correct. ':'Not quite. ')+'</b>'+esc(q.why)+'</div>';
+
+  // Enable Finish only when every question has been answered.
+  if(Object.keys(QSTATE).length===l.quiz.length){
+    var b=document.getElementById('qdone'); if(b) b.disabled=false;
+    var sc=scoreOf(l);
+    document.getElementById('qresult').innerHTML=
+      '<div class="box '+(sc>=PASS?'rem':'nev')+'" style="margin-top:18px">'+
+      '<div class="box-t">'+(sc>=PASS?'Passed':'Not yet')+'</div>'+
+      '<b style="font-family:var(--orb);font-size:26px">'+sc+'%</b> — '+
+      (sc>=PASS ? 'that counts as complete. Press Finish to save it.'
+                : 'you need '+PASS+'% to complete this level. Press Finish to save the attempt, '+
+                  'then read back through and try again. Nobody is counting the retakes.')+
+      '</div>';
+  }
+}
+function scoreOf(l){
+  var right=0;
+  l.quiz.forEach(function(q,i){ if(QSTATE[i]===q.right) right++; });
+  return Math.round(right / l.quiz.length * 100);
+}
+
+function finish(id){
+  var l=levels().filter(function(x){ return x.id===id; })[0];
+  var sc=scoreOf(l);
+  var b=document.getElementById('qdone'); b.disabled=true; b.textContent='Saving…';
+  call('trainSave', { moduleId:id, status:(sc>=PASS?'complete':'failed'), score:sc },
+    function(r){
+      if(!r||!r.ok){ b.disabled=false; b.textContent='Finish';
+        return toast(r&&r.msg?r.msg:'Could not save that. Your answers are still on screen.'); }
+      ROWS=r.rows||ROWS;
+      toast(sc>=PASS ? ('Level '+l.n+' complete — '+sc+'%') : ('Attempt saved — '+sc+'%'));
+      go({name:'home'});
+    },
+    function(){ b.disabled=false; b.textContent='Finish';
+      toast('Could not reach the server — nothing was saved. Try Finish again.'); });
+}
+
+/* ── OWNER: everyone's progress ──────────────────────────────── */
+function everyone(){
+  var v=document.getElementById('view');
+  v.innerHTML='<div class="none">Loading…</div>';
+  call('trainEveryone', {}, function(r){
+    if(!r||!r.ok) return v.innerHTML='<div class="none">'+(r?esc(r.msg):'Could not load')+'</div>';
+    var rows=r.rows||[];
+    v.innerHTML='<div class="lesson"><div class="crumb">Owner</div><h2>Who is trained</h2>'+
+      (rows.length
+        ? rows.map(function(x){
+            return '<div class="lv" style="cursor:default">'+
+              '<span class="lv-n" style="font-size:12px">'+x.done+'</span>'+
+              '<span class="lv-b"><span class="lv-t">'+esc(x.rep)+'</span>'+
+              '<span class="lv-s">'+x.done+' complete · '+x.started+' in progress'+
+                (x.avg?(' · average '+x.avg+'%'):'')+'</span></span>'+
+              '<span class="lv-r">'+esc(x.last||'—')+'</span></div>';
+          }).join('')
+        : '<div class="none">Nobody has started yet.</div>')+
+      '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back</button></div></div>';
+  });
+}
+</script></body></html>
