@@ -111,6 +111,16 @@ def get_pic(raw):
     if 'drive.google.com' in raw: return thumb(raw)
     return raw
 
+# "N/A" in a COA cell means somebody looked and decided this product does not
+# need one. That is an ANSWER, not a gap.
+#
+# is_valid_coa rejects it as not-a-URL and blanks the field, so by the time the
+# audit runs it looks identical to an empty cell — which is why N/A products
+# kept appearing on the build alert. The raw cell has to be remembered here.
+def said_none(v):
+    t = str(v or '').strip().lower()
+    return t in ('n/a', 'na', 'none', 'n\\a', '-', '--', 'not applicable', 'not needed')
+
 def is_valid_coa(url):
     """Accept any real http(s) COA URL except known-expiring hosts (Slack)."""
     url = str(url or '').strip()
@@ -286,6 +296,7 @@ def parse_flower(rows):
         coa    = row[9].strip() if len(row)>9 else ''
         pic_raw= row[7].strip() if len(row)>7 else ''
         pic    = get_pic(pic_raw)              # '' -> "Picture Coming Soon" on site
+        coa_na = said_none(coa)                    # the cell said N/A on purpose
         coa    = coa if is_valid_coa(coa) else ''  # '' -> "COA Coming Soon" on site
 
         try: thca = float(thca_s)
@@ -316,7 +327,7 @@ def parse_flower(rows):
             disp_name = f'{name} ({current_unit_label})' if current_unit_label else name
             unit_size = '3.5g' if 'CAN' in current_unit_label.upper() else ('7g' if 'QUARTER' in current_unit_label.upper() else '')
             items.append({
-                'n':disp_name,'thca':thca,'qty':qty,'pic':pic,'vid':vid,'coa':coa,
+                'n':disp_name,'thca':thca,'qty':qty,'pic':pic,'vid':vid,'coa':coa,'coaNA':coa_na,
                 'st':st,'sl':sl,'isnew':isnew,'special':special,
                 'unitmode':True,'unitprice':unit_price,'size':unit_size,
                 'lb':0,'half':0,'qtr':0,'oz':0,'hideThca':True,
@@ -348,7 +359,7 @@ def parse_flower(rows):
             isnew = 'true' if name not in KNOWN_PREV else 'false'
             items.append({
                 'n':name,'thca':thca,'qty':qty,'lb':lb_f,'half':half_f,
-                'qtr':qtr_f,'oz':oz_f,'pic':pic,'vid':vid,'coa':coa,
+                'qtr':qtr_f,'oz':oz_f,'pic':pic,'vid':vid,'coa':coa,'coaNA':coa_na,
                 'st':st,'sl':sl,'isnew':isnew,'special':special,'unitmode':False,
             })
         # De-duplicate identical product names (sheet sometimes lists a flavor twice)
@@ -498,13 +509,14 @@ def parse_preroll(rows):
         pic_raw = row[pic_idx].strip() if pic_idx != -1 else ''
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         pic = get_pic(pic_raw)
+        coa_na = said_none(coa)                # the cell said N/A on purpose
         coa = coa if is_valid_coa(coa) else ''
         # Extract ALL price tiers for this product (1000u/500u/100u/10u/1u as present).
         tiers = extract_tiers(row, tier_cols)
         cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
         items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'tiers':tiers,'pic':pic,'coa':coa,'note':current_note,
+                      'tiers':tiers,'pic':pic,'coa':coa,'coaNA':coa_na,'note':current_note,
                       'size':current_size,'king':current_is_king})
     return items
 
@@ -589,11 +601,12 @@ def parse_vape(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
+        coa_na = said_none(coa)                # the cell said N/A on purpose
         coa = coa if is_valid_coa(coa) else ''
         items.append({'sec':False,'n':name,'cann':cann,
                       'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'tiers':tiers,'pic':pic,'coa':coa,
+                      'tiers':tiers,'pic':pic,'coa':coa,'coaNA':coa_na,
                       'fixedBlend':current_fixed})
     return items
 
@@ -651,6 +664,7 @@ def parse_edibles(rows):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
+        coa_na = said_none(coa)                # the cell said N/A on purpose
         coa = coa if is_valid_coa(coa) else ''
         # Read pieces + category from the sheet columns (fallback to hardcoded map)
         raw_pieces = row[pieces_col].strip() if 0 <= pieces_col < len(row) else ''
@@ -662,7 +676,7 @@ def parse_edibles(rows):
         items.append({'sec':False,'n':name,'cann':cann,
                       'cannList':[x.strip() for x in re.split(r'[/,]', cann) if x.strip()],
                       'qty':row[2].strip() if len(row)>2 else '',
-                      'tiers':tiers,'pic':pic,'coa':coa,
+                      'tiers':tiers,'pic':pic,'coa':coa,'coaNA':coa_na,
                       'note':'','pieces':pieces})
     return items
 def build_edibles_js(items):
@@ -1134,10 +1148,11 @@ def parse_generic(rows, const_name):
         coa     = row[coa_idx].strip() if coa_idx != -1 else ''
         tiers = extract_tiers(row, tier_cols)
         pic = get_pic(pic_raw)
+        coa_na = said_none(coa)                # the cell said N/A on purpose
         coa = coa if is_valid_coa(coa) else ''
         cann_list = [x.strip() for x in re.split(r'[/,]', cann) if x.strip()]
         items.append({'sec':False,'n':name,'cann':cann,'cannList':cann_list,'size':'',
-                      'tiers':tiers,'pic':pic,'coa':coa,
+                      'tiers':tiers,'pic':pic,'coa':coa,'coaNA':coa_na,
                       'qty':row[2].strip() if len(row)>2 else ''})
     return items
 
@@ -1256,7 +1271,11 @@ var CO_FREE_OVER = 5000, CO_DEPOSIT_PCT = 50, CO_REP_DISC = 0;
       body:JSON.stringify({action:'catalogConfig',secret:CATALOG_SECRET,rep:getRep()})});
     var d=await r.json();
     if(d&&d.ok){
-      CO_FREE_OVER=Number(d.freeShipOver)||CO_FREE_OVER;
+      // NOT `||` — the server sends 0 to mean "never", and 0 is falsy, so the
+      // fallback would quietly switch free shipping back on in the cart while
+      // the server charged for it. The customer sees one total, pays another.
+      if(d.freeShipOver!==undefined && d.freeShipOver!==null)
+        CO_FREE_OVER=Number(d.freeShipOver)||0;
       CO_DEPOSIT_PCT=Number(d.depositPct)||CO_DEPOSIT_PCT;
       // The rep's link pricing, so the cart shows what will actually be charged.
       CO_REP_DISC=Number(d.repDiscountPct)||0;
@@ -1515,6 +1534,11 @@ REDIRECTS = f"""# Branded short links for the team. 302 so the address is never 
 /report       {APPS_SCRIPT_EXEC}?page=admin      302
 /payout       {APPS_SCRIPT_EXEC}?page=admin      302
 
+# ── The Sales Academy. Behind the same rep access code as the invoice form.
+#    noindex is set in the page head AND here, because a training page that
+#    turns up in a search result is a training page anyone can read.
+/training     /training.html                   200
+
 """
 
 HEADERS = """/*
@@ -1522,6 +1546,16 @@ HEADERS = """/*
   Netlify-CDN-Cache-Control: public, max-age=0, must-revalidate
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+
+# The academy is internal. The page sets noindex in its own head, but a bot
+# that never parses the HTML will still read the header — and the content file
+# is plain JavaScript that no crawler would treat as a page at all.
+/training
+  X-Robots-Tag: noindex, nofollow, noarchive
+/training.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+/training.json.js
+  X-Robots-Tag: noindex, nofollow, noarchive
 
 """
 
@@ -1560,9 +1594,10 @@ def deploy_to_netlify(html_content):
     # Files that MUST be there. A redirect points at each of these, so if one is
     # missing the visitor gets a 404 — and the old code skipped silently, so the
     # build reported success while the page did not exist.
-    REQUIRED_EXTRAS = ()
+    REQUIRED_EXTRAS = ('training.html', 'training.json.js')
     missing = []
     for extra in ('dashboard_data.json', 'inventory_history.json',
+                  'training.html', 'training.json.js',
                   '_headers', '_redirects'):
         if os.path.exists(extra):
             try:
@@ -1836,7 +1871,8 @@ def audit_build(parsed):
         no_img   = [_clean(p['n']) for p in prods if not str(p.get('pic','')).strip()]
         # A buyer asks for the COA before they buy. A product without one is a
         # question the rep has to answer by hand, every time.
-        no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
+        no_coa   = [_clean(p['n']) for p in prods
+                    if not str(p.get('coa','')).strip() and not p.get('coaNA')]
         # A product has a price if EITHER (a) any of the legacy per-unit keys are
         # populated (Flower still uses lb/half/qtr/oz), OR (b) it has a non-empty
         # `tiers` list with at least one priced tier (PreRoll/Vape/Edibles/Extracts/
@@ -1850,7 +1886,8 @@ def audit_build(parsed):
             tiers = p.get('tiers') or []
             return any(str(t.get('price','')).strip() for t in tiers if isinstance(t, dict))
         no_price = [_clean(p['n']) for p in prods if not _has_price(p)]
-        no_coa   = [_clean(p['n']) for p in prods if not str(p.get('coa','')).strip()]
+        no_coa   = [_clean(p['n']) for p in prods
+                    if not str(p.get('coa','')).strip() and not p.get('coaNA')]
 
         # duplicate product names within a tab — a REAL dupe is the same name AND
         # the same product line/size (e.g. two "STRAWBERRY" both 1g Doobie).
@@ -1867,7 +1904,7 @@ def audit_build(parsed):
         details[tab] = {
             'products': len(prods), 'dropped': len(dropped),
             'no_img': len(no_img), 'no_price': len(no_price), 'no_coa': len(no_coa),
-            'no_coa': len(no_coa), 'dupes': len(dupes),
+            'dupes': len(dupes),
         }
 
         # --- Escalate to problems / warnings ---
