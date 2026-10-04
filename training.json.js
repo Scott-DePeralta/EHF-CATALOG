@@ -1,6 +1,6 @@
 const COA_DEMO = {"title": "Night Walker \u2014 PharmLabs San Diego", "sampleId": "SD260420-019", "lab": "PharmLabs San Diego", "accred": "ISO/IEC 17025:2017 \u00b7 Acc. 85368", "analyzed": "17 April 2026", "reported": "20 April 2026", "matrix": "Flower", "rows": [["THCA", "Tetrahydrocannabinolic acid", "37.57%", "375.69 mg/g", "k", "The big one. This is what converts when it is heated."], ["Delta-9 THC", "&Delta;9-THC", "0.30%", "3.00 mg/g", "k", "Right on the 0.3% line of the current federal standard. Nothing to round down."], ["Total THC", "(THCA &times; 0.877) + &Delta;9", "33.25%", "332.48 mg/g", "k", "The lab did the sum for you. Check it: 37.57 &times; 0.877 = 32.95, + 0.30 = 33.25."], ["Delta-8 THC", "&Delta;8-THC", "ND", "&mdash;", "", "Not detected above the lab's threshold. Not the same as zero."], ["CBGA", "Cannabigerolic acid", "0.45%", "4.50 mg/g", "", ""], ["CBG", "Cannabigerol", "0.20%", "2.00 mg/g", "", ""], ["Total cannabinoids", "", "37.72%", "377.15 mg/g", "", "Everything the lab found, added up."], ["Moisture", "", "9.4%", "limit 13%", "", "Under the limit. Wet flower moulds in transit."], ["Water activity", "", "0.63", "limit 0.85", "", ""]], "missing": ["Pesticides", "Heavy metals", "Residual solvents", "Microbials", "Mycotoxins"]};
 const FED_NOTE = {"asOf": "3 October 2026", "lines": [["12 November 2026", "Converted cannabinoids &mdash; Delta-8, HHC, THC-O, THC-P &mdash; are widely reported to lose federal hemp status on this date."], ["Reported as 11 December 2026", "Some sources report a delay to this date for THCa flower, vapes, concentrates and hemp Delta-9 edibles, moving them to a total-THC standard plus a 0.4&nbsp;mg per-container cap."], ["The sources disagree", "Public reporting does not agree on the dates or exactly what each one covers. That disagreement is itself the point."]]};
-const FINAL_TEST = {"pass": 85, "q": [{"q": "What does vertically integrated mean for EHF?", "a": ["We control cultivation through fulfilment ourselves", "We only sell to licensed dispensaries", "We own our own delivery fleet", "We have the lowest price in the market"], "right": 0, "why": "EHF owns the chain from growing to shipping, so there is no middleman's margin stacked on top."}, {"q": "Who does EHF sell to?", "a": ["Licensed dispensaries only", "Smoke shops, vape shops, hemp retailers and distributors", "Anyone who can pay", "Consumers over 21"], "right": 1, "why": "B2B wholesale. Business contacts, 21+, never a retail consumer."}, {"q": "What happens to THCa when it is heated?", "a": ["It becomes CBD", "It evaporates", "It converts substantially to delta-9 THC", "Nothing"], "right": 2, "why": "Decarboxylation. It is why high-THCa flower is intoxicating when smoked."}, {"q": "Are hemp and marijuana different plants?", "a": ["Hemp is male, marijuana female", "Hemp is outdoor-grown", "Yes, different species", "No \u2014 same plant, different legal categories"], "right": 3, "why": "Same plant. The line is drawn by measured THC content, not biology."}, {"q": "A customer asks whether THCa is legal in their state. You should\u2026", "a": ["Verify against EHF's current compliance policy first", "Tell them to check with their lawyer", "Say yes if delta-9 is under 0.3%", "Send them the COA"], "right": 0, "why": "Legality is a policy question. Never answered from a COA or from memory."}, {"q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026", "a": ["30.25%", "26.56%", "26.31%", "27.00%"], "right": 1, "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."}, {"q": "A potency COA proves the product is free of pesticides.", "a": ["False", "True"], "right": 0, "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually be on the report."}, {"q": "What does ND mean on a COA?", "a": ["Not dated", "No data", "None detected \u2014 an absolute zero", "Not detected above the lab's reporting threshold"], "right": 3, "why": "Below the method's threshold, which is not the same as zero."}, {"q": "Catalog says 31% THCa; the COA says 24%. What do you do?", "a": ["Stop and ask EHF", "Quote the catalog", "Quote the COA", "Quote the average"], "right": 0, "why": "A material disagreement means something is wrong. Either number is a figure you cannot stand behind."}, {"q": "Higher THCa always means better flower.", "a": ["True", "False"], "right": 1, "why": "Nose, bag appeal, structure, trim, freshness and consistency all matter. Leading with the number invites a price fight."}, {"q": "What is the three-choice presentation?", "a": ["Three payment terms", "Three strains at one price", "Value, balance, premium", "Three quantity tiers"], "right": 2, "why": "Three directions turn an open browse into a decision, and which one they ask about tells you their real priority."}, {"q": "A state is marked YELLOW. What do you do?", "a": ["Never offer it", "Ask the customer to confirm legality", "Sell carefully", "Stop and ask EHF before offering"], "right": 3, "why": "Yellow means ask. Conditions may apply and you are not the person who knows them."}, {"q": "Which sentence may you say to a customer?", "a": ["Rules vary by state and product \u2014 let me verify your location", "The COA proves it's compliant where you are", "It's legal in all 50 states", "Under .3 means we can ship anywhere"], "right": 0, "why": "The only one that is true and the only one that does not make a promise you cannot keep."}, {"q": "What is the non-negotiable rule for your lead log?", "a": ["Fifty leads a week", "Every live lead has a next action and a date", "Record every owner's email", "Colour-code by state"], "right": 1, "why": "Without a next action a lead quietly disappears."}, {"q": "What is the EHF vendor opener?", "a": ["Asking to email the catalog", "A pitch on quality", "Asking their process for becoming an approved vendor", "Offering a first-order discount"], "right": 2, "why": "A process question, not a pitch. Shops answer process questions because suppliers ask them all the time."}, {"q": "Which discovery question do most reps skip?", "a": ["How much volume?", "Who decides?", "What's your budget?", "What does your current supplier do well?"], "right": 3, "why": "It tells you what you must match and does not make the buyer defensive."}, {"q": "A buyer asks what they can sell your flower for. You should\u2026", "a": ["Ask what they sell comparable flower for locally", "Send a margin calculator", "Quote a typical retail price", "Promise they'll double their money"], "right": 0, "why": "Never promise a resale price or profit. Asking gets a real number and makes them do the maths."}, {"q": "What is EHF's minimum order?", "a": ["$500", "There is no rigid minimum", "One pound", "$1,000"], "right": 1, "why": "No rigid minimum. Inventing one to pressure a buyer loses sales."}, {"q": "\u201cI already have a vendor.\u201d Best response?", "a": ["Move on", "Explain why EHF is better", "Ask what it would take to earn a spot as backup or secondary", "Ask who it is and beat the price"], "right": 2, "why": "Nobody has to fire anyone, and the incumbent will eventually be out of stock."}, {"q": "Should you tell a buyer their current supplier is poor quality?", "a": ["Only with evidence", "Yes if true", "Only if they raise it", "No \u2014 never attack a competitor"], "right": 3, "why": "You do not know the relationship, and it makes you sound small."}, {"q": "How much may you discount without approval?", "a": ["Up to 5%", "Up to 10%", "Whatever closes it", "Nothing"], "right": 0, "why": "Up to 5% is yours. Beyond that, ask Scott before promising it."}, {"q": "$2,500 of product plus $75 shipping. What is commissionable?", "a": ["$2,575", "$2,500", "$2,425", "Depends on the carrier"], "right": 1, "why": "Product only. Shipping, tax and fees never count."}, {"q": "When is commission earned?", "a": ["On submission", "On EHF approval", "When paid in full and EHF confirms cleared funds", "On delivery"], "right": 2, "why": "Paid in full, confirmed by EHF. It ties your pay to money that actually arrived."}, {"q": "A customer sends a screenshot of payment. Is the order paid?", "a": ["Yes if it's from their bank", "Yes", "Yes if the amount matches", "No \u2014 only EHF confirming cleared funds counts"], "right": 3, "why": "Screenshots, \u201cI sent it\u201d and pending are all meaningless. Cleared funds only."}, {"q": "What is the normal sample shipping charge?", "a": ["$10", "$25", "Varies", "Free"], "right": 0, "why": "$10, and it does most of the filtering for you."}, {"q": "What question must accompany every sample?", "a": ["Who else are you sampling?", "What are you considering buying if it checks out?", "Can you cover shipping?", "When will you decide?"], "right": 1, "why": "It qualifies the opportunity and gives you the subject of your follow-up."}, {"q": "Which shipping option may a rep NOT offer?", "a": ["UPS Overnight", "Customer provides own label", "Local pickup", "USPS Ground"], "right": 2, "why": "Owner approval only, and refused server-side from a rep login."}, {"q": "When does an order ship free?", "a": ["Over $5,000", "Over $10,000", "On UPS Ground", "Only when Scott approves it, which is uncommon"], "right": 3, "why": "There is no automatic free shipping. Every order is quoted and charged for carriage."}, {"q": "Can you authorise a refund for a damaged order?", "a": ["No \u2014 only Scott can make an exception", "Yes if it's clearly EHF's fault", "Yes, up to $500", "Yes with photos"], "right": 0, "why": "All sales are final unless Scott makes an exception. Promising one turns a product problem into a trust problem."}, {"q": "A shop bought two pounds and moves about a pound a fortnight. When do you call?", "a": ["When they call you", "At about three weeks, before they run out", "In three months", "Weekly until they buy"], "right": 1, "why": "Before they run out. A shop that has already run out has called someone else."}]};
+const FINAL_TEST = {"pass": 85, "q": [{"q": "What does vertically integrated mean for EHF?", "a": ["We control cultivation through fulfilment ourselves", "We only sell to licensed dispensaries", "We own our own delivery fleet", "We have the lowest price in the market"], "right": 0, "why": "EHF owns the chain from growing to shipping, so there is no middleman's margin stacked on top."}, {"q": "Who does EHF sell to?", "a": ["Licensed dispensaries only", "Smoke shops, vape shops, hemp retailers and distributors", "Anyone who can pay", "Consumers over 21"], "right": 1, "why": "B2B wholesale. Business contacts, 21+, never a retail consumer."}, {"q": "What happens to THCa when it is heated?", "a": ["It becomes CBD", "It evaporates", "It converts substantially to delta-9 THC", "Nothing"], "right": 2, "why": "Decarboxylation. It is why high-THCa flower is intoxicating when smoked."}, {"q": "Are hemp and marijuana different plants?", "a": ["Hemp is male, marijuana female", "Hemp is outdoor-grown", "Yes, different species", "No \u2014 same plant, different legal categories"], "right": 3, "why": "Same plant. The line is drawn by measured THC content, not biology."}, {"q": "A customer asks whether THCa is legal in their state. You should\u2026", "a": ["Verify against EHF's current compliance policy first", "Tell them to check with their lawyer", "Say yes if delta-9 is under 0.3%", "Send them the COA"], "right": 0, "why": "Legality is a policy question. Never answered from a COA or from memory."}, {"q": "THCa is 30.00% and delta-9 is 0.25%. Potential total THC is approximately\u2026", "a": ["30.25%", "26.56%", "26.31%", "27.00%"], "right": 1, "why": "(30.00 \u00d7 0.877) + 0.25 = 26.31 + 0.25 = 26.56%."}, {"q": "A potency COA proves the product is free of pesticides.", "a": ["False", "True"], "right": 0, "why": "A potency COA reports cannabinoids. Contaminant panels are separate and must actually be on the report."}, {"q": "What does ND mean on a COA?", "a": ["Not dated", "No data", "None detected \u2014 an absolute zero", "Not detected above the lab's reporting threshold"], "right": 3, "why": "Below the method's threshold, which is not the same as zero."}, {"q": "Catalog says 31% THCa; the COA says 24%. What do you do?", "a": ["Stop and ask EHF", "Quote the catalog", "Quote the COA", "Quote the average"], "right": 0, "why": "A material disagreement means something is wrong. Either number is a figure you cannot stand behind."}, {"q": "Higher THCa always means better flower.", "a": ["True", "False"], "right": 1, "why": "Nose, bag appeal, structure, trim, freshness and consistency all matter. Leading with the number invites a price fight."}, {"q": "What is the three-choice presentation?", "a": ["Three payment terms", "Three strains at one price", "Value, balance, premium", "Three quantity tiers"], "right": 2, "why": "Three directions turn an open browse into a decision, and which one they ask about tells you their real priority."}, {"q": "You have researched a state and it looks fine. A buyer wants to order. What do you do?", "a": ["Refuse the order", "Send the customer your research", "Take the order \u2014 your research says it is fine", "Confirm with EHF before promising availability"], "right": 3, "why": "Research tells you where to prospect. It does not make you the authority on legality."}, {"q": "Which sentence may you say to a customer?", "a": ["Rules vary by state and product \u2014 let me verify your location", "The COA proves it's compliant where you are", "It's legal in all 50 states", "Under .3 means we can ship anywhere"], "right": 0, "why": "The only one that is true and the only one that does not make a promise you cannot keep."}, {"q": "What is the non-negotiable rule for your lead log?", "a": ["Fifty leads a week", "Every live lead has a next action and a date", "Record every owner's email", "Colour-code by state"], "right": 1, "why": "Without a next action a lead quietly disappears."}, {"q": "What is the EHF vendor opener?", "a": ["Asking to email the catalog", "A pitch on quality", "Asking their process for becoming an approved vendor", "Offering a first-order discount"], "right": 2, "why": "A process question, not a pitch. Shops answer process questions because suppliers ask them all the time."}, {"q": "Which discovery question do most reps skip?", "a": ["How much volume?", "Who decides?", "What's your budget?", "What does your current supplier do well?"], "right": 3, "why": "It tells you what you must match and does not make the buyer defensive."}, {"q": "A buyer asks what they can sell your flower for. You should\u2026", "a": ["Ask what they sell comparable flower for locally", "Send a margin calculator", "Quote a typical retail price", "Promise they'll double their money"], "right": 0, "why": "Never promise a resale price or profit. Asking gets a real number and makes them do the maths."}, {"q": "What is EHF's minimum order?", "a": ["$500", "There is no rigid minimum", "One pound", "$1,000"], "right": 1, "why": "No rigid minimum. Inventing one to pressure a buyer loses sales."}, {"q": "\u201cI already have a vendor.\u201d Best response?", "a": ["Move on", "Explain why EHF is better", "Ask what it would take to earn a spot as backup or secondary", "Ask who it is and beat the price"], "right": 2, "why": "Nobody has to fire anyone, and the incumbent will eventually be out of stock."}, {"q": "Should you tell a buyer their current supplier is poor quality?", "a": ["Only with evidence", "Yes if true", "Only if they raise it", "No \u2014 never attack a competitor"], "right": 3, "why": "You do not know the relationship, and it makes you sound small."}, {"q": "How much may you discount without approval?", "a": ["Up to 5%", "Up to 10%", "Whatever closes it", "Nothing"], "right": 0, "why": "Up to 5% is yours. Beyond that, ask Scott before promising it."}, {"q": "$2,500 of product plus $75 shipping. What is commissionable?", "a": ["$2,575", "$2,500", "$2,425", "Depends on the carrier"], "right": 1, "why": "Product only. Shipping, tax and fees never count."}, {"q": "When is commission earned?", "a": ["On submission", "On EHF approval", "When paid in full and EHF confirms cleared funds", "On delivery"], "right": 2, "why": "Paid in full, confirmed by EHF. It ties your pay to money that actually arrived."}, {"q": "A customer sends a screenshot of payment. Is the order paid?", "a": ["Yes if it's from their bank", "Yes", "Yes if the amount matches", "No \u2014 only EHF confirming cleared funds counts"], "right": 3, "why": "Screenshots, \u201cI sent it\u201d and pending are all meaningless. Cleared funds only."}, {"q": "What is the normal sample shipping charge?", "a": ["$10", "$25", "Varies", "Free"], "right": 0, "why": "$10, and it does most of the filtering for you."}, {"q": "What question must accompany every sample?", "a": ["Who else are you sampling?", "What are you considering buying if it checks out?", "Can you cover shipping?", "When will you decide?"], "right": 1, "why": "It qualifies the opportunity and gives you the subject of your follow-up."}, {"q": "Which shipping option may a rep NOT offer?", "a": ["UPS Overnight", "Customer provides own label", "Local pickup", "USPS Ground"], "right": 2, "why": "Owner approval only, and refused server-side from a rep login."}, {"q": "When does an order ship free?", "a": ["Over $5,000", "Over $10,000", "On UPS Ground", "Only when Scott approves it, which is uncommon"], "right": 3, "why": "There is no automatic free shipping. Every order is quoted and charged for carriage."}, {"q": "Can you authorise a refund for a damaged order?", "a": ["No \u2014 only Scott can make an exception", "Yes if it's clearly EHF's fault", "Yes, up to $500", "Yes with photos"], "right": 0, "why": "All sales are final unless Scott makes an exception. Promising one turns a product problem into a trust problem."}, {"q": "A shop bought two pounds and moves about a pound a fortnight. When do you call?", "a": ["When they call you", "At about three weeks, before they run out", "In three months", "Weekly until they buy"], "right": 1, "why": "Before they run out. A shop that has already run out has called someone else."}]};
 const CLOSED = {"before": [["Say the order back", "Product, quantity, price, shipping method, ship-to address, total. Out loud, before you hang up. Thirty seconds here beats a credit note later."], ["Get the ship-to exactly", "Street, suite or unit, city, state, ZIP \u2014 as the box will be labelled. Not \u201cthe usual\u201d. Read it back."], ["Get the email right", "The invoice goes there. A typo means they never see it and you spend a week wondering why they have not paid."], ["Agree the shipping method", "USPS Ground, USPS 2-Day Priority, UPS Ground or UPS Overnight. Their choice, and it is quoted on the invoice. There is no automatic free shipping."], ["Agree how they are paying", "Clover card or debit, or wire. Anything else needs arranging with Scott first."]], "now": [["Submit the invoice today", "Prices and stock move. An order you sit on for two days is an order that may not be quotable at the same number."], ["Submit it once", "The invoice number is assigned on submission. Pressing it twice makes two orders and somebody has to untangle it."], ["Tell the customer what happens next", "Use the script below. Saying it now prevents the \u201cwhere is my order?\u201d call on day two."], ["Log the follow-up", "Next action: payment check. Next date: two days out. The system nudges you as well, but the log is yours."]], "theirs": [["Scott approves it", "Your submission lands in Slack. Status becomes APPROVED."], ["The customer pays", "Clover link or wire. Card fees are absorbed by EHF."], ["EHF confirms cleared funds", "Not a screenshot, not \u201cI sent it\u201d. This is the moment the order becomes real \u2014 and the moment your commission exists."], ["The warehouse packs and ships", "Nothing ships before payment clears."], ["Tracking is posted", "The label is photographed into Slack and attaches to the invoice automatically."]], "never": ["Do not promise a ship date. You do not control approval, payment clearing or the warehouse queue.", "Do not confirm payment yourself. A screenshot is not payment.", "Do not chase the warehouse. If something is late, ask Scott.", "Do not authorise a refund, credit, replacement or free shipping. None of those are yours."], "say": "You'll get the invoice by email shortly. You can pay by card on the link in it, or by wire if you'd rather. Once the payment clears it goes straight to our warehouse \u2014 I'll let you know as soon as it's on its way.", "chase": [["Day 2", "The system nudges you if it is still unpaid. Call them \u2014 a friendly check that the invoice arrived."], ["Day 5", "Second nudge to you."], ["Day 8", "Scott is copied in."], ["Day 14", "Scott escalates."]], "after": [["It ships", "Tell them it is on the way and give them the tracking. This is a call worth making, not a text."], ["On delivery", "Confirm it arrived and ask what they think. Easiest relationship-building call in the job."], ["A week or two in", "Ask what moved. That tells you what goes in the reorder."], ["Before they run out", "Estimate their burn rate and call first. A shop that has already run out has rung somebody else."]]};
 const TRAINING = {
  "version": 1,
@@ -1055,49 +1055,38 @@ const TRAINING = {
    "n": 5,
    "title": "Compliance",
    "mins": 7,
-   "blurb": "Three colours, one habit, and the sentences that must never leave your mouth.",
+   "blurb": "Research the states you prospect, and never promise legality to anybody.",
    "lessons": [
     {
      "id": "L5a",
-     "title": "Green, yellow, red",
+     "title": "Research before you prospect",
      "blocks": [
       {
        "t": "text",
-       "v": "EHF maintains a living view of which products may be offered where. You do not interpret statutes. You check a status and act on it."
+       "v": "Hemp and THCa rules differ by state, differ by <b>product</b> within a state, and change on short notice. Several states have moved in the last twelve months alone."
       },
       {
-       "t": "status",
+       "t": "text",
+       "v": "Before you spend an afternoon calling shops in a market, <b>research that state</b>. Find out whether what you want to present can be sold there at all, and whether it is restricted to a licensed channel you cannot supply."
+      },
+      {
+       "t": "bullets",
        "v": [
-        [
-         "GREEN",
-         "May present and sell this product under current EHF policy.",
-         "g"
-        ],
-        [
-         "YELLOW",
-         "Stop and ask EHF before offering. Conditions may apply.",
-         "y"
-        ],
-        [
-         "RED",
-         "Do not offer or ship this product under EHF policy.",
-         "r"
-        ]
+        "Search the state's own department of agriculture or health, not a vendor blog.",
+        "Look for the <b>product</b>, not just the state \u2014 flower, vapes and edibles are often treated differently.",
+        "Check the date on anything you read. A guide from last year is probably wrong.",
+        "If two sources disagree, treat that as a reason to ask rather than a reason to pick one."
        ]
       },
       {
-       "t": "states",
-       "v": "live"
-      },
-      {
        "t": "remember",
-       "v": "The discipline matters more than the list. <b>Check before you promise.</b> A status you remember from three weeks ago is not a status."
+       "v": "Research tells you <b>where to spend your time</b>. It does not make you the authority on what is legal. Those are two different things and the next lesson is about the second one."
       }
      ]
     },
     {
      "id": "L5b",
-     "title": "Sentences that end careers",
+     "title": "Never promise legality",
      "blocks": [
       {
        "t": "never",
@@ -1105,15 +1094,19 @@ const TRAINING = {
       },
       {
        "t": "text",
-       "v": "Each of those is a promise about law, made by someone with no authority to make it, recorded in writing in a customer's inbox. They are the four sentences most likely to cause real damage."
-      },
-      {
-       "t": "script",
-       "v": "Regulations vary by state and product and they change quickly. Let me verify your location against EHF's current compliance policy before I promise availability."
+       "v": "Each of those is a promise about law, made by somebody with no authority to make it, and usually recorded in writing in a customer's inbox."
       },
       {
        "t": "text",
-       "v": "That answer loses nothing. It sounds like a company with a process, which is exactly what a serious buyer wants to hear."
+       "v": "However much research you have done, the answer to a customer asking whether you can ship to them is the same:"
+      },
+      {
+       "t": "script",
+       "v": "Regulations vary by state and product and they change quickly. Let me verify your location against EHF's current policy before I promise availability."
+      },
+      {
+       "t": "text",
+       "v": "That costs you nothing. It sounds like a company with a process, which is exactly what a serious buyer wants to hear \u2014 and it puts the decision where it belongs."
       }
      ]
     },
@@ -1123,82 +1116,82 @@ const TRAINING = {
      "blocks": [
       {
        "t": "text",
-       "v": "The most common push is <b>\u201ceveryone sells it here\u201d</b>. It may even be true. It does not change EHF policy, and what other vendors risk is not your business."
+       "v": "The most common push is <b>\u201ceveryone sells it here\u201d</b>. It may even be true. It does not change EHF policy, and what other vendors are willing to risk is not your business."
       },
       {
        "t": "script",
-       "v": "I understand \u2014 and I'm not saying anyone's doing anything wrong. Regulations change quickly and I'd rather verify your location than promise you something I have to walk back."
+       "v": "I understand \u2014 and I'm not saying anyone's doing anything wrong. Regulations change quickly and I'd rather verify than promise you something I have to walk back."
       },
       {
        "t": "try",
-       "v": "A buyer in a yellow state wants to place an order today for a product you are not sure about. What do you do?",
+       "v": "You have researched a state and everything you read suggests your product is fine there. A buyer wants to place an order today. What do you do?",
        "answers": [
-        "Tell them no and move on",
-        "Take the details, tell them you are confirming availability with EHF today, and give them a time you will call back",
-        "Send the COA and let them decide",
-        "Take the order \u2014 you can always cancel it"
+        "Take the order \u2014 your research says it is fine",
+        "Take the details, confirm with EHF today, and give them a time you will call back",
+        "Tell them no, you cannot sell into that state",
+        "Send them what you found and let them decide"
        ],
        "right": 1,
-       "why": "Taking the details and confirming with EHF keeps the deal alive without promising anything. Taking the order outright damages trust if you have to cancel it; refusing throws away a sale that might be perfectly fine; and sending the COA pushes a legal decision onto the customer, which is exactly what you must not do."
+       "why": "Your research told you where to spend your time; it did not make you the authority. Confirming first keeps the deal alive and costs a few hours. Acting on your own reading risks a shipment you have to recall, refusing outright throws away a sale that is probably fine, and handing a customer your research pushes a legal decision onto them \u2014 which is exactly what you must not do."
       }
      ]
     }
    ],
    "quiz": [
     {
-     "q": "A state is marked YELLOW. What does that mean?",
+     "q": "Why research a state before prospecting it?",
      "a": [
-      "Stop and ask EHF before offering",
-      "Never offer it",
-      "It depends on the product's THCa",
-      "Sell it, but carefully"
+      "So you can tell customers it is legal there",
+      "To find out whether it is worth spending your time on that market at all",
+      "Because EHF requires a written report",
+      "So you can quote the statute"
      ],
-     "right": 0,
-     "why": "Yellow means stop and ask. Conditions may apply, and the person who knows them is not you."
+     "right": 1,
+     "why": "Research tells you where your time is well spent. Calling forty shops in a market you cannot supply is forty wasted calls."
+    },
+    {
+     "q": "Your research says a product is fine in a state. May you tell a customer it is legal there?",
+     "a": [
+      "Yes, if the sources were official",
+      "Yes, if you show them the sources",
+      "No \u2014 verify against EHF's current policy before promising anything",
+      "Yes, if the COA is under 0.3%"
+     ],
+     "right": 2,
+     "why": "Research guides where you prospect. It does not make you the authority on legality, and a promise in a customer's inbox is a promise EHF has to stand behind."
     },
     {
      "q": "Which of these may you say to a customer?",
      "a": [
+      "\u201cIt's legal in all 50 states.\u201d",
       "\u201cUnder .3 means we can ship anywhere.\u201d",
-      "\u201cRules vary by state and product \u2014 let me verify your location against EHF's current policy.\u201d",
       "\u201cThe COA proves it's compliant in your state.\u201d",
-      "\u201cIt's legal in all 50 states.\u201d"
+      "\u201cRules vary by state and product \u2014 let me verify your location against EHF's current policy.\u201d"
      ],
-     "right": 1,
-     "why": "The only one of the four that is true, and the only one that does not make a legal promise you have no authority to make."
+     "right": 3,
+     "why": "The only one that is true, and the only one that does not make a legal promise you have no authority to make."
     },
     {
      "q": "A customer says every other shop in town sells it. Does that change what you can offer?",
      "a": [
-      "Yes, if they sign a waiver",
-      "Yes \u2014 if it's being sold locally it's clearly fine",
-      "No \u2014 EHF policy decides, not local practice",
-      "Only if they can show you a licence"
+      "Yes \u2014 local practice is the real test",
+      "No \u2014 EHF policy decides, not what competitors risk",
+      "Only if they show you a licence",
+      "Yes, if they accept the risk in writing"
+     ],
+     "right": 1,
+     "why": "What other vendors are willing to risk is not EHF policy and not your liability to take on."
+    },
+    {
+     "q": "Two sources disagree about whether a product can be sold in a state. What does that tell you?",
+     "a": [
+      "Pick the more recent one",
+      "Pick the more official one",
+      "Treat it as a reason to ask EHF rather than to choose",
+      "Average the two"
      ],
      "right": 2,
-     "why": "What other vendors risk is not EHF policy and is not your liability to take on."
-    },
-    {
-     "q": "Who decides whether a product can be sold into a given state?",
-     "a": [
-      "The customer",
-      "Whichever lab issued the report",
-      "The salesperson, using the COA",
-      "EHF's current compliance policy"
-     ],
-     "right": 3,
-     "why": "EHF policy. Your job is to check it and relay it, not to interpret law."
-    },
-    {
-     "q": "Why does compliance live as updateable data rather than being written into this training?",
-     "a": [
-      "Because the rules change \u2014 and a lesson you cannot update becomes wrong without anyone noticing",
-      "For legal reasons",
-      "It doesn't",
-      "To save space"
-     ],
-     "right": 0,
-     "why": "A hardcoded rule is a rule nobody can fix. The federal framework changes in November 2026 alone. The habit of checking is what is trained here; the list itself is maintained separately."
+     "why": "Disagreement between sources is itself the signal. It means the position is unsettled, which is exactly when a rep should not be the one deciding."
     }
    ]
   },
@@ -3008,258 +3001,5 @@ const TRAINING = {
     }
    ]
   }
- ],
- "states": [
-  [
-   "Alabama",
-   "r",
-   "smokable THCa prohibited"
-  ],
-  [
-   "Alaska",
-   "r",
-   "prohibited"
-  ],
-  [
-   "Arizona",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Arkansas",
-   "r",
-   "Act 629 \u2014 intoxicating hemp"
-  ],
-  [
-   "California",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Colorado",
-   "y",
-   "dispensary channel only"
-  ],
-  [
-   "Connecticut",
-   "y",
-   "total-THC testing"
-  ],
-  [
-   "Delaware",
-   "r",
-   "prohibited"
-  ],
-  [
-   "Florida",
-   "y",
-   "total-THC formula; inhalable flower restricted"
-  ],
-  [
-   "Georgia",
-   "r",
-   "flower/leaf retail sale prohibited"
-  ],
-  [
-   "Hawaii",
-   "r",
-   "total-THC testing"
-  ],
-  [
-   "Idaho",
-   "r",
-   "any THC including THCa"
-  ],
-  [
-   "Illinois",
-   "y",
-   "date-specific review needed"
-  ],
-  [
-   "Indiana",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Iowa",
-   "r",
-   "treated as controlled substance analog"
-  ],
-  [
-   "Kansas",
-   "r",
-   "all THC isomers"
-  ],
-  [
-   "Kentucky",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Louisiana",
-   "r",
-   "total-THC law; smokable banned"
-  ],
-  [
-   "Maine",
-   "y",
-   "restricted"
-  ],
-  [
-   "Maryland",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Massachusetts",
-   "y",
-   "gray \u2014 verify"
-  ],
-  [
-   "Michigan",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Minnesota",
-   "y",
-   "potency limits"
-  ],
-  [
-   "Mississippi",
-   "r",
-   "prohibited"
-  ],
-  [
-   "Missouri",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Montana",
-   "y",
-   "dispensary channel only"
-  ],
-  [
-   "Nebraska",
-   "y",
-   "high-THCa flower a significant risk"
-  ],
-  [
-   "Nevada",
-   "y",
-   "regulated cannabis market only"
-  ],
-  [
-   "New Hampshire",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "New Jersey",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "New Mexico",
-   "y",
-   "restricted"
-  ],
-  [
-   "New York",
-   "y",
-   "gray \u2014 verify"
-  ],
-  [
-   "North Carolina",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "North Dakota",
-   "r",
-   "prohibited"
-  ],
-  [
-   "Ohio",
-   "y",
-   "SB 56 effective March 2026"
-  ],
-  [
-   "Oklahoma",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Oregon",
-   "y",
-   "dispensary channel only"
-  ],
-  [
-   "Pennsylvania",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Rhode Island",
-   "r",
-   "total-THC standard"
-  ],
-  [
-   "South Carolina",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "South Dakota",
-   "y",
-   "gray \u2014 verify"
-  ],
-  [
-   "Tennessee",
-   "r",
-   "HB 1376 \u2014 flower banned Jan 2026"
-  ],
-  [
-   "Texas",
-   "r",
-   "DSHS Schedule I listing; litigation ongoing"
-  ],
-  [
-   "Utah",
-   "y",
-   "gray \u2014 verify"
-  ],
-  [
-   "Vermont",
-   "y",
-   "dispensary channel only"
-  ],
-  [
-   "Virginia",
-   "y",
-   "total-THC with per-package cap"
-  ],
-  [
-   "Washington",
-   "y",
-   "gray \u2014 verify"
-  ],
-  [
-   "West Virginia",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Wisconsin",
-   "y",
-   "not confirmed by EHF"
-  ],
-  [
-   "Wyoming",
-   "y",
-   "gray \u2014 verify"
-  ]
- ],
- "statesUpdated": "2026-10-03"
+ ]
 };
