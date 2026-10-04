@@ -175,6 +175,59 @@ button{font-family:inherit;cursor:pointer}
 
 .copybox{width:100%;background:var(--bg);border:1px solid var(--line2);border-radius:10px;
   padding:12px;color:#d7dcf0;font-family:ui-monospace,monospace;font-size:12px;resize:vertical}
+
+/* ── federal change notice ── */
+.fed{background:linear-gradient(135deg,rgba(255,107,107,.1),rgba(251,191,36,.07));
+  border:1px solid rgba(255,107,107,.35);border-radius:14px;padding:18px 19px}
+.fed-t{font-size:9.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--red);margin-bottom:12px}
+.fed-r{display:flex;gap:13px;padding:9px 0;border-top:1px solid rgba(255,255,255,.06)}
+.fed-r:first-of-type{border-top:0}
+.fed-r b{flex:0 0 150px;font-size:13px;color:#fff;font-weight:800;line-height:1.5}
+.fed-r span{flex:1;font-size:14px;color:#d7dcf0;line-height:1.65}
+.fed-f{margin-top:13px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:13px;color:var(--muted);line-height:1.7}
+@media(max-width:620px){.fed-r{flex-direction:column;gap:3px}.fed-r b{flex:none}}
+
+/* ── annotated COA ── */
+.coa{background:#07080f;border:1px solid var(--line2);border-radius:14px;overflow:hidden}
+.coa-h{padding:15px 17px;background:var(--card3);border-bottom:1px solid var(--line2)}
+.coa-h b{display:block;font-size:15.5px;color:#fff;margin-bottom:5px}
+.coa-h span{display:block;font-size:11.5px;color:var(--muted);line-height:1.7}
+.coa-b{padding:4px 0}
+.coa-r{padding:11px 17px;border-bottom:1px solid rgba(255,255,255,.04);
+  display:grid;grid-template-columns:1fr auto;gap:4px 14px}
+.coa-r.key{background:rgba(201,168,76,.07);border-left:3px solid var(--gold)}
+.coa-n b{font-size:14.5px;color:#fff;font-weight:700}
+.coa-n span{display:block;font-size:11.5px;color:var(--dim)}
+.coa-v{font-family:var(--orb);font-size:16px;font-weight:700;color:var(--gold-l);text-align:right;
+  white-space:nowrap}
+.coa-v span{display:block;font-size:11px;color:var(--dim);font-weight:400}
+.coa-note{grid-column:1/-1;font-size:13px;color:var(--blue-l);line-height:1.6;
+  padding-top:5px;font-style:italic}
+.coa-miss{padding:15px 17px;background:rgba(255,107,107,.06);border-top:1px solid rgba(255,107,107,.25)}
+.coa-miss b{display:block;font-size:9.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--red);margin-bottom:9px}
+.coa-miss>span{display:inline-block;background:rgba(255,107,107,.12);border:1px solid rgba(255,107,107,.3);
+  border-radius:99px;padding:4px 11px;margin:0 5px 5px 0;font-size:12px;color:#ffc9c9}
+.coa-miss .coa-note{color:#ffc9c9;font-style:normal}
+
+/* ── the just-closed checklist ── */
+.ck{display:flex;flex-direction:column;gap:8px}
+.ck-r{display:flex;gap:13px;align-items:flex-start;background:var(--card2);
+  border:1px solid var(--line2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s}
+.ck-r:hover{border-color:rgba(168,85,247,.4)}
+.ck-r input{flex:0 0 22px;width:22px;height:22px;margin-top:1px;accent-color:#00ff88;cursor:pointer}
+.ck-r>span{flex:1}
+.ck-r b{display:block;font-size:15px;color:#fff;font-weight:700;margin-bottom:3px;line-height:1.45}
+.ck-r b+span{font-size:14px;color:#d7dcf0;line-height:1.65}
+.ck-r:has(input:checked){background:rgba(0,255,136,.055);border-color:rgba(0,255,136,.3)}
+.ck-r:has(input:checked) b{color:var(--neon);text-decoration:line-through;text-decoration-color:rgba(0,255,136,.45)}
+.ck-no{cursor:default;background:rgba(255,255,255,.025)}
+.ck-no:hover{border-color:var(--line2)}
+.ck-d{flex:0 0 22px;height:22px;border-radius:50%;border:2px solid var(--line2);margin-top:1px;
+  display:flex;align-items:center;justify-content:center}
+.ck-d::after{content:'';width:7px;height:7px;border-radius:50%;background:var(--dim)}
 button.cert{cursor:pointer}
 
 
@@ -376,9 +429,10 @@ function certState(){
   var L=levels();
   if(!L.length) return 'none';
   var done=L.filter(lvDone).length;
+  if(finalPassed()) return 'certified';
   if(done===0) return 'none';
   if(done<L.length) return 'training';
-  return 'certified';
+  return 'ready';          // every level done, final test still to sit
 }
 
 /* ── router ──────────────────────────────────────────────────── */
@@ -390,6 +444,8 @@ function render(){
   if(VIEW.name==='quiz')   { v.innerHTML=quizHTML(VIEW.id); QSTATE={}; }
   if(VIEW.name==='cert')   v.innerHTML=certHTML();
   if(VIEW.name==='kit')    v.innerHTML=kitHTML(VIEW.id);
+  if(VIEW.name==='final')  { v.innerHTML=finalHTML(); FSTATE={}; }
+  if(VIEW.name==='closed') v.innerHTML=closedHTML();
   // Calculators are inert markup until their first run, so a rep sees a
   // worked example rather than an empty box.
   try{ if(document.getElementById('cTHCout')) calcTHC();
@@ -400,13 +456,15 @@ function render(){
 /* ── THE DASHBOARD ───────────────────────────────────────────── */
 function homeHTML(){
   var L=levels(), pct=pctDone(), nx=nextLevel(), cs=certState();
-  var certCls = cs==='certified'?'on':(cs==='training'?'go':'no');
+  var certCls = cs==='certified'?'on':((cs==='training'||cs==='ready')?'go':'no');
   var certTxt = cs==='certified'?'✓ Certified'
+              : cs==='ready'    ?'Ready for the final test'
               : cs==='training' ?'In training' : 'Not started';
 
   var tools=[
     ['📖','Live catalog','/','ext'],
     ['🧾','Invoice','/invoice','ext'],
+    ['✅','Just closed?','closed'],
     ['📞','Call script','script'],
     ['💬','Objections','obj'],
     ['🔬','COA guide','coa'],
@@ -524,14 +582,18 @@ function block(b){
   if(b.t==='notify') return blkNotify(b.v);
   if(b.t==='cards')  return blkCards(b.v);
   if(b.t==='calc')   return blkCalc(b.v);
+  if(b.t==='fed')    return blkFed();
+  if(b.t==='coa')    return blkCOA();
   if(b.t==='try'){
     var id='try'+Math.random().toString(36).slice(2,8);
     TRY[id]=b;
+    // The content file is ours and uses <b> for emphasis, exactly as every other
+    // block does. Escaping it here printed the tags on screen as text.
     return '<div class="q" id="'+id+'"><div class="q-t">Try it</div>'+
-      '<div class="q-q">'+esc(b.v)+'</div>'+
+      '<div class="q-q">'+b.v+'</div>'+
       b.answers.map(function(a,i){
         return '<button class="opt" onclick="tryPick(\''+id+'\','+i+')">'+
-          '<span class="mk">'+'ABCDEF'.charAt(i)+'</span>'+esc(a)+'</button>';
+          '<span class="mk">'+'ABCDEF'.charAt(i)+'</span>'+a+'</button>';
       }).join('')+'<div class="whyslot"></div></div>';
   }
   return '';
@@ -564,10 +626,11 @@ function quizHTML(id){
       'your best score is the one that is kept.</p></div>'+
     l.quiz.map(function(q,i){
       return '<div class="q" id="q'+i+'"><div class="q-t">Question '+(i+1)+' of '+l.quiz.length+'</div>'+
-        '<div class="q-q">'+esc(q.q)+'</div>'+
+        // Same as the try-it blocks: the content file uses <b> for emphasis.
+        '<div class="q-q">'+q.q+'</div>'+
         q.a.map(function(a,k){
           return '<button class="opt" onclick="pick(\''+id+'\','+i+','+k+')">'+
-            '<span class="mk">'+'ABCDEF'.charAt(k)+'</span>'+esc(a)+'</button>';
+            '<span class="mk">'+'ABCDEF'.charAt(k)+'</span>'+a+'</button>';
         }).join('')+'<div class="whyslot"></div></div>';
     }).join('')+
     '<div id="qresult"></div>'+
@@ -589,7 +652,7 @@ function pick(levelId, qi, ki){
     else if(k===ki) opts[k].classList.add('wrong');
   }
   el.querySelector('.whyslot').innerHTML='<div class="why"><b>'+
-    (ki===q.right?'Correct. ':'Not quite. ')+'</b>'+esc(q.why)+'</div>';
+    (ki===q.right?'Correct. ':'Not quite. ')+'</b>'+q.why+'</div>';
 
   // Enable Finish only when every question has been answered.
   if(Object.keys(QSTATE).length===l.quiz.length){
@@ -702,6 +765,13 @@ function blkStates(){
 
 /* A link out — catalog, invoice, a toolkit page. */
 function blkLink(v){
+  // A '#name' href is an internal view, not an anchor on the page. Treating it
+  // as an anchor left the rep looking at a URL that did nothing.
+  if(v.href.charAt(0)==='#'){
+    return '<div class="blk"><button class="btn" onclick="go({name:\''+
+      (v.href.slice(1)==='closed'?'closed':'kit')+'\',id:\''+v.href.slice(1)+'\'})">'+
+      esc(v.label)+'</button></div>';
+  }
   var ext=v.href.charAt(0)==='/';
   return '<div class="blk"><a class="btn" href="'+esc(v.href)+'"'+
     (ext?' target="_blank" rel="noopener"':'')+'>'+esc(v.label)+(ext?' &#8599;':'')+'</a></div>';
@@ -806,8 +876,22 @@ function certHTML(){
         '<div class="prog-pct" style="font-size:30px">'+avg+'%</div></div></div>'+
       '<div class="prog-track"><div class="prog-fill" style="width:'+pct+'%"></div></div>'+
     '</div>'+
-    (ready
-      ? '<div class="box rem"><div class="box-t">Certified</div>You have completed every level. '+
+    (finalPassed()
+      ? '<div class="box rem"><div class="box-t">Certified</div>You passed the final at <b>'+
+        lvScore({id:'FINAL'})+'%</b>.<br><br><b>It does not mean you stop checking.</b> '+
+        'Compliance, pricing and inventory are live and they change &mdash; certification '+
+        'never overrides the live source.</div>'
+      : ready
+      ? '<div class="box rate"><div class="box-t">Ready for the final test</div>Every level done. '+
+        'Thirty questions, 85% to pass, unlimited retakes.'+
+        '<div style="margin-top:13px"><button class="btn" onclick="go({name:\'final\'})">'+
+        'Take the final test</button></div></div>'
+      : '<div class="box rate"><div class="box-t">In training</div>'+
+        (L.length-done.length)+' level'+((L.length-done.length)===1?'':'s')+' to go, then a '+
+        'thirty-question final at 85%.'+
+        '<div style="margin-top:13px"><button class="btn ghost" onclick="go({name:\'final\'})">'+
+        'Sit the final early</button></div></div>')+
+    ('' ? '<div class="box rem"><div class="box-t">Certified</div>You have completed every level. '+
         'That is the knowledge side done.<br><br><b>It does not mean you stop checking.</b> '+
         'Compliance, pricing and inventory are live and they change — certification never '+
         'overrides the live source.</div>'
@@ -888,6 +972,179 @@ function kitHTML(id){
 
   return '<div class="lesson"><div class="crumb">Sales toolkit</div><h2>'+esc(title)+'</h2>'+
     (body||'<div class="none">Nothing here yet.</div>')+
+    '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back to the dashboard</button></div></div>';
+}
+</script>
+<script>
+/* ── THE FEDERAL CHANGE ──────────────────────────────────────── */
+function blkFed(){
+  var F=(typeof FED_NOTE!=='undefined')?FED_NOTE:null;
+  if(!F) return '';
+  return '<div class="blk"><div class="fed">'+
+    '<div class="fed-t">The ground is moving &mdash; as of '+esc(F.asOf)+'</div>'+
+    F.lines.map(function(l){
+      return '<div class="fed-r"><b>'+l[0]+'</b><span>'+l[1]+'</span></div>'; }).join('')+
+    '<div class="fed-f">Nothing here is legal advice, and none of it overrides EHF policy. '+
+    'If a customer asks about the change, say it is being worked through and get them a '+
+    'straight answer from EHF.</div></div></div>';
+}
+
+/* ── THE ANNOTATED COA ───────────────────────────────────────── */
+function blkCOA(){
+  var C=(typeof COA_DEMO!=='undefined')?COA_DEMO:null;
+  if(!C) return '';
+  return '<div class="blk"><div class="coa">'+
+    '<div class="coa-h"><b>'+esc(C.title)+'</b>'+
+      '<span>Sample '+esc(C.sampleId)+' &middot; '+esc(C.matrix)+'</span>'+
+      '<span>Analysed '+esc(C.analyzed)+' &middot; reported '+esc(C.reported)+'</span>'+
+      '<span>'+esc(C.accred)+'</span></div>'+
+    '<div class="coa-b">'+C.rows.map(function(r){
+      return '<div class="coa-r'+(r[4]==='k'?' key':'')+'">'+
+        '<div class="coa-n"><b>'+r[0]+'</b>'+(r[1]?('<span>'+r[1]+'</span>'):'')+'</div>'+
+        '<div class="coa-v">'+r[2]+(r[3]&&r[3]!=='&mdash;'?('<span>'+r[3]+'</span>'):'')+'</div>'+
+        (r[5]?('<div class="coa-note">'+r[5]+'</div>'):'')+
+      '</div>'; }).join('')+'</div>'+
+    '<div class="coa-miss"><b>Not on this report</b>'+
+      C.missing.map(function(m){ return '<span>'+esc(m)+'</span>'; }).join('')+
+      '<div class="coa-note" style="margin-top:8px">This is a <b>potency</b> COA. Never tell a '+
+      'customer it shows the product is clean of any of the above &mdash; those panels are not here.</div>'+
+    '</div></div></div>';
+}
+
+/* ── THE FINAL TEST ──────────────────────────────────────────── */
+var FSTATE={};
+function finalHTML(){
+  var F=(typeof FINAL_TEST!=='undefined')?FINAL_TEST:null;
+  if(!F) return '<div class="none">The final test is not in the content file.</div>';
+  var L=levels(), ready=L.filter(lvDone).length===L.length;
+  var need=Math.ceil(F.q.length*F.pass/100);
+  return '<div class="lesson"><div class="crumb">Final certification test</div>'+
+    '<h2>Thirty questions</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">Drawn from every level. You need <b>'+
+      F.pass+'%</b> to pass &mdash; that is <b>'+need+' of '+F.q.length+'</b>. '+
+      'Retake it as often as you like.</p></div>'+
+    (ready?'':'<div class="box rate"><div class="box-t">Levels not finished</div>'+
+      'You can sit this now, but it covers material from levels you have not read yet.</div>')+
+    F.q.map(function(q,i){
+      return '<div class="q" id="f'+i+'"><div class="q-t">'+(i+1)+' of '+F.q.length+'</div>'+
+        '<div class="q-q">'+q.q+'</div>'+
+        q.a.map(function(a,k){
+          return '<button class="opt" onclick="fpick('+i+','+k+')">'+
+            '<span class="mk">'+'ABCDEF'.charAt(k)+'</span>'+a+'</button>'; }).join('')+
+        '<div class="whyslot"></div></div>';
+    }).join('')+
+    '<div id="fresult"></div>'+
+    '<div class="nav"><button class="btn ghost" onclick="go({name:\'cert\'})">Back</button>'+
+    '<button class="btn" id="fdone" disabled onclick="ffinish()">Finish</button></div></div>';
+}
+function fpick(i,k){
+  if(FSTATE[i]!==undefined) return;
+  var F=FINAL_TEST, q=F.q[i], el=document.getElementById('f'+i);
+  FSTATE[i]=k;
+  var opts=el.querySelectorAll('.opt');
+  for(var n=0;n<opts.length;n++){
+    opts[n].disabled=true;
+    if(n===q.right) opts[n].classList.add('right');
+    else if(n===k)  opts[n].classList.add('wrong');
+  }
+  el.querySelector('.whyslot').innerHTML='<div class="why"><b>'+
+    (k===q.right?'Correct. ':'Not quite. ')+'</b>'+q.why+'</div>';
+  if(Object.keys(FSTATE).length===F.q.length){
+    document.getElementById('fdone').disabled=false;
+    var sc=fscore(), pass=sc>=F.pass;
+    document.getElementById('fresult').innerHTML=
+      '<div class="box '+(pass?'rem':'nev')+'" style="margin-top:18px">'+
+      '<div class="box-t">'+(pass?'Passed':'Not this time')+'</div>'+
+      '<b style="font-family:var(--orb);font-size:26px">'+sc+'%</b> &mdash; '+
+      (pass?'that is your certification. Press Finish to record it.'
+           :'you need '+F.pass+'%. Press Finish to save the attempt, then read back '+
+            'through the levels you slipped on. There is no limit on retakes.')+'</div>';
+  }
+}
+function fscore(){
+  var F=FINAL_TEST, right=0;
+  F.q.forEach(function(q,i){ if(FSTATE[i]===q.right) right++; });
+  return Math.round(right/F.q.length*100);
+}
+function ffinish(){
+  var sc=fscore(), pass=sc>=FINAL_TEST.pass;
+  var b=document.getElementById('fdone'); b.disabled=true; b.textContent='Saving…';
+  call('trainSave', { moduleId:'FINAL', status:(pass?'complete':'failed'), score:sc },
+    function(r){
+      if(!r||!r.ok){ b.disabled=false; b.textContent='Finish';
+        return toast(r&&r.msg?r.msg:'Could not save. Your answers are still on screen.'); }
+      ROWS=r.rows||ROWS;
+      toast(pass?('Certified — '+sc+'%'):('Attempt saved — '+sc+'%'));
+      FSTATE={}; go({name:'cert'});
+    },
+    function(){ b.disabled=false; b.textContent='Finish';
+      toast('Could not reach the server — nothing was saved. Press Finish again.'); });
+}
+function finalPassed(){ var r=ROWS['FINAL']; return !!(r && r.status==='complete'); }
+</script>
+<script>
+/* ── "I JUST CLOSED. NOW WHAT?" ───────────────────────────────
+   A rep reads this standing at a counter with a buyer who just said yes.
+   It is a checklist, not a lesson — tick as you go, nothing to save. */
+function closedHTML(){
+  var C=(typeof CLOSED!=='undefined')?CLOSED:null;
+  if(!C) return '<div class="none">Not in the content file.</div>';
+  var n=0;
+  function list(items, cls){
+    return '<div class="ck">'+items.map(function(s){
+      var id='ck'+(n++);
+      return '<label class="ck-r'+(cls?' '+cls:'')+'" for="'+id+'">'+
+        '<input type="checkbox" id="'+id+'">'+
+        '<span><b>'+s[0]+'</b><span>'+s[1]+'</span></span></label>';
+    }).join('')+'</div>';
+  }
+  function plain(items){
+    return '<div class="ck">'+items.map(function(s){
+      return '<div class="ck-r ck-no"><span class="ck-d"></span>'+
+        '<span><b>'+s[0]+'</b><span>'+s[1]+'</span></span></div>';
+    }).join('')+'</div>';
+  }
+
+  return '<div class="lesson"><div class="crumb">Sales toolkit</div>'+
+    '<h2>You just closed. Now what?</h2>'+
+    '<div class="blk"><p style="color:var(--muted)">Work down it. The first two sections are '+
+      'yours and they are time-sensitive. The third is not yours at all &mdash; knowing that is '+
+      'half the job.</p></div>'+
+
+    '<div class="sec-h" style="margin-top:22px">Before you hang up</div>'+
+    list(C.before)+
+
+    '<div class="sec-h">Within the hour</div>'+
+    list(C.now)+
+    '<div class="blk"><a class="btn" href="/invoice" target="_blank" rel="noopener">'+
+      'Open the invoice portal &#8599;</a></div>'+
+
+    '<div class="sec-h">Say this before you ring off</div>'+
+    '<div class="blk"><div class="script"><div class="script-t">Say this</div>'+
+      '<div class="script-q">&ldquo;'+esc(C.say)+'&rdquo;</div></div></div>'+
+
+    '<div class="sec-h">Not yours &mdash; what EHF does next</div>'+
+    plain(C.theirs)+
+
+    '<div class="sec-h">Do not</div>'+
+    '<div class="blk"><div class="box nev"><div class="box-t">These are not yours to give</div>'+
+      '<ul style="margin-top:4px">'+C.never.map(function(x){
+        return '<li>'+esc(x)+'</li>'; }).join('')+'</ul></div></div>'+
+
+    '<div class="sec-h">If it is not paid</div>'+
+    '<div class="blk"><p style="color:var(--muted)">The system chases on a schedule and tells you '+
+      'when it is your turn. You do not have to remember &mdash; but you do have to act when it does.</p></div>'+
+    plain(C.chase)+
+
+    '<div class="sec-h">Once it ships</div>'+
+    plain(C.after)+
+
+    '<div class="blk" style="margin-top:20px"><div class="box rem">'+
+      '<div class="box-t">The one that matters</div>'+
+      'Your commission exists the moment EHF confirms cleared funds &mdash; not on submission, '+
+      'not on approval, not on a screenshot. Everything above is in service of getting to that '+
+      'point cleanly.</div></div>'+
+
     '<div class="nav"><button class="btn ghost" onclick="go({name:\'home\'})">Back to the dashboard</button></div></div>';
 }
 </script>
