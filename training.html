@@ -506,6 +506,10 @@ function render(){
   if(VIEW.name==='kit')    v.innerHTML=kitHTML(VIEW.id);
   if(VIEW.name==='final')  { v.innerHTML=finalHTML(); FSTATE={}; }
   if(VIEW.name==='closed') v.innerHTML=closedHTML();
+  // The toolkit tiles all route to 'kit'. These three have their own builders,
+  // so without this the tile opens an empty page — which is exactly what the
+  // "Just closed?" tile was doing.
+  if(VIEW.name==='kit' && VIEW.id==='closed')  v.innerHTML=closedHTML();
   if(VIEW.name==='kit' && VIEW.id==='obj')     v.innerHTML=objHTML();
   if(VIEW.name==='kit' && VIEW.id==='sources') v.innerHTML=sourcesHTML();
   try{ if(document.getElementById('uOut')) calcUnits(); }catch(e){}
@@ -527,6 +531,7 @@ function homeHTML(){
   var tools=[
     ['📖','Live catalog','/','ext'],
     ['🧾','Invoice','/invoice','ext'],
+    ['👤','My Profile','profile'],
     ['✅','Just closed?','closed'],
     ['📞','Call script','script'],
     ['💬','Objections','obj'],
@@ -1014,6 +1019,21 @@ function kitHTML(id){
       '<div class="blk"><textarea class="copybox" readonly rows="3" onclick="this.select()">'+
       cols.join('\t')+'</textarea></div>'+
       '<div class="blk"><ul>'+cols.map(function(c){ return '<li>'+esc(c)+'</li>'; }).join('')+'</ul></div>';
+  }
+  if(id==='profile'){
+    title='My Profile';
+    body='<div class="blk"><p>Five documents and your contact details. Until they are all in, '+
+      'the selling side of your dashboard is on hold &mdash; but <b>My Profile and this academy '+
+      'always stay open</b>, so you can never be locked out of the page that unlocks you.</p></div>'+
+      blkDocs()+
+      '<div class="blk"><p>Each one has a <b>download</b> link for the blank form and an '+
+      '<b>upload</b> button for your signed copy. Photograph it with your phone if that is '+
+      'easier &mdash; a clear photo is fine.</p></div>'+
+      '<div class="blk"><a class="btn" href="/operations" target="_blank" rel="noopener">'+
+      'Open My Profile &#8599;</a></div>'+
+      '<div class="blk"><div class="box rem"><div class="box-t">Where they go</div>'+
+      'A private folder. Never shared by link, and no Social Security number, licence number '+
+      'or bank account is written into any spreadsheet.</div></div>';
   }
   if(id==='compliance'){
     title='Before you promise anything';
