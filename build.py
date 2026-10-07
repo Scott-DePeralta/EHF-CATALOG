@@ -117,6 +117,45 @@ def get_pic(raw):
 # is_valid_coa rejects it as not-a-URL and blanks the field, so by the time the
 # audit runs it looks identical to an empty cell — which is why N/A products
 # kept appearing on the build alert. The raw cell has to be remembered here.
+# ── The announcement bar at the top of the catalog ──────────────────────────
+#
+#  A STATIC bar, not the scrolling marquee that was there before. The old one
+#  announced a date that had passed and scrolled past before anyone could read
+#  it. This one sits still and can be read.
+#
+#  Edit the three strings below and rebuild. To take it down, set SHOW to False.
+CATALOG_BANNER_SHOW = True
+CATALOG_BANNER = """<div class="ehf-bar" role="region" aria-label="Product announcement">
+  <div class="ehf-bar-in">
+    <span class="ehf-bar-tag">Texas</span>
+    <span class="ehf-bar-msg"><b>Infused CBD &amp; CBG flower</b> &mdash; compliant for Texas,
+      in stock now. Ask your rep, or call <b>(408)&nbsp;444-HEMP</b>.</span>
+    <a class="ehf-bar-cta" href="tel:4084444367">Call</a>
+  </div>
+</div>"""
+CATALOG_BANNER_CSS = """
+.ehf-bar{background:linear-gradient(94deg,#0b2a1a,#123d26 46%,#0b2a1a);
+  border-bottom:1px solid rgba(0,255,136,.34);padding:11px 16px;position:relative;z-index:9}
+.ehf-bar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:13px;flex-wrap:wrap}
+.ehf-bar-tag{flex:0 0 auto;background:#00ff88;color:#04140c;border-radius:5px;padding:3px 9px;
+  font-family:'Orbitron',sans-serif;font-size:10px;font-weight:900;letter-spacing:.13em;
+  text-transform:uppercase}
+.ehf-bar-msg{flex:1;min-width:200px;font-family:'DM Sans',sans-serif;font-size:14.5px;
+  line-height:1.5;color:#dff5e8}
+.ehf-bar-msg b{color:#fff}
+.ehf-bar-cta{flex:0 0 auto;background:rgba(0,255,136,.13);border:1px solid rgba(0,255,136,.45);
+  color:#7dffbb;border-radius:8px;padding:8px 16px;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:700;text-decoration:none;min-height:40px;display:flex;
+  align-items:center}
+.ehf-bar-cta:hover{background:rgba(0,255,136,.22);color:#fff}
+@media(max-width:640px){
+  .ehf-bar{padding:10px 12px}
+  .ehf-bar-in{gap:9px}
+  .ehf-bar-msg{font-size:13.5px;flex:1 1 100%;order:3}
+  .ehf-bar-cta{margin-left:auto}
+}
+"""
+
 def said_none(v):
     t = str(v or '').strip().lower()
     return t in ('n/a', 'na', 'none', 'n\\a', '-', '--', 'not applicable', 'not needed')
@@ -2335,6 +2374,22 @@ def clean_index(html):
     html = re.sub(r'<div class="ctab-dsp">.*?</div>\s*</div>\s*', '', html, flags=re.S)
     html = re.sub(r'<div class="hdr-dsp">.*?</div>\s*</div>\s*</div>\s*', '', html, flags=re.S)
     if html != before: notes.append('removed the DataScalePro script and credits')
+
+    # ── 4b. The announcement bar.
+    #
+    #  Re-inserted on every build so the message can be changed in one place.
+    #  Any previous copy is stripped first, or edits would stack the way the
+    #  checkout block did.
+    html = re.sub(r'<div class="ehf-bar"[\s\S]*?</div>\s*</div>\s*', '', html)
+    html = re.sub(r'\n?/\* EHF-BAR \*/[\s\S]*?/\* /EHF-BAR \*/\n?', '', html)
+    if CATALOG_BANNER_SHOW:
+        # after the age gate and the contact strip, before the header
+        m = re.search(r'(<!-- HEADER -->)', html)
+        if m:
+            html = html[:m.start()] + CATALOG_BANNER + '\n\n' + html[m.start():]
+            notes.append('announcement bar in place')
+        html = html.replace('</style>',
+            '/* EHF-BAR */' + CATALOG_BANNER_CSS + '/* /EHF-BAR */\n</style>', 1)
 
     # ── 5a. The heading above the form.
     #
