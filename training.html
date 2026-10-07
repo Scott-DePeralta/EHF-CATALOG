@@ -119,7 +119,7 @@ button{font-family:inherit;cursor:pointer}
   text-transform:uppercase;color:var(--dim);padding-top:3px}
 .cat-r>div{flex:1;font-size:14.5px;color:#d7dcf0;line-height:1.6}
 
-/* ── status rows — never colour alone ── */
+/* ── status rows — never color alone ── */
 .st{display:flex;gap:13px;align-items:flex-start;border-radius:12px;padding:13px 15px;
   margin-bottom:8px;border:1px solid}
 .st-m{flex:0 0 26px;height:26px;border-radius:7px;display:flex;align-items:center;
@@ -811,7 +811,7 @@ function blkCat(c){
   '</div></div>';
 }
 
-/* Tiered rows — used for discount authority. Never colour alone: every row
+/* Tiered rows — used for discount authority. Never color alone: every row
    carries a word and a symbol, so it still reads on a mono screen or to
    somebody who cannot distinguish the colours. */
 function blkStatus(rows){
@@ -1032,7 +1032,7 @@ function kitHTML(id){
       '<div class="blk"><a class="btn" href="/operations" target="_blank" rel="noopener">'+
       'Open My Profile &#8599;</a></div>'+
       '<div class="blk"><div class="box rem"><div class="box-t">Where they go</div>'+
-      'A private folder. Never shared by link, and no Social Security number, licence number '+
+      'A private folder. Never shared by link, and no Social Security number, license number '+
       'or bank account is written into any spreadsheet.</div></div>';
   }
   if(id==='compliance'){
@@ -1067,7 +1067,7 @@ function blkCOA(){
   return '<div class="blk"><div class="coa">'+
     '<div class="coa-h"><b>'+esc(C.title)+'</b>'+
       '<span>Sample '+esc(C.sampleId)+' &middot; '+esc(C.matrix)+'</span>'+
-      '<span>Analysed '+esc(C.analyzed)+' &middot; reported '+esc(C.reported)+'</span>'+
+      '<span>Analyzed '+esc(C.analyzed)+' &middot; reported '+esc(C.reported)+'</span>'+
       '<span>'+esc(C.accred)+'</span></div>'+
     '<div class="coa-b">'+C.rows.map(function(r){
       return '<div class="coa-r'+(r[4]==='k'?' key':'')+'">'+
@@ -1341,7 +1341,7 @@ function blkLinks3(){
 function blkDocs(){
   var D=[
    ['Signed W-9','Nobody can legally pay you without it. It carries your taxpayer number, which is why it is first.'],
-   ['Driver\'s licence or state ID','Proof of identity and that you are over 21.'],
+   ['Driver\'s license or state ID','Proof of identity and that you are over 21.'],
    ['Direct deposit form','Where your commission goes. Attach a voided check.'],
    ['Signed NDA','Pricing, customers and supply are confidential.'],
    ['Signed contractor agreement','Your commission rate, what you may and may not say, and that you are an independent contractor paid by Scott DePeralta Consulting LLC.']
