@@ -161,5 +161,24 @@
   ],
   "went_oos": [],
   "back_in": []
+ },
+ {
+  "ts": "2026-10-27T17:03:28.625896+00:00",
+  "version": "3.222",
+  "added": [
+   "Flower: FAT PURPLE CANDY"
+  ],
+  "removed": [
+   "Flower: PURPLE PUSH POP",
+   "Flower: G47",
+   "Flower: SLAPZ #2",
+   "Flower: POWDERED DONUTS #2"
+  ],
+  "price_changes": [
+   "Flower: GUMBO (LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0 -> LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0)",
+   "Flower: SLAPZ (LB:1350.0|\u00bdLB:745.0|\u00bcLB:390.0|OZ:110.0 -> LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0)"
+  ],
+  "went_oos": [],
+  "back_in": []
  }
 ]
