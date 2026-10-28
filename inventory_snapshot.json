@@ -160,20 +160,6 @@
   "stock": "2",
   "cann": ""
  },
- "Flower::NOSE CANDY": {
-  "tab": "Flower",
-  "name": "NOSE CANDY",
-  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-  "stock": "2",
-  "cann": ""
- },
- "Flower::GUAVA": {
-  "tab": "Flower",
-  "name": "GUAVA",
-  "price": "LB:1275.0|\u00bdLB:705.0|\u00bcLB:370.0|OZ:100.0",
-  "stock": "2",
-  "cann": ""
- },
  "Flower::PINK GUAVA": {
   "tab": "Flower",
   "name": "PINK GUAVA",
@@ -186,6 +172,13 @@
   "name": "GRAPE CHERRY GELATO",
   "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
   "stock": "0.75",
+  "cann": ""
+ },
+ "Flower::NOSE CANDY": {
+  "tab": "Flower",
+  "name": "NOSE CANDY",
+  "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+  "stock": "2",
   "cann": ""
  },
  "Flower::SUPER SILVER HAZE": {
