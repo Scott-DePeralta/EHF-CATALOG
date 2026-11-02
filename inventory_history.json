@@ -191,5 +191,23 @@
   "price_changes": [],
   "went_oos": [],
   "back_in": []
+ },
+ {
+  "ts": "2026-11-02T21:06:48.708403+00:00",
+  "version": "3.234",
+  "added": [
+   "Flower: WHITE CHERRY GELATO",
+   "Flower: ZOOTOPIA",
+   "Flower: BLUE SLUSHIE",
+   "Flower: MAGIC MELON"
+  ],
+  "removed": [
+   "Flower: APPLE TART"
+  ],
+  "price_changes": [
+   "Flower: GRAPE CANDY (LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0 -> LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0)"
+  ],
+  "went_oos": [],
+  "back_in": []
  }
 ]
