@@ -1,6 +1,6 @@
 {
- "version": "3.234",
- "built": "2026-11-02T21:06:48.708608+00:00",
+ "version": "3.235",
+ "built": "2026-11-03T04:39:59.616938+00:00",
  "counts": {
   "Flower": 61,
   "PreRoll": 31,
@@ -12,53 +12,9 @@
   "GelCaps": 7
  },
  "changes": {
-  "added": [
-   {
-    "tab": "Flower",
-    "name": "WHITE CHERRY GELATO",
-    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
-    "stock": "3",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "ZOOTOPIA",
-    "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
-    "stock": "unknown",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "BLUE SLUSHIE",
-    "price": "LB:1150.0|\u00bdLB:635.0|\u00bcLB:335.0|OZ:90.0",
-    "stock": "unknown",
-    "cann": ""
-   },
-   {
-    "tab": "Flower",
-    "name": "MAGIC MELON",
-    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "stock": "unknown",
-    "cann": ""
-   }
-  ],
-  "removed": [
-   {
-    "tab": "Flower",
-    "name": "APPLE TART",
-    "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
-    "stock": "1",
-    "cann": ""
-   }
-  ],
-  "price_changes": [
-   {
-    "tab": "Flower",
-    "name": "GRAPE CANDY",
-    "old": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
-    "new": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0"
-   }
-  ],
+  "added": [],
+  "removed": [],
+  "price_changes": [],
   "went_oos": [],
   "back_in": [],
   "first_run": false
