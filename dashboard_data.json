@@ -1,8 +1,8 @@
 {
- "version": "3.277",
- "built": "2026-11-24T07:40:34.089188+00:00",
+ "version": "3.278",
+ "built": "2026-11-24T21:44:46.096350+00:00",
  "counts": {
-  "Flower": 61,
+  "Flower": 53,
   "PreRoll": 31,
   "Vape": 47,
   "Edibles": 68,
@@ -13,7 +13,64 @@
  },
  "changes": {
   "added": [],
-  "removed": [],
+  "removed": [
+   {
+    "tab": "Flower",
+    "name": "KANDY KUSH",
+    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+    "stock": "0.5",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "JUNGLE CAKE",
+    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+    "stock": "0.5",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "GRAPE CANDY",
+    "price": "LB:1300.0|\u00bdLB:715.0|\u00bcLB:375.0|OZ:105.0",
+    "stock": "unknown",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "VANILLA CAKE",
+    "price": "LB:1100.0|\u00bdLB:605.0|\u00bcLB:320.0|OZ:90.0",
+    "stock": "2",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "MODIFIED GRAPES",
+    "price": "LB:1050.0|\u00bdLB:580.0|\u00bcLB:305.0|OZ:85.0",
+    "stock": "3",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "RASPBERRY",
+    "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
+    "stock": "0.25",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "GRAPE CHERRY GELATO",
+    "price": "LB:1250.0|\u00bdLB:690.0|\u00bcLB:360.0|OZ:100.0",
+    "stock": "0.75",
+    "cann": ""
+   },
+   {
+    "tab": "Flower",
+    "name": "CARTIER RUNTZ",
+    "price": "LB:1200.0|\u00bdLB:660.0|\u00bcLB:345.0|OZ:95.0",
+    "stock": "4.75",
+    "cann": ""
+   }
+  ],
   "price_changes": [],
   "went_oos": [],
   "back_in": [],
